@@ -11,6 +11,6 @@ package com.grupp6.ngo.system;
 public class NGOSystem {
 
     public static void main(String[] args) {
-        System.out.println("Häst123!");
+        System.out.println("Häst123!"); //nudå
     }
 }
