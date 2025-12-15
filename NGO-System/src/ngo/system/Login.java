@@ -39,6 +39,8 @@ public class Login extends javax.swing.JFrame {
         tfPwd = new javax.swing.JTextField();
         lblErr = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        devbtnAutoDetail = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,6 +59,15 @@ public class Login extends javax.swing.JFrame {
         });
         btnLogin.addActionListener(this::btnLoginActionPerformed);
 
+        jLabel1.setText("Utvecklingsverktyg");
+
+        devbtnAutoDetail.setText("Autofyll korrekt login-data");
+        devbtnAutoDetail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                devbtnAutoDetailMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,15 +76,18 @@ public class Login extends javax.swing.JFrame {
                 .addGap(95, 95, 95)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblErr)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblPwd)
-                            .addComponent(lblEpost))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tfEpost)
-                            .addComponent(tfPwd, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblPwd)
+                                .addComponent(lblEpost))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(tfEpost)
+                                .addComponent(tfPwd, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addComponent(devbtnAutoDetail)))
                 .addContainerGap(116, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -91,7 +105,11 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(tfPwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnLogin)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(devbtnAutoDetail)
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -106,7 +124,9 @@ public class Login extends javax.swing.JFrame {
         try {
             String dbPwd = idb.fetchSingle(sqlQ);
             if (pwd.equals(dbPwd)) {
-                
+                new Meny(idb, epost).setVisible(true);
+                lblErr.setVisible(false); //ifall vi vill komma åt menyn igen utan ERRMSG
+                this.setVisible(false);
             } else {
                 lblErr.setVisible(true);
             }
@@ -120,6 +140,11 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void devbtnAutoDetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_devbtnAutoDetailMouseClicked
+        tfEpost.setText("maria.g@example.com");
+        tfPwd.setText("password123");
+    }//GEN-LAST:event_devbtnAutoDetailMouseClicked
 
     /**
      * @param args the command line arguments
@@ -148,6 +173,8 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton devbtnAutoDetail;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblErr;
     private javax.swing.JLabel lblPwd;
