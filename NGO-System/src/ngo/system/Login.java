@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ngo.system;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+import javax.swing.JOptionPane;
 /**
  *
  * @author alve
@@ -23,7 +20,11 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         lblErr.setVisible(false);
     }
-
+    
+    private void showError(String message) {
+    JOptionPane.showMessageDialog(this, message, "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -121,6 +122,21 @@ public class Login extends javax.swing.JFrame {
         String pwd = tfPwd.getText();
         String sqlQ = "select losenord from anstalld where epost = '" + epost + "'";
         System.out.println(sqlQ);
+        
+        //Först validera epost
+        String error = Validering.goodStr(epost);
+        if (error != null) {
+            showError("E-post: " + error);
+            return;
+        }
+        
+        //Validera lösen
+        error = Validering.goodStr(pwd);
+        if (error != null) {
+            showError("Lösenord: " + error);
+            return;
+        }
+        
         try {
             String dbPwd = idb.fetchSingle(sqlQ);
             if (pwd.equals(dbPwd)) {
