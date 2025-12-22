@@ -24,6 +24,7 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
      */
     public Hallbarhetsmal(InfDB idb) {
         this.idb = idb;
+        hamtaListInfo();
         initComponents();
     }
 
@@ -39,11 +40,22 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
     private void initComponents() {
 
         showGoals = new javax.swing.JButton();
+        valjMål = new javax.swing.JLabel();
+        cboxHallbarhetsMal = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         showGoals.setText("Visa Mål");
         showGoals.addActionListener(this::showGoalsActionPerformed);
+
+        valjMål.setText("jLabel1");
+
+        cboxHallbarhetsMal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboxHallbarhetsMal.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cboxHallbarhetsMalFocusGained(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,15 +63,22 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(showGoals)
-                .addContainerGap(320, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(showGoals)
+                    .addComponent(valjMål)
+                    .addComponent(cboxHallbarhetsMal, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(263, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(showGoals)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(valjMål)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cboxHallbarhetsMal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         pack();
@@ -69,12 +88,30 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
         try {
             String sqlQ = "select namn from sdgsweden.hallbarhetsmal";
             ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
+            ArrayList<String> namnlist = new ArrayList<>();
+            for (HashMap<String, String> row : databasSvar) {
+                namnlist.add(row.get("namn"));
+                }
         } catch (InfException ex) {
             System.getLogger(Hallbarhetsmal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         
+        
     }//GEN-LAST:event_showGoalsActionPerformed
 
+    private void cboxHallbarhetsMalFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboxHallbarhetsMalFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboxHallbarhetsMalFocusGained
+    private void hamtaListInfo() {
+        try {
+            String sqlQ = "select namn from sdgsweden.hallbarhetsmal";
+            ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
+        } catch (InfException ex) {
+            System.getLogger(Hallbarhetsmal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -101,6 +138,8 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cboxHallbarhetsMal;
     private javax.swing.JButton showGoals;
+    private javax.swing.JLabel valjMål;
     // End of variables declaration//GEN-END:variables
 }
