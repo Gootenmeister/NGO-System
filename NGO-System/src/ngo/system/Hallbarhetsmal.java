@@ -39,16 +39,15 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        showGoals = new javax.swing.JButton();
         valjMål = new javax.swing.JLabel();
         cboxHallbarhetsMal = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tfMalBeskrivning = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        showGoals.setText("Visa Mål");
-        showGoals.addActionListener(this::showGoalsActionPerformed);
-
-        valjMål.setText("jLabel1");
+        valjMål.setText("Hållbarhetsmål");
 
         cboxHallbarhetsMal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         cboxHallbarhetsMal.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -58,6 +57,14 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
         });
         cboxHallbarhetsMal.addActionListener(this::cboxHallbarhetsMalActionPerformed);
 
+        tfMalBeskrivning.setColumns(20);
+        tfMalBeskrivning.setLineWrap(true);
+        tfMalBeskrivning.setRows(5);
+        tfMalBeskrivning.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(tfMalBeskrivning);
+
+        jLabel1.setText("Beskrivning:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,47 +72,43 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(showGoals)
                     .addComponent(valjMål)
-                    .addComponent(cboxHallbarhetsMal, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(263, Short.MAX_VALUE))
+                    .addComponent(cboxHallbarhetsMal, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(160, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(showGoals)
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addComponent(valjMål)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cboxHallbarhetsMal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(3, 3, 3)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(124, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void showGoalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGoalsActionPerformed
-        try {
-            String sqlQ = "select namn from sdgsweden.hallbarhetsmal";
-            ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
-            ArrayList<String> namnlist = new ArrayList<>();
-            for (HashMap<String, String> row : databasSvar) {
-                namnlist.add(row.get("namn"));
-                }
-        } catch (InfException ex) {
-            System.getLogger(Hallbarhetsmal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        
-        
-    }//GEN-LAST:event_showGoalsActionPerformed
-
     private void cboxHallbarhetsMalFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboxHallbarhetsMalFocusGained
-        // TODO add your handling code here:
+        // TODO Printa ut mål i en 
+        
     }//GEN-LAST:event_cboxHallbarhetsMalFocusGained
 
     private void cboxHallbarhetsMalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxHallbarhetsMalActionPerformed
-        // TODO add your handling code here:
+        String FetchDesc = "select beskrivning from hallbarhetsmal where namn = ";
+        String valtMal = (String) cboxHallbarhetsMal.getSelectedItem();
+        try {
+        String UtskriftDesc = idb.fetchSingle(FetchDesc + "'"+valtMal+"'");
+        tfMalBeskrivning.setText(UtskriftDesc);
+        } catch(InfException ex) {
+            System.out.println("Error: " +ex);
+        }
     }//GEN-LAST:event_cboxHallbarhetsMalActionPerformed
     private void hamtaListInfo() {
         try {
@@ -153,7 +156,9 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboxHallbarhetsMal;
-    private javax.swing.JButton showGoals;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea tfMalBeskrivning;
     private javax.swing.JLabel valjMål;
     // End of variables declaration//GEN-END:variables
 }
