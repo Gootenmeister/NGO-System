@@ -50,7 +50,7 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
 
         valjMål.setText("jLabel1");
 
-        cboxHallbarhetsMal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboxHallbarhetsMal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         cboxHallbarhetsMal.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 cboxHallbarhetsMalFocusGained(evt);
@@ -113,9 +113,11 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
             int i = 1;
             ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
             ArrayList<String> namnlist = new ArrayList<>();
+            String sqlfraga = "select namn from hallbarhetsmal where hid = ";
             for (HashMap<String, String> row : databasSvar) {
+                String malNamn = idb.fetchSingle(sqlfraga + i);
                 namnlist.add(row.get("namn"));
-                cboxHallbarhetsMal.addItem("adw");
+                cboxHallbarhetsMal.addItem(malNamn);
                 i++;
                 }
         } catch (InfException ex) {
