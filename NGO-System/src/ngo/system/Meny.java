@@ -16,6 +16,10 @@ public class Meny extends javax.swing.JFrame {
     private InfDB idb; 
     private String activeUser;
     private int permissionLevel;
+    private static String currentAID;
+    private static InfDB idbStatic;
+    private static String staticUser;
+    
     /**
      * Creates new form Meny
      */
@@ -24,7 +28,23 @@ public class Meny extends javax.swing.JFrame {
         this.idb = idb;
         initComponents();
         lblActiveUser.setText(activeUser);
+        staticUser = activeUser;
+        idbStatic = idb;
         //lblIfAdmin.setText(PLACEHOLDER);
+    }
+    
+    public static String getAID(){
+        String sqlQ = "select aid from anstalld where epost = ";
+        try {
+            currentAID = idbStatic.fetchSingle(sqlQ + "'" + staticUser + "'");
+        }
+        
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }
+        
+        return currentAID;
     }
 
     /**
@@ -106,7 +126,7 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_openHallbarhetsMalMouseClicked
 
     private void btnPersonalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPersonalMouseClicked
-        new Personal(idb, null).setVisible(true); //ersätt null med avdelningen på maria?
+        new Personal(idb).setVisible(true); //ersätt null med avdelningen på maria?
     }//GEN-LAST:event_btnPersonalMouseClicked
 
     /**
