@@ -15,6 +15,7 @@ public class Meny extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Meny.class.getName());
     private InfDB idb; 
     private String activeUser;
+    private int permissionLevel;
     /**
      * Creates new form Meny
      */
@@ -23,6 +24,7 @@ public class Meny extends javax.swing.JFrame {
         this.idb = idb;
         initComponents();
         lblActiveUser.setText(activeUser);
+        //lblIfAdmin.setText(PLACEHOLDER);
     }
 
     /**
@@ -36,12 +38,15 @@ public class Meny extends javax.swing.JFrame {
 
         lblUserPrefix = new javax.swing.JLabel();
         lblActiveUser = new javax.swing.JLabel();
+        lblIfAdmin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblUserPrefix.setText("Inloggad som:");
 
         lblActiveUser.setText("jLabel1");
+
+        lblIfAdmin.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,8 +56,10 @@ public class Meny extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblUserPrefix)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblActiveUser)
-                .addContainerGap(275, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblIfAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblActiveUser))
+                .addContainerGap(340, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -61,7 +68,9 @@ public class Meny extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUserPrefix)
                     .addComponent(lblActiveUser))
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIfAdmin)
+                .addContainerGap(306, Short.MAX_VALUE))
         );
 
         pack();
@@ -94,6 +103,7 @@ public class Meny extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblActiveUser;
+    private javax.swing.JLabel lblIfAdmin;
     private javax.swing.JLabel lblUserPrefix;
     // End of variables declaration//GEN-END:variables
 }
