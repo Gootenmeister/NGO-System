@@ -24,8 +24,8 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
      */
     public Hallbarhetsmal(InfDB idb) {
         this.idb = idb;
-        hamtaListInfo();
         initComponents();
+        hamtaListInfo();
     }
 
     /**
@@ -56,6 +56,7 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
                 cboxHallbarhetsMalFocusGained(evt);
             }
         });
+        cboxHallbarhetsMal.addActionListener(this::cboxHallbarhetsMalActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,10 +103,21 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
     private void cboxHallbarhetsMalFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboxHallbarhetsMalFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_cboxHallbarhetsMalFocusGained
+
+    private void cboxHallbarhetsMalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxHallbarhetsMalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboxHallbarhetsMalActionPerformed
     private void hamtaListInfo() {
         try {
-            String sqlQ = "select namn from sdgsweden.hallbarhetsmal";
+            String sqlQ = "select namn from sdgsweden.hallbarhetsmal order by hid";
+            int i = 1;
             ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
+            ArrayList<String> namnlist = new ArrayList<>();
+            for (HashMap<String, String> row : databasSvar) {
+                namnlist.add(row.get("namn"));
+                cboxHallbarhetsMal.addItem("adw");
+                i++;
+                }
         } catch (InfException ex) {
             System.getLogger(Hallbarhetsmal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
