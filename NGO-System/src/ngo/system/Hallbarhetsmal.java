@@ -22,7 +22,8 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
     /**
      * Creates new form Hallbarhetsmal
      */
-    public Hallbarhetsmal() {
+    public Hallbarhetsmal(InfDB idb) {
+        this.idb = idb;
         initComponents();
     }
 
@@ -96,7 +97,7 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Hallbarhetsmal().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new Hallbarhetsmal().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
