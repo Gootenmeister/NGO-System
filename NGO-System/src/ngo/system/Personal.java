@@ -1,6 +1,7 @@
 package ngo.system;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.JOptionPane;
@@ -21,22 +22,69 @@ public class Personal extends javax.swing.JFrame {
     private InfDB idb;
     private String avdelning;
     private String avdelningNummer;
+    private ArrayList<String> namnLista;
 
     /**
      * Creates new form Personal
      */
     public Personal(InfDB idb) {
         this.idb = idb;
+        ArrayList<String> namnLista = new ArrayList<>();
         initComponents();
-        String sqlQ = "select avdelning from anstalld where aid = ";
+        printAvdelning();
+        anstalldLista();
+    }
+    
+    private void printAvdelning()
+    {
+        setAvdelningNummer();
+        setAvdelning();
+        lblAvdelning.setText(avdelning);
+    }
+    
+    private void setAvdelningNummer()
+    {
         try {
-            avdelningNummer = this.idb.fetchSingle(sqlQ + Meny.getAID());
-            sqlQ = "select namn from avdelning where avdid = ";
-            avdelning = this.idb.fetchSingle(sqlQ + avdelningNummer);
-            lblAvdelning.setText(avdelning);
+            String sqlQ = "select avdelning from anstalld where aid = ";
+            avdelningNummer = idb.fetchSingle(sqlQ + Meny.getAID());
         }
         
-        catch(InfException exception){
+        catch(InfException exception) {
+            System.out.println("Error: " + exception);
+        }
+    }
+    
+    private void setAvdelning()
+    {
+        try {
+            String sqlQ = "select namn from avdelning where avdid = ";
+            avdelning = idb.fetchSingle(sqlQ + avdelningNummer);
+        }
+        
+        catch(InfException exception) {
+            System.out.println("Error: " + exception);
+        }
+    }
+    
+    private void anstalldLista()
+    {
+        try {
+            String sqlQ = "select fornamn, efternamn from anstalld where avdelning = " + avdelningNummer;
+            ArrayList<HashMap<String, String>> anstalldaNamn = idb.fetchRows(sqlQ);
+            DefaultListModel<String> listModel = new DefaultListModel<>();
+            
+            for (HashMap<String, String> row : anstalldaNamn) {
+                String fornamn = row.get("fornamn");
+                String efternamn = row.get("efternamn");
+                String fullNamn = fornamn + " " + efternamn;
+                listModel.addElement(fullNamn);
+
+            }
+            
+            lstAnstallda.setModel(listModel);
+        }
+        
+        catch (InfException exception) {
             System.out.println("Error: " + exception);
         }
     }
@@ -53,9 +101,10 @@ public class Personal extends javax.swing.JFrame {
         lblAvdelning = new javax.swing.JLabel();
         splAnstallda = new javax.swing.JScrollPane();
         lstAnstallda = new javax.swing.JList<>();
-        sbrAnstallda = new javax.swing.JScrollBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setResizable(false);
 
         lblAvdelning.setText("jLabel1");
 
@@ -71,15 +120,11 @@ public class Personal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblAvdelning)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(125, Short.MAX_VALUE)
-                .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sbrAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAvdelning)
+                    .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,9 +132,7 @@ public class Personal extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(lblAvdelning)
                 .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(sbrAnstallda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -123,7 +166,6 @@ public class Personal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JList<String> lstAnstallda;
-    private javax.swing.JScrollBar sbrAnstallda;
     private javax.swing.JScrollPane splAnstallda;
     // End of variables declaration//GEN-END:variables
 }
