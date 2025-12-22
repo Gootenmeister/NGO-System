@@ -46,8 +46,12 @@ public class Validering {
         return "Inputsträng tom!";
     }
     if (s.length() > MAX_STRLEN) {
-        return "Inputsträng för lång! (>255)";
+    return "Inputsträng för lång! (>255)";
     }
+    if (!s.contains("@")) {
+        return "E-postadresser måste innehålla '@'";
+    }
+
     return null; //här med är NULL är valid
     }
 }
