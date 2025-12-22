@@ -40,6 +40,7 @@ public class Meny extends javax.swing.JFrame {
         lblActiveUser = new javax.swing.JLabel();
         lblIfAdmin = new javax.swing.JLabel();
         openHallbarhetsMal = new javax.swing.JButton();
+        btnPersonal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,11 +57,18 @@ public class Meny extends javax.swing.JFrame {
             }
         });
 
+        btnPersonal.setText("Personal");
+        btnPersonal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPersonalMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblUserPrefix)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -68,7 +76,9 @@ public class Meny extends javax.swing.JFrame {
                     .addComponent(lblIfAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblActiveUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-                .addComponent(openHallbarhetsMal)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPersonal)
+                    .addComponent(openHallbarhetsMal))
                 .addGap(49, 49, 49))
         );
         layout.setVerticalGroup(
@@ -83,7 +93,9 @@ public class Meny extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblIfAdmin))
                     .addComponent(openHallbarhetsMal))
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnPersonal)
+                .addContainerGap(265, Short.MAX_VALUE))
         );
 
         pack();
@@ -92,6 +104,10 @@ public class Meny extends javax.swing.JFrame {
     private void openHallbarhetsMalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openHallbarhetsMalMouseClicked
         new Hallbarhetsmal(idb).setVisible(true);
     }//GEN-LAST:event_openHallbarhetsMalMouseClicked
+
+    private void btnPersonalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPersonalMouseClicked
+        new Personal(idb, null).setVisible(true); //ersätt null med avdelningen på maria?
+    }//GEN-LAST:event_btnPersonalMouseClicked
 
     /**
      * @param args the command line arguments
@@ -119,6 +135,7 @@ public class Meny extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPersonal;
     private javax.swing.JLabel lblActiveUser;
     private javax.swing.JLabel lblIfAdmin;
     private javax.swing.JLabel lblUserPrefix;
