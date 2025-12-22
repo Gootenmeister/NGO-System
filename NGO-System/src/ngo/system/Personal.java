@@ -20,15 +20,25 @@ public class Personal extends javax.swing.JFrame {
     
     private InfDB idb;
     private String avdelning;
+    private String avdelningNummer;
 
     /**
      * Creates new form Personal
      */
-    public Personal(InfDB idb, String avdeling) {
-        this.avdelning = avdelning;
+    public Personal(InfDB idb) {
         this.idb = idb;
         initComponents();
-        lblAvdelning.setText(avdelning);
+        String sqlQ = "select avdelning from anstalld where aid = ";
+        try {
+            avdelningNummer = this.idb.fetchSingle(sqlQ + Meny.getAID());
+            sqlQ = "select namn from avdelning where avdid = ";
+            avdelning = this.idb.fetchSingle(sqlQ + avdelningNummer);
+            lblAvdelning.setText(avdelning);
+        }
+        
+        catch(InfException exception){
+            System.out.println("Error: " + exception);
+        }
     }
 
     /**
@@ -41,35 +51,35 @@ public class Personal extends javax.swing.JFrame {
     private void initComponents() {
 
         lblAvdelning = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jScrollBar1 = new javax.swing.JScrollBar();
+        splAnstallda = new javax.swing.JScrollPane();
+        lstAnstallda = new javax.swing.JList<>();
+        sbrAnstallda = new javax.swing.JScrollBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblAvdelning.setText("jLabel1");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        lstAnstallda.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        splAnstallda.setViewportView(lstAnstallda);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(200, 200, 200)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblAvdelning)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(129, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(125, Short.MAX_VALUE)
+                .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(115, 115, 115))
+                .addComponent(sbrAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,8 +88,8 @@ public class Personal extends javax.swing.JFrame {
                 .addComponent(lblAvdelning)
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sbrAnstallda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -111,9 +121,9 @@ public class Personal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JScrollBar jScrollBar1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAvdelning;
+    private javax.swing.JList<String> lstAnstallda;
+    private javax.swing.JScrollBar sbrAnstallda;
+    private javax.swing.JScrollPane splAnstallda;
     // End of variables declaration//GEN-END:variables
 }

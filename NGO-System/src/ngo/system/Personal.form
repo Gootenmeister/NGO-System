@@ -24,16 +24,16 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="lblAvdelning" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="129" max="32767" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="140" max="-2" attributes="0"/>
+              <EmptySpace pref="125" max="32767" attributes="0"/>
+              <Component id="splAnstallda" min="-2" pref="140" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollBar1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
+              <Component id="sbrAnstallda" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="125" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -44,8 +44,8 @@
               <Component id="lblAvdelning" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jScrollBar1" max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                  <Component id="sbrAnstallda" max="32767" attributes="0"/>
+                  <Component id="splAnstallda" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="72" max="32767" attributes="0"/>
           </Group>
@@ -58,14 +58,14 @@
         <Property name="text" type="java.lang.String" value="jLabel1"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+    <Container class="javax.swing.JScrollPane" name="splAnstallda">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JList" name="jList1">
+        <Component class="javax.swing.JList" name="lstAnstallda">
           <Properties>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
               <StringArray count="5">
@@ -83,7 +83,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JScrollBar" name="jScrollBar1">
+    <Component class="javax.swing.JScrollBar" name="sbrAnstallda">
     </Component>
   </SubComponents>
 </Form>
