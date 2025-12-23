@@ -22,14 +22,14 @@ public class Personal extends javax.swing.JFrame {
     private InfDB idb;
     private String avdelning;
     private String avdelningNummer;
-    private ArrayList<String> namnLista;
+    private String sokning;
 
     /**
      * Creates new form Personal
      */
     public Personal(InfDB idb) {
         this.idb = idb;
-        ArrayList<String> namnLista = new ArrayList<>();
+        sokning = "";
         initComponents();
         printAvdelning();
         anstalldLista();
@@ -69,16 +69,37 @@ public class Personal extends javax.swing.JFrame {
     private void anstalldLista()
     {
         try {
-            String sqlQ = "select fornamn, efternamn from anstalld where avdelning = " + avdelningNummer;
-            ArrayList<HashMap<String, String>> anstalldaNamn = idb.fetchRows(sqlQ);
+            int i = 0;
+            String sqlQ;
             DefaultListModel<String> listModel = new DefaultListModel<>();
+            ArrayList<HashMap<String, String>> anstalldaNamn;
+            ArrayList<String> anstalldaEpost;
+            
+            if(!sokning.isEmpty())
+            {
+                sqlQ = "select fornamn, efternamn from anstalld where avdelning = " + avdelningNummer + " and aid in (select aid from handlaggare)";
+                anstalldaNamn = idb.fetchRows(sqlQ);
+
+                sqlQ = "select epost from anstalld where avdelning = " + avdelningNummer + " and aid in (select aid from handlaggare)";
+                anstalldaEpost = idb.fetchColumn(sqlQ);
+            }
+            else {
+                sqlQ = "select fornamn, efternamn from anstalld where avdelning = " + avdelningNummer;
+                anstalldaNamn = idb.fetchRows(sqlQ);
+
+                sqlQ = "select epost from anstalld where avdelning = " + avdelningNummer;
+                anstalldaEpost = idb.fetchColumn(sqlQ);
+            }
             
             for (HashMap<String, String> row : anstalldaNamn) {
                 String fornamn = row.get("fornamn");
                 String efternamn = row.get("efternamn");
                 String fullNamn = fornamn + " " + efternamn;
-                listModel.addElement(fullNamn);
-
+                if(fullNamn.toLowerCase().contains(sokning.toLowerCase()) || anstalldaEpost.get(i).toLowerCase().contains(sokning.toLowerCase()))
+                {
+                    listModel.addElement(fullNamn);
+                }
+                i++;
             }
             
             lstAnstallda.setModel(listModel);
@@ -101,12 +122,16 @@ public class Personal extends javax.swing.JFrame {
         lblAvdelning = new javax.swing.JLabel();
         splAnstallda = new javax.swing.JScrollPane();
         lstAnstallda = new javax.swing.JList<>();
+        txtHandlaggare = new javax.swing.JTextField();
+        lblHandlaggare = new javax.swing.JLabel();
+        btnHandlaggare = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
         lblAvdelning.setText("jLabel1");
+        lblAvdelning.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lstAnstallda.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -115,29 +140,65 @@ public class Personal extends javax.swing.JFrame {
         });
         splAnstallda.setViewportView(lstAnstallda);
 
+        txtHandlaggare.addActionListener(this::txtHandlaggareActionPerformed);
+
+        lblHandlaggare.setText("Sök efter handläggare i din avdelning utifrån namn eller e-post");
+
+        btnHandlaggare.setText("Sök");
+        btnHandlaggare.addActionListener(this::btnHandlaggareActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(125, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAvdelning)
-                    .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(132, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(341, 341, 341)
+                        .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(257, 257, 257)
+                        .addComponent(lblAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(164, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtHandlaggare, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblHandlaggare, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(131, 131, 131)
+                        .addComponent(btnHandlaggare)
+                        .addGap(127, 127, 127)))
+                .addGap(176, 176, 176))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(lblAvdelning)
                 .addGap(37, 37, 37)
+                .addComponent(lblAvdelning)
+                .addGap(38, 38, 38)
                 .addComponent(splAnstallda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addComponent(lblHandlaggare)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtHandlaggare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnHandlaggare)
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHandlaggareActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHandlaggareActionPerformed
+
+    private void btnHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHandlaggareActionPerformed
+        sokning = txtHandlaggare.getText();
+        anstalldLista();
+    }//GEN-LAST:event_btnHandlaggareActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,8 +225,11 @@ public class Personal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHandlaggare;
     private javax.swing.JLabel lblAvdelning;
+    private javax.swing.JLabel lblHandlaggare;
     private javax.swing.JList<String> lstAnstallda;
     private javax.swing.JScrollPane splAnstallda;
+    private javax.swing.JTextField txtHandlaggare;
     // End of variables declaration//GEN-END:variables
 }
