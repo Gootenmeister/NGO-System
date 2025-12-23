@@ -45,7 +45,7 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
         tfMalBeskrivning = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         valjMål.setText("Hållbarhetsmål");
 
