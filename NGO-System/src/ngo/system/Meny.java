@@ -33,6 +33,7 @@ public class Meny extends javax.swing.JFrame {
         //lblIfAdmin.setText(PLACEHOLDER);
     }
     
+    //En get metod för användarens AID
     public static String getAID(){
         String sqlQ = "select aid from anstalld where epost = ";
         try {
