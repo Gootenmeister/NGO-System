@@ -19,18 +19,29 @@ public class Meny extends javax.swing.JFrame {
     private static String currentAID;
     private static InfDB idbStatic;
     private static String staticUser;
+    private final int accessLevel;
     
     /**
      * Creates new form Meny
      */
-    public Meny(InfDB idb, String activeUser) {
+    public Meny(InfDB idb, String activeUser, int accessLevel) {
         this.activeUser = activeUser;
         this.idb = idb;
+        this.accessLevel = accessLevel;
         initComponents();
         lblActiveUser.setText(activeUser);
         staticUser = activeUser;
         idbStatic = idb;
         //lblIfAdmin.setText(PLACEHOLDER);
+        if (accessLevel == 0){
+                lblAccessLevel.setText("handläggare");
+        }
+        if (accessLevel == 1){
+                lblAccessLevel.setText("projektchef");
+        }
+        if (accessLevel == 2){
+                lblAccessLevel.setText("admin");
+        }
     }
     
     //En get metod för användarens AID
@@ -46,6 +57,8 @@ public class Meny extends javax.swing.JFrame {
         }
         
         return currentAID;
+        
+        
     }
 
     /**
@@ -59,7 +72,7 @@ public class Meny extends javax.swing.JFrame {
 
         lblUserPrefix = new javax.swing.JLabel();
         lblActiveUser = new javax.swing.JLabel();
-        lblIfAdmin = new javax.swing.JLabel();
+        lblAccessLevel = new javax.swing.JLabel();
         openHallbarhetsMal = new javax.swing.JButton();
         btnPersonal = new javax.swing.JButton();
 
@@ -69,7 +82,7 @@ public class Meny extends javax.swing.JFrame {
 
         lblActiveUser.setText("jLabel1");
 
-        lblIfAdmin.setText("jLabel1");
+        lblAccessLevel.setText("Behörighetsnivå");
 
         openHallbarhetsMal.setText("Hållbarhetsmål");
         openHallbarhetsMal.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -94,9 +107,9 @@ public class Meny extends javax.swing.JFrame {
                 .addComponent(lblUserPrefix)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblIfAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblActiveUser))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+                    .addComponent(lblActiveUser)
+                    .addComponent(lblAccessLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPersonal)
                     .addComponent(openHallbarhetsMal))
@@ -112,7 +125,7 @@ public class Meny extends javax.swing.JFrame {
                             .addComponent(lblUserPrefix)
                             .addComponent(lblActiveUser))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblIfAdmin))
+                        .addComponent(lblAccessLevel))
                     .addComponent(openHallbarhetsMal))
                 .addGap(18, 18, 18)
                 .addComponent(btnPersonal)
@@ -157,8 +170,8 @@ public class Meny extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPersonal;
+    private javax.swing.JLabel lblAccessLevel;
     private javax.swing.JLabel lblActiveUser;
-    private javax.swing.JLabel lblIfAdmin;
     private javax.swing.JLabel lblUserPrefix;
     private javax.swing.JButton openHallbarhetsMal;
     // End of variables declaration//GEN-END:variables

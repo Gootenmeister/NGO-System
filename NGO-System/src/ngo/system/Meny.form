@@ -28,10 +28,10 @@
               <Component id="lblUserPrefix" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblIfAdmin" min="-2" pref="53" max="-2" attributes="0"/>
                   <Component id="lblActiveUser" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblAccessLevel" min="-2" pref="70" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="181" max="32767" attributes="0"/>
+              <EmptySpace pref="164" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnPersonal" min="-2" max="-2" attributes="0"/>
                   <Component id="openHallbarhetsMal" min="-2" max="-2" attributes="0"/>
@@ -51,7 +51,7 @@
                           <Component id="lblActiveUser" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblIfAdmin" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblAccessLevel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="openHallbarhetsMal" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -73,9 +73,9 @@
         <Property name="text" type="java.lang.String" value="jLabel1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblIfAdmin">
+    <Component class="javax.swing.JLabel" name="lblAccessLevel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel1"/>
+        <Property name="text" type="java.lang.String" value="Beh&#xf6;righetsniv&#xe5;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="openHallbarhetsMal">

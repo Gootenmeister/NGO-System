@@ -11,6 +11,9 @@ public class Login extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
     
     private InfDB idb;
+    
+    //vilken behörighets nivå personen som loggar in har, 0 är vanlig handläggare, 1 är projektchef och 2 är admin
+    private int access;
 
     /**
      * Creates new form Login
@@ -123,6 +126,42 @@ public class Login extends javax.swing.JFrame {
         String sqlQ = "select losenord from anstalld where epost = '" + epost + "'";
         System.out.println(sqlQ);
         
+        //alla sql satser som används för att få reda på någon behörigheter
+        String sqlAID = "select anstalld.aid from sdgsweden.anstalld where epost = '" + epost + "'" + " limit 1";
+        String sqlIsAdmin = "select anstalld.aid from sdgsweden.anstalld join sdgsweden.admin on sdgsweden.anstalld.aid = sdgsweden.admin.aid where sdgsweden.anstalld.epost = '" + epost + "'" + " limit 1";
+        String sqlIsProjektChef = "select anstalld.aid from sdgsweden.anstalld join sdgsweden.projekt on sdgsweden.anstalld.aid = sdgsweden.projekt.projektchef where sdgsweden.anstalld.epost = '" + epost + "'" +  " limit 1";
+        String sqlIsHandlaggare = "select anstalld.aid from sdgsweden.anstalld join sdgsweden.handlaggare on sdgsweden.anstalld.aid = sdgsweden.handlaggare.aid where sdgsweden.anstalld.epost = '" + epost + "'" + " limit 1";
+        
+        try {
+            String AID = idb.fetchSingle(sqlAID);
+            String isAdmin = idb.fetchSingle(sqlIsAdmin);
+            String isProjektchef = idb.fetchSingle(sqlIsProjektChef);
+            String isHandlaggare = idb.fetchSingle(sqlIsHandlaggare);
+            
+        // om någon är handläggare kan den oxå vara projektchef, då finns det en check i if-satsen
+        if (AID.equals(isHandlaggare)){
+            if (AID.equals(isProjektchef)){
+            access = 1;
+        }
+            else {
+            access = 0;
+            }
+        } 
+        
+        else if (AID.equals(isAdmin)){
+            access = 2;
+        }
+        
+        
+
+        
+        System.out.println("nivå=" + access);
+            
+        } catch (InfException ex) {
+            System.getLogger(Login.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        
         //Först validera epost
         String error = Validering.goodStr(epost);
         if (error != null) {
@@ -140,7 +179,7 @@ public class Login extends javax.swing.JFrame {
         try {
             String dbPwd = idb.fetchSingle(sqlQ);
             if (pwd.equals(dbPwd)) {
-                new Meny(idb, epost).setVisible(true);
+                new Meny(idb, epost, access).setVisible(true);
                 lblErr.setVisible(false); //ifall vi vill komma åt menyn igen utan ERRMSG
                 this.setVisible(false);
             } else {
