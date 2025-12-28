@@ -62,6 +62,7 @@ public class Meny extends javax.swing.JFrame {
         lblIfAdmin = new javax.swing.JLabel();
         openHallbarhetsMal = new javax.swing.JButton();
         btnPersonal = new javax.swing.JButton();
+        btnProjekt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,6 +86,13 @@ public class Meny extends javax.swing.JFrame {
             }
         });
 
+        btnProjekt.setText("Projekt");
+        btnProjekt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnProjektMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,6 +106,7 @@ public class Meny extends javax.swing.JFrame {
                     .addComponent(lblActiveUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnProjekt)
                     .addComponent(btnPersonal)
                     .addComponent(openHallbarhetsMal))
                 .addGap(49, 49, 49))
@@ -116,7 +125,9 @@ public class Meny extends javax.swing.JFrame {
                     .addComponent(openHallbarhetsMal))
                 .addGap(18, 18, 18)
                 .addComponent(btnPersonal)
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addComponent(btnProjekt)
+                .addContainerGap(210, Short.MAX_VALUE))
         );
 
         pack();
@@ -129,7 +140,10 @@ public class Meny extends javax.swing.JFrame {
     private void btnPersonalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPersonalMouseClicked
         new Personal(idb).setVisible(true); //ersätt null med avdelningen på maria?
     }//GEN-LAST:event_btnPersonalMouseClicked
-
+    
+    private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
+        new Projekt(idb).setVisible(true); 
+    }   
     /**
      * @param args the command line arguments
      */
@@ -157,6 +171,7 @@ public class Meny extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPersonal;
+    private javax.swing.JButton btnProjekt;
     private javax.swing.JLabel lblActiveUser;
     private javax.swing.JLabel lblIfAdmin;
     private javax.swing.JLabel lblUserPrefix;

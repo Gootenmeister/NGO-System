@@ -33,6 +33,7 @@
               </Group>
               <EmptySpace pref="181" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnProjekt" min="-2" max="-2" attributes="0"/>
                   <Component id="btnPersonal" min="-2" max="-2" attributes="0"/>
                   <Component id="openHallbarhetsMal" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -57,7 +58,9 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnPersonal" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="265" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <Component id="btnProjekt" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="210" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -93,6 +96,14 @@
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnPersonalMouseClicked"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnProjekt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Projekt"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnProjekt.addMouseListener(new java.awt.event.MouseAdapter() {&#xa;    public void mouseClicked(java.awt.event.MouseEvent evt) {&#xa;        btnProjektMouseClicked(evt);&#xa;    }&#xa;});"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
