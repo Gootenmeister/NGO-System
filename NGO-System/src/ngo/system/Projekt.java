@@ -4,13 +4,14 @@
  */
 package ngo.system;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.JOptionPane;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  *
@@ -22,21 +23,19 @@ public class Projekt extends javax.swing.JFrame {
     private InfDB idb;
     private String avdelning;
     private String avdelningNummer;
-    private String startDatumString;
-    private String slutDatumString;
     private String epost;
-    private LocalDate startDatum;
-    private LocalDate slutDatum;
+    private Date startDatum;
+    private Date slutDatum;
     private ArrayList<String> projektNamn;
     private String epostChef;
+    private LocalDate startDatumLocal;
+    private LocalDate slutDatumLocal;
 
     /**
      * Creates new form Projekt
      */
     public Projekt(InfDB idb) {
         this.idb = idb;
-        startDatumString = "";
-        slutDatumString = "";
         epost = "";
         ArrayList<String> projektNamn = new ArrayList<>();
         epostChef = "";
@@ -79,7 +78,7 @@ public class Projekt extends javax.swing.JFrame {
         }
     }
     
-    //Skapar en lista för alla projekt som finns i avdelningen som användaren jobbar på och som är aktiva samt ingår i det datumet användaren skrivit in om de har det
+    //Skapar en lista för alla projekt som finns i avdelningen som användaren jobbar på och som är aktiva samt ingår i det datumet användaren skrivit in om de har det. Söker även efter projekt utifrån vilken projektchef som projektet har om användaren har sökt på en Epost-adress. 
     private void projektLista()
     {
         try {
@@ -87,18 +86,19 @@ public class Projekt extends javax.swing.JFrame {
             DefaultListModel<String> listModel = new DefaultListModel<>();
 
             //Kollar om användaren har sökt på ett specifikt datum, om de inte har så körs kod-blocket nedan
-            if(startDatumString.isEmpty() || slutDatumString.isEmpty())
+            if(startDatum == null || slutDatum == null)
             {
                 sqlQ = "select projektnamn from projekt where status = 'Pågående' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
             }
             //Om de har sökt på ett datum så körs kod-blocket nedan
             else
             {
-                sqlQ = "select projektnamn from projekt where status = 'Pågående' and startdatum >= '" + startDatum + "' and slutdatum <= '" + slutDatum + "' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
+                sqlQ = "select projektnamn from projekt where status = 'Pågående' and startdatum >= '" + startDatumLocal + "' and slutdatum <= '" + slutDatumLocal + "' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
             }
             
             projektNamn = idb.fetchColumn(sqlQ);
             
+            //Kollar genom varje projekt som är aktuell för att se om projektchefens Epost innehåller det som användaren sökt på
             for (int i = 0; i < projektNamn.size(); i++) {
                 String currentProjektNamn = projektNamn.get(i);
                 sqlQ = "select epost from anstalld where aid in (select projektchef from projekt where projektnamn = '" + projektNamn.get(i) + "')";
@@ -235,24 +235,27 @@ public class Projekt extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Om användaren klickar på sök-knappen så hämtar vi värdena som står i datum-rutorna och gör om em från Strings till LocalDate samt kör projektLista() metoden för att uppdatera projekt-listan
+    //När användaren klickar på knappen så hämtas det som användaren har sökt på för Epost och de datum som användaren har knappat in. Datumen görs om från Date till LocalDate så att vi kan gemföra datum i vår SQL query
     private void btnDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumActionPerformed
         epost = txtEpost.getText();
-         
-        if((!startDatumString.isEmpty() || !slutDatumString.isEmpty()) && (startDatumString.length() != 10 || slutDatumString.length() != 10))
+        startDatum = dtcStart.getDate();
+        slutDatum = dtcSlut.getDate();
+        
+        //Kollar om något av datumen är null, detta kollar vi för att med koden nedan så får vi en massa errors om något av datumen är null vilken som kan leda till att koden inte fungerar som planerat
+        if(startDatum != null && slutDatum != null)
         {
-            JOptionPane.showMessageDialog(null, "Vänligen skriv in start- och slutdatum i formatet YYYY-MM-DD (bindestreck inkluderat) för att söka på aktiva projekt inom de datumen.", "Tom sökning", JOptionPane.ERROR_MESSAGE);
+            startDatumLocal = LocalDate.ofInstant(startDatum.toInstant(), ZoneId.systemDefault());
+            slutDatumLocal = LocalDate.ofInstant(slutDatum.toInstant(), ZoneId.systemDefault());
         }
+        //Om något av datumen är null så gör vi om våra två LocalDate värden till null så att koden för att skapa vår projektlista kan köras som planerat
         else
         {
-            if(!startDatumString.isEmpty() || !slutDatumString.isEmpty())
-            {
-                DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                startDatum = LocalDate.parse(startDatumString, format);
-                slutDatum = LocalDate.parse(slutDatumString, format); 
-            }
-            projektLista();
+            startDatumLocal = null;
+            slutDatumLocal = null;
         }
+        System.out.println(startDatumLocal);
+        System.out.println(slutDatumLocal);
+        projektLista();
     }//GEN-LAST:event_btnDatumActionPerformed
 
     private void txtEpostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEpostActionPerformed
