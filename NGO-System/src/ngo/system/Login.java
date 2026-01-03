@@ -37,11 +37,11 @@ public class Login extends javax.swing.JFrame {
         lblEpost = new javax.swing.JLabel();
         lblPwd = new javax.swing.JLabel();
         tfEpost = new javax.swing.JTextField();
-        tfPwd = new javax.swing.JTextField();
         lblErr = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         devbtnAutoDetail = new javax.swing.JButton();
+        tfPwd = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,9 +85,9 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(lblEpost))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tfEpost)
-                                .addComponent(tfPwd, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addComponent(tfEpost, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                                .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(tfPwd)))
                         .addComponent(devbtnAutoDetail)))
                 .addContainerGap(116, Short.MAX_VALUE))
         );
@@ -195,6 +195,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lblErr;
     private javax.swing.JLabel lblPwd;
     private javax.swing.JTextField tfEpost;
-    private javax.swing.JTextField tfPwd;
+    private javax.swing.JPasswordField tfPwd;
     // End of variables declaration//GEN-END:variables
 }

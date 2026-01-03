@@ -57,6 +57,7 @@ public class Hallbarhetsmal extends javax.swing.JFrame {
         });
         cboxHallbarhetsMal.addActionListener(this::cboxHallbarhetsMalActionPerformed);
 
+        tfMalBeskrivning.setEditable(false);
         tfMalBeskrivning.setColumns(20);
         tfMalBeskrivning.setLineWrap(true);
         tfMalBeskrivning.setRows(5);
