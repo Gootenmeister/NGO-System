@@ -195,7 +195,9 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     }//GEN-LAST:event_cboxUppgiftActionPerformed
 
     private void btnOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOKMouseClicked
-        String sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where " + cboxUppgift.getSelectedItem().toString() + " = '" + txtExData.getText() + "'";
+        String sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where namn = '" + txtExData.getText() + "'";
+        System.out.println(sqlQ);
+        
         try 
         {
             idb.update(sqlQ);
