@@ -24,13 +24,16 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     private ArrayList<String> avdelningLista;
     private ArrayList<String> uppgiftLista;
     private ArrayList<String> dataLista;
+    private String exDataString;
     
     public AvdelningUppgifter(InfDB idb) {
         this.idb = idb;
+        exDataString = "";
         ArrayList<String> avdelningLista = new ArrayList<>();
         ArrayList<String> uppgiftLista = new ArrayList<>();
         ArrayList<String> dataLista = new ArrayList<>();
         initComponents();
+        setAvdelning();
     }
 
     /**
@@ -51,24 +54,17 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         lblAtgard = new javax.swing.JLabel();
         lblExData = new javax.swing.JLabel();
         lblNyData = new javax.swing.JLabel();
-        cboxExData = new javax.swing.JComboBox<>();
         txtNyData = new javax.swing.JTextField();
+        txtExData = new javax.swing.JTextField();
+        btnOK = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblTitel.setText("Ändra eller lägg till data om avdelningar");
 
-        cboxAvdelning.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                cboxAvdelningFocusGained(evt);
-            }
-        });
+        cboxAvdelning.addActionListener(this::cboxAvdelningActionPerformed);
 
-        cboxUppgift.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                cboxUppgiftFocusGained(evt);
-            }
-        });
+        cboxUppgift.addActionListener(this::cboxUppgiftActionPerformed);
 
         cboxAtgard.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ändra", "Lägg till" }));
 
@@ -82,99 +78,137 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
 
         lblNyData.setText("Ny data");
 
-        cboxExData.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboxExData.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                cboxExDataFocusGained(evt);
+        txtExData.setEditable(false);
+
+        btnOK.setText("OK");
+        btnOK.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnOKMouseClicked(evt);
             }
         });
-
-        txtNyData.addActionListener(this::txtNyDataActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 18, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboxAtgard, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(lblAtgard)
-                                .addGap(24, 24, 24)))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addComponent(lblExData)
-                                .addGap(16, 16, 16))
-                            .addComponent(cboxExData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblNyData)
-                                .addGap(44, 44, 44))
-                            .addComponent(txtNyData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cboxAvdelning, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(141, 141, 141)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTitel)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblAvdelning)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cboxAvdelning, 0, 398, Short.MAX_VALUE)
+                            .addComponent(txtExData))
+                        .addGap(18, 18, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblUppgift)
-                        .addGap(67, 67, 67))))
+                        .addGap(69, 69, 69)
+                        .addComponent(lblAtgard)
+                        .addGap(54, 54, 54))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNyData, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboxAtgard, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(184, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblExData)
+                        .addGap(251, 251, 251)
+                        .addComponent(lblNyData)
+                        .addGap(106, 106, 106))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnOK)
+                        .addGap(280, 280, 280))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblTitel)
+                        .addGap(216, 216, 216))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblAtgard)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboxAtgard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(lblTitel)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblAvdelning)
-                            .addComponent(lblUppgift))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cboxAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblExData)
-                            .addComponent(lblNyData))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cboxExData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNyData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(lblTitel)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAvdelning)
+                    .addComponent(lblUppgift)
+                    .addComponent(lblAtgard))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboxAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboxAtgard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNyData)
+                    .addComponent(lblExData))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNyData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtExData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addComponent(btnOK)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNyDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNyDataActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNyDataActionPerformed
+    private void cboxAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxAvdelningActionPerformed
+        String sqlQ = "select column_name from information_schema.columns where table_name = 'avdelning'";
+        try
+        {
+            uppgiftLista = idb.fetchColumn(sqlQ);
+            cboxUppgift.setModel(new javax.swing.DefaultComboBoxModel(uppgiftLista.toArray()));
+        }
+        
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }  
+    }//GEN-LAST:event_cboxAvdelningActionPerformed
 
-    private void cboxAvdelningFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboxAvdelningFocusGained
+    private void cboxUppgiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxUppgiftActionPerformed
+        String sqlQ = "select " + cboxUppgift.getSelectedItem().toString() + " from avdelning where namn = '" + cboxAvdelning.getSelectedItem().toString() + "'";
+        
+        try
+        {
+            exDataString = idb.fetchSingle(sqlQ);
+            txtExData.setText(exDataString);
+        }
+        
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }
+            
+    }//GEN-LAST:event_cboxUppgiftActionPerformed
+
+    private void btnOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOKMouseClicked
+        String sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where " + cboxUppgift.getSelectedItem().toString() + " = '" + txtExData.getText() + "'";
+        try 
+        {
+            idb.update(sqlQ);
+        }
+        
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }
+    }//GEN-LAST:event_btnOKMouseClicked
+
+    private void setAvdelning()
+    {
         String sqlQ = "select namn from avdelning";
         try
         {
@@ -186,36 +220,8 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         {
             System.out.println("Error: " + exception);
         }
-    }//GEN-LAST:event_cboxAvdelningFocusGained
-
-    private void cboxUppgiftFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboxUppgiftFocusGained
-        String sqlQ = "select column_name from information_schema.columns where table_name = 'avdelning'";
-        try
-        {
-            uppgiftLista = idb.fetchColumn(sqlQ);
-            cboxUppgift.setModel(new javax.swing.DefaultComboBoxModel(uppgiftLista.toArray()));
-        }
-        
-        catch(InfException exception)
-        {
-            System.out.println("Error: " + exception);
-        }
-    }//GEN-LAST:event_cboxUppgiftFocusGained
-
-    private void cboxExDataFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboxExDataFocusGained
-        String sqlQ = "select " + cboxUppgift.getSelectedItem().toString() + " from avdelning where namn = '" + cboxAvdelning.getSelectedItem().toString() + "'";
-        try
-        {
-            dataLista = idb.fetchColumn(sqlQ);
-            cboxExData.setModel(new javax.swing.DefaultComboBoxModel(dataLista.toArray()));
-        }
-        
-        catch(InfException exception)
-        {
-            System.out.println("Error: " + exception);
-        }
-    }//GEN-LAST:event_cboxExDataFocusGained
-
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -242,9 +248,9 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOK;
     private javax.swing.JComboBox<String> cboxAtgard;
     private javax.swing.JComboBox<String> cboxAvdelning;
-    private javax.swing.JComboBox<String> cboxExData;
     private javax.swing.JComboBox<String> cboxUppgift;
     private javax.swing.JLabel lblAtgard;
     private javax.swing.JLabel lblAvdelning;
@@ -252,6 +258,7 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     private javax.swing.JLabel lblNyData;
     private javax.swing.JLabel lblTitel;
     private javax.swing.JLabel lblUppgift;
+    private javax.swing.JTextField txtExData;
     private javax.swing.JTextField txtNyData;
     // End of variables declaration//GEN-END:variables
 }
