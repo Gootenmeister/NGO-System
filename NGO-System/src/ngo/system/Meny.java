@@ -81,6 +81,7 @@ public class Meny extends javax.swing.JFrame {
         btnProjekt = new javax.swing.JButton();
         pcKnapp = new javax.swing.JButton();
         adminKnapp = new javax.swing.JButton();
+        btnAvdelningUpggifter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +126,14 @@ public class Meny extends javax.swing.JFrame {
             }
         });
 
+        btnAvdelningUpggifter.setText("Avdelningsuppgifter");
+        btnAvdelningUpggifter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAvdelningUpggifterMouseClicked(evt);
+            }
+        });
+        btnAvdelningUpggifter.addActionListener(this::btnAvdelningUpggifterActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,24 +145,31 @@ public class Meny extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblAccessLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblActiveUser))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnProjekt)
-                    .addComponent(btnPersonal)
-                    .addComponent(openHallbarhetsMal))
-                .addGap(49, 49, 49))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(openHallbarhetsMal)
+                        .addGap(60, 60, 60))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPersonal)
+                            .addComponent(btnProjekt))
+                        .addGap(74, 74, 74))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pcKnapp)
-                .addGap(18, 18, 18)
-                .addComponent(adminKnapp)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAvdelningUpggifter)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pcKnapp)
+                        .addGap(18, 18, 18)
+                        .addComponent(adminKnapp)))
                 .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblUserPrefix)
@@ -163,9 +179,11 @@ public class Meny extends javax.swing.JFrame {
                     .addComponent(openHallbarhetsMal))
                 .addGap(18, 18, 18)
                 .addComponent(btnPersonal)
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addComponent(btnProjekt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnAvdelningUpggifter)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pcKnapp)
                     .addComponent(adminKnapp))
@@ -190,10 +208,19 @@ public class Meny extends javax.swing.JFrame {
     private void adminKnappMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminKnappMouseClicked
         new AdminGUI(idb, activeUser).setVisible(true);
     }//GEN-LAST:event_adminKnappMouseClicked
+
+    private void btnAvdelningUpggifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvdelningUpggifterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAvdelningUpggifterActionPerformed
+
+    private void btnAvdelningUpggifterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvdelningUpggifterMouseClicked
+        new AvdelningUppgifter(idb).setVisible(true);
+    }//GEN-LAST:event_btnAvdelningUpggifterMouseClicked
     
     private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
         new Projekt(idb).setVisible(true); 
     }   
+   
     /**
      * @param args the command line arguments
      */
@@ -221,6 +248,7 @@ public class Meny extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adminKnapp;
+    private javax.swing.JButton btnAvdelningUpggifter;
     private javax.swing.JButton btnPersonal;
     private javax.swing.JButton btnProjekt;
     private javax.swing.JLabel lblAccessLevel;
