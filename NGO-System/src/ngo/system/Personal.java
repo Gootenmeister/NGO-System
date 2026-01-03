@@ -4,7 +4,7 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
-import javax.swing.JOptionPane;
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -35,6 +35,7 @@ public class Personal extends javax.swing.JFrame {
         anstalldLista();
     }
     
+    //Kör metoderna setAvdelningNummer och setAvdelning för att få ut vilken avdelning användaren tillhör i form av namnet på avdelning och gör att lblAvdelning visar den avdelningen
     private void printAvdelning()
     {
         setAvdelningNummer();
@@ -42,6 +43,7 @@ public class Personal extends javax.swing.JFrame {
         lblAvdelning.setText(avdelning);
     }
     
+    //Ger fältet avdelningNummer värdet för avdelningen som användaren tillhör med hjälp av AID
     private void setAvdelningNummer()
     {
         try {
@@ -54,6 +56,7 @@ public class Personal extends javax.swing.JFrame {
         }
     }
     
+    //Ger fältet avdelning namnet för avdelningen som användaren tillhör med hjälp av avdid
     private void setAvdelning()
     {
         try {
@@ -66,6 +69,7 @@ public class Personal extends javax.swing.JFrame {
         }
     }
     
+    //Hämtar all personal som tillhör samma avdelning som användaren, och skriver antingen ut dem eller alla handlaggare i avdelning som matchar det som användaren har sökt på beroende på om sök-rutan är tom eller inte
     private void anstalldLista()
     {
         try {
@@ -75,6 +79,7 @@ public class Personal extends javax.swing.JFrame {
             ArrayList<HashMap<String, String>> anstalldaNamn;
             ArrayList<String> anstalldaEpost;
             
+            //Kollar om sök-rutan är inte tom, om den inte är det så hämtas alla handläggare från avdelningen som matchar det som användaren har skrivit i sök-rutan
             if(!sokning.isEmpty())
             {
                 sqlQ = "select fornamn, efternamn from anstalld where avdelning = " + avdelningNummer + " and aid in (select aid from handlaggare)";
@@ -83,6 +88,7 @@ public class Personal extends javax.swing.JFrame {
                 sqlQ = "select epost from anstalld where avdelning = " + avdelningNummer + " and aid in (select aid from handlaggare)";
                 anstalldaEpost = idb.fetchColumn(sqlQ);
             }
+            //Om rutan är tom så hämtar vi all personal på avdelningen
             else {
                 sqlQ = "select fornamn, efternamn from anstalld where avdelning = " + avdelningNummer;
                 anstalldaNamn = idb.fetchRows(sqlQ);
@@ -91,6 +97,7 @@ public class Personal extends javax.swing.JFrame {
                 anstalldaEpost = idb.fetchColumn(sqlQ);
             }
             
+            //Vi skriver ut all personal eller alla handläggare som matchar användarens sökning (beroende på om sökk-rutan är tom eller inte) i model lista
             for (HashMap<String, String> row : anstalldaNamn) {
                 String fornamn = row.get("fornamn");
                 String efternamn = row.get("efternamn");
@@ -194,7 +201,8 @@ public class Personal extends javax.swing.JFrame {
     private void txtHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHandlaggareActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtHandlaggareActionPerformed
-
+    
+    //När knappen klickas så hämtas texten som står i txtHandlaggare och metoden anstalldLista() körs
     private void btnHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHandlaggareActionPerformed
         sokning = txtHandlaggare.getText();
         anstalldLista();

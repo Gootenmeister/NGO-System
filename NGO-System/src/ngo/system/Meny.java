@@ -19,20 +19,37 @@ public class Meny extends javax.swing.JFrame {
     private static String currentAID;
     private static InfDB idbStatic;
     private static String staticUser;
+    private final int accessLevel;
     
     /**
      * Creates new form Meny
      */
-    public Meny(InfDB idb, String activeUser) {
+    public Meny(InfDB idb, String activeUser, int accessLevel) {
         this.activeUser = activeUser;
         this.idb = idb;
+        this.accessLevel = accessLevel;
         initComponents();
         lblActiveUser.setText(activeUser);
         staticUser = activeUser;
         idbStatic = idb;
         //lblIfAdmin.setText(PLACEHOLDER);
+        if (accessLevel == 0){
+                lblAccessLevel.setText("handläggare");
+                pcKnapp.setVisible(false);
+                adminKnapp.setVisible(false);
+        }
+        if (accessLevel == 1){
+                lblAccessLevel.setText("projektchef");
+                adminKnapp.setVisible(false);
+        }
+        if (accessLevel == 2){
+                lblAccessLevel.setText("admin");
+                pcKnapp.setVisible(false);
+        }
+        
     }
     
+    //En get metod för användarens AID
     public static String getAID(){
         String sqlQ = "select aid from anstalld where epost = ";
         try {
@@ -58,9 +75,13 @@ public class Meny extends javax.swing.JFrame {
 
         lblUserPrefix = new javax.swing.JLabel();
         lblActiveUser = new javax.swing.JLabel();
-        lblIfAdmin = new javax.swing.JLabel();
+        lblAccessLevel = new javax.swing.JLabel();
         openHallbarhetsMal = new javax.swing.JButton();
         btnPersonal = new javax.swing.JButton();
+        btnProjekt = new javax.swing.JButton();
+        pcKnapp = new javax.swing.JButton();
+        adminKnapp = new javax.swing.JButton();
+        btnAvdelningUpggifter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,7 +89,7 @@ public class Meny extends javax.swing.JFrame {
 
         lblActiveUser.setText("jLabel1");
 
-        lblIfAdmin.setText("jLabel1");
+        lblAccessLevel.setText("jLabel1");
 
         openHallbarhetsMal.setText("Hållbarhetsmål");
         openHallbarhetsMal.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -84,6 +105,35 @@ public class Meny extends javax.swing.JFrame {
             }
         });
 
+        btnProjekt.setText("Projekt");
+        btnProjekt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnProjektMouseClicked(evt);
+            }
+        });
+
+        pcKnapp.setText("PC knapp");
+        pcKnapp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pcKnappMouseClicked(evt);
+            }
+        });
+
+        adminKnapp.setText("Admin knapp");
+        adminKnapp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminKnappMouseClicked(evt);
+            }
+        });
+
+        btnAvdelningUpggifter.setText("Avdelningsuppgifter");
+        btnAvdelningUpggifter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAvdelningUpggifterMouseClicked(evt);
+            }
+        });
+        btnAvdelningUpggifter.addActionListener(this::btnAvdelningUpggifterActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,29 +143,51 @@ public class Meny extends javax.swing.JFrame {
                 .addComponent(lblUserPrefix)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblIfAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAccessLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblActiveUser))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnPersonal)
-                    .addComponent(openHallbarhetsMal))
-                .addGap(49, 49, 49))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(openHallbarhetsMal)
+                        .addGap(60, 60, 60))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPersonal)
+                            .addComponent(btnProjekt))
+                        .addGap(74, 74, 74))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAvdelningUpggifter)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pcKnapp)
+                        .addGap(18, 18, 18)
+                        .addComponent(adminKnapp)))
+                .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblUserPrefix)
                             .addComponent(lblActiveUser))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblIfAdmin))
+                        .addComponent(lblAccessLevel))
                     .addComponent(openHallbarhetsMal))
                 .addGap(18, 18, 18)
                 .addComponent(btnPersonal)
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnProjekt)
+                .addGap(18, 18, 18)
+                .addComponent(btnAvdelningUpggifter)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pcKnapp)
+                    .addComponent(adminKnapp))
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -129,6 +201,26 @@ public class Meny extends javax.swing.JFrame {
         new Personal(idb).setVisible(true); //ersätt null med avdelningen på maria?
     }//GEN-LAST:event_btnPersonalMouseClicked
 
+    private void pcKnappMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pcKnappMouseClicked
+        new ProjektChefGUI(idb, activeUser).setVisible(true);
+    }//GEN-LAST:event_pcKnappMouseClicked
+
+    private void adminKnappMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminKnappMouseClicked
+        new AdminGUI(idb, activeUser).setVisible(true);
+    }//GEN-LAST:event_adminKnappMouseClicked
+
+    private void btnAvdelningUpggifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvdelningUpggifterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAvdelningUpggifterActionPerformed
+
+    private void btnAvdelningUpggifterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvdelningUpggifterMouseClicked
+        new AvdelningUppgifter(idb).setVisible(true);
+    }//GEN-LAST:event_btnAvdelningUpggifterMouseClicked
+    
+    private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
+        new Projekt(idb).setVisible(true); 
+    }   
+   
     /**
      * @param args the command line arguments
      */
@@ -155,10 +247,14 @@ public class Meny extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton adminKnapp;
+    private javax.swing.JButton btnAvdelningUpggifter;
     private javax.swing.JButton btnPersonal;
+    private javax.swing.JButton btnProjekt;
+    private javax.swing.JLabel lblAccessLevel;
     private javax.swing.JLabel lblActiveUser;
-    private javax.swing.JLabel lblIfAdmin;
     private javax.swing.JLabel lblUserPrefix;
     private javax.swing.JButton openHallbarhetsMal;
+    private javax.swing.JButton pcKnapp;
     // End of variables declaration//GEN-END:variables
 }
