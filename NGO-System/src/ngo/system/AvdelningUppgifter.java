@@ -8,6 +8,7 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -195,12 +196,48 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     }//GEN-LAST:event_cboxUppgiftActionPerformed
 
     private void btnOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOKMouseClicked
-        String sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where namn = '" + txtExData.getText() + "'";
-        System.out.println(sqlQ);
-        
+        String sqlQ = "";
         try 
         {
-            idb.update(sqlQ);
+            if(cboxAvdelning.getSelectedItem() == null || cboxUppgift.getSelectedItem() == null || cboxAtgard.getSelectedItem() == null || txtNyData.getText().isEmpty())
+            {
+                if(cboxAvdelning.getSelectedItem() == null)
+                {
+                    JOptionPane.showMessageDialog(this, "Vänligen välj en avdelning för att ändra eller lägga till information, tack.", "Ingen avdelning vald", JOptionPane.ERROR_MESSAGE);
+                }
+                if(cboxUppgift.getSelectedItem() == null)
+                {
+                    JOptionPane.showMessageDialog(this, "Vänligen välj en uppgift för att ändra eller lägga till information, tack.", "Ingen uppgift vald", JOptionPane.ERROR_MESSAGE);
+                }
+                if(cboxAtgard.getSelectedItem() == null)
+                {
+                    JOptionPane.showMessageDialog(this, "Vänligen välj om datan ska ändras eller läggas till, tack.", "Inget åtgärd vald", JOptionPane.ERROR_MESSAGE);
+                }
+                if(txtNyData.getText().isEmpty())
+                {
+                    JOptionPane.showMessageDialog(this, "Vänligen skriv in den nya datan för att ändra eller lägga till information, tack.", "Ingen ny datan skriven", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+            else if(cboxAtgard.getSelectedItem().toString() == "Ändra")
+            {
+                sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where namn = '" + txtExData.getText() + "'";
+                System.out.println(sqlQ);
+                idb.update(sqlQ);
+            }
+            else if(cboxAtgard.getSelectedItem().toString() == "Lägg till")
+            {
+                if(txtExData.getText().isEmpty())
+                {
+                    sqlQ = "insert into avdelning (" + cboxUppgift.getSelectedItem().toString() + ") values ('" + txtNyData.getText() + "')";
+                    System.out.println(sqlQ);
+                    idb.insert(sqlQ);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Den nuvarande datan måste vara tom för att kunna lägga till ny data. Testa annars \"Ändra\" åtgärdet", "Nuvarande data inte tom", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
         
         catch(InfException exception)
