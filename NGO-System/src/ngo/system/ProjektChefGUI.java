@@ -1,4 +1,6 @@
 package ngo.system;
+import java.util.ArrayList;
+import java.util.HashMap;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -24,6 +26,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         this.activeUser = activeUser;
         System.out.println("inloggad som " + activeUser);
         initComponents();
+        hamtaKostnad();
         String sqlForNamn = "select fornamn from sdgsweden.anstalld where epost = '" + activeUser + "'";
         String sqlEfterNamn = "select efternamn from sdgsweden.anstalld where epost = '" + activeUser + "'";
         try {
@@ -33,12 +36,39 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         } catch (InfException ex) {
             System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        
-
     }
 
     private ProjektChefGUI() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    private void hamtaKostnad(){
+
+            System.out.println(activeUser);
+            String sqlAID = "select aid from sdgsweden.anstalld where epost = '" + activeUser + "'";
+            
+        try {
+            String aid = idb.fetchSingle(sqlAID);
+            System.out.println(aid);
+            String sqlQ = "select projektnamn from sdgsweden.projekt order by projektnamn";
+            int i = 1;
+            ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
+            ArrayList<String> projektLista = new ArrayList<>();
+            String sqlfraga = "select projektnamn from sdgsweden.projekt where pid = ";
+            for (HashMap<String, String> row : databasSvar){
+            String projektNamn = idb.fetchSingle(sqlfraga + i + " and projektchef = " + aid);
+            projektLista.add(row.get("projektnamn"));
+            if (projektNamn != null){
+                projektBox.addItem(projektNamn);
+            }
+            i++; 
+            }
+            
+        } catch (InfException ex) {
+            System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+           
+
     }
 
     /**
@@ -52,12 +82,28 @@ public class ProjektChefGUI extends javax.swing.JFrame {
 
         PCLabel = new javax.swing.JLabel();
         jLabelName = new javax.swing.JLabel();
+        projektBox = new javax.swing.JComboBox<>();
+        kostnadLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tfLandInfo = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         PCLabel.setText("Projekt Chef Meny");
 
         jLabelName.setText("Välkommen ");
+
+        projektBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
+        projektBox.addActionListener(this::projektBoxActionPerformed);
+
+        kostnadLabel.setText("jLabel1");
+
+        tfLandInfo.setEditable(false);
+        tfLandInfo.setColumns(20);
+        tfLandInfo.setLineWrap(true);
+        tfLandInfo.setRows(5);
+        tfLandInfo.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(tfLandInfo);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,7 +113,10 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PCLabel)
-                    .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(kostnadLabel)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -77,11 +126,59 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                 .addComponent(PCLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelName)
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(kostnadLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void projektBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projektBoxActionPerformed
+        String fetchKostnad = "select kostnad from projekt where projektnamn = ";
+        String valtProjekt = (String) projektBox.getSelectedItem();
+        try {
+            String utskriftKostnad = idb.fetchSingle(fetchKostnad + "'" + valtProjekt + "'");
+            kostnadLabel.setText(utskriftKostnad + " kr");
+        }
+        catch(InfException ex) {
+            System.out.println("Error: " +ex);
+        }
+        
+        String fetchLandID = "select land from projekt where projektnamn = ";
+        try {
+            String lid = idb.fetchSingle(fetchLandID + "'" + valtProjekt + "'");
+            String fetchLand = "select namn from land where lid = ";
+            String landNamn = idb.fetchSingle(fetchLand + lid);
+            
+            String fetchLandSprak = "select sprak from land where lid = ";
+            String landSprak = idb.fetchSingle(fetchLandSprak + lid);
+            
+            String fetchLandValuta = "select valuta from land where lid = ";
+            String landValuta = idb.fetchSingle(fetchLandValuta + lid);
+            
+            String fetchLandTidszon = "select tidszon from land where lid = ";
+            String landTidszon = idb.fetchSingle(fetchLandTidszon + lid);
+            
+            String fetchLandPolitik = "select politisk_struktur from land where lid = ";
+            String landPolitik = idb.fetchSingle(fetchLandPolitik + lid);
+            
+            String fetchLandEkomoni = "select ekonomi from land where lid = ";
+            String landEkomoni = idb.fetchSingle(fetchLandEkomoni + lid);
+            
+            String landInfo = (landNamn + ", " + landSprak + ", " + landValuta + ", " + landTidszon + ", " + landPolitik + ", " + landEkomoni);
+            tfLandInfo.setText(landInfo);
+            
+            
+        } catch (InfException ex) {
+            System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+    }//GEN-LAST:event_projektBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,5 +208,11 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel PCLabel;
     private javax.swing.JLabel jLabelName;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel kostnadLabel;
+    private javax.swing.JComboBox<String> projektBox;
+    private javax.swing.JTextArea tfLandInfo;
     // End of variables declaration//GEN-END:variables
+
+    
 }

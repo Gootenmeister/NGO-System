@@ -135,8 +135,6 @@ public class Projekt extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtEpost = new javax.swing.JTextField();
         lblEpost = new javax.swing.JLabel();
-        dtcStart = new com.toedter.calendar.JDateChooser();
-        dtcSlut = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -162,10 +160,6 @@ public class Projekt extends javax.swing.JFrame {
 
         lblEpost.setText("E-post");
 
-        dtcStart.setDateFormatString("yyyy-MM-dd");
-
-        dtcSlut.setDateFormatString("yyyy-MM-dd");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -178,25 +172,20 @@ public class Projekt extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel1))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(dtcStart, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(dtcSlut, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtEpost, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(103, 103, 103)
-                                                .addComponent(lblEpost)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtEpost, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addGap(15, 15, 15)
-                                            .addComponent(lblStart)
-                                            .addGap(81, 81, 81)
-                                            .addComponent(lblSlut))))))
+                                            .addGap(103, 103, 103)
+                                            .addComponent(lblEpost)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(15, 15, 15)
+                                        .addComponent(lblStart)
+                                        .addGap(81, 81, 81)
+                                        .addComponent(lblSlut)))))
                         .addGap(65, 65, 65))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnDatum)
@@ -219,11 +208,7 @@ public class Projekt extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStart)
                     .addComponent(lblSlut))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dtcStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dtcSlut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                .addGap(36, 36, 36)
                 .addComponent(lblEpost)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -238,8 +223,8 @@ public class Projekt extends javax.swing.JFrame {
     //När användaren klickar på knappen så hämtas det som användaren har sökt på för Epost och de datum som användaren har knappat in. Datumen görs om från Date till LocalDate så att vi kan gemföra datum i vår SQL query
     private void btnDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumActionPerformed
         epost = txtEpost.getText();
-        startDatum = dtcStart.getDate();
-        slutDatum = dtcSlut.getDate();
+        //startDatum = dtcStart.getDate();
+        //slutDatum = dtcSlut.getDate();
         
         //Kollar om något av datumen är null, detta kollar vi för att med koden nedan så får vi en massa errors om något av datumen är null vilken som kan leda till att koden inte fungerar som planerat
         if(startDatum != null && slutDatum != null)
@@ -289,8 +274,6 @@ public class Projekt extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDatum;
-    private com.toedter.calendar.JDateChooser dtcSlut;
-    private com.toedter.calendar.JDateChooser dtcStart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblEpost;
