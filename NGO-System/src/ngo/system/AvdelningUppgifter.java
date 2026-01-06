@@ -22,6 +22,8 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
      * Creates new form AvdelningUppgifter
      */
     private InfDB idb;
+    private String avdid;
+    private ArrayList<String> avdidLista;
     private ArrayList<String> avdelningLista;
     private ArrayList<String> uppgiftLista;
     private ArrayList<String> dataLista;
@@ -30,7 +32,7 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     public AvdelningUppgifter(InfDB idb) {
         this.idb = idb;
         exDataString = "";
-        ArrayList<String> avdelningLista = new ArrayList<>();
+        avdid = "";
         ArrayList<String> uppgiftLista = new ArrayList<>();
         ArrayList<String> dataLista = new ArrayList<>();
         initComponents();
@@ -93,17 +95,14 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblAvdelning, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblAvdelning)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cboxAvdelning, 0, 398, Short.MAX_VALUE)
+                            .addComponent(cboxAvdelning, 0, 368, Short.MAX_VALUE)
                             .addComponent(txtExData))
-                        .addGap(18, 18, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -150,8 +149,8 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                     .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboxAtgard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNyData)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNyData, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblExData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -180,7 +179,8 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     }//GEN-LAST:event_cboxAvdelningActionPerformed
 
     private void cboxUppgiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxUppgiftActionPerformed
-        String sqlQ = "select " + cboxUppgift.getSelectedItem().toString() + " from avdelning where namn = '" + cboxAvdelning.getSelectedItem().toString() + "'";
+        getAvdid();
+        String sqlQ = "select " + cboxUppgift.getSelectedItem().toString() + " from avdelning where avdid = '" + avdid + "'";
         
         try
         {
@@ -221,9 +221,11 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
             }
             else if(cboxAtgard.getSelectedItem().toString() == "Ändra")
             {
-                sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where namn = '" + txtExData.getText() + "'";
+                getAvdid();
+                sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where avdid = " + avdid;
                 System.out.println(sqlQ);
                 idb.update(sqlQ);
+                JOptionPane.showMessageDialog(this, "Datan har uppdaterats till: " + txtNyData.getText(), "Uppdatering lyckades", JOptionPane.INFORMATION_MESSAGE);
             }
             else if(cboxAtgard.getSelectedItem().toString() == "Lägg till")
             {
@@ -232,6 +234,7 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                     sqlQ = "insert into avdelning (" + cboxUppgift.getSelectedItem().toString() + ") values ('" + txtNyData.getText() + "')";
                     System.out.println(sqlQ);
                     idb.insert(sqlQ);
+                    JOptionPane.showMessageDialog(this, "Ny data har laggts till: " + txtNyData.getText(), "Tillägg lyckats", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else
                 {
@@ -248,10 +251,17 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
 
     private void setAvdelning()
     {
-        String sqlQ = "select namn from avdelning";
+        String sqlQ = "select avdid from avdelning";
+        ArrayList<String> avdidLista = new ArrayList<>();
+        ArrayList<String> avdelningLista = new ArrayList<>();
         try
         {
-            avdelningLista = idb.fetchColumn(sqlQ);
+            avdidLista = idb.fetchColumn(sqlQ);
+            for(String id : avdidLista)
+            {
+                sqlQ = "select namn from avdelning where avdid = " + id;
+                avdelningLista.add(id + ". " + idb.fetchSingle(sqlQ));
+            }
             cboxAvdelning.setModel(new javax.swing.DefaultComboBoxModel(avdelningLista.toArray()));
         }
         
@@ -259,6 +269,13 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         {
             System.out.println("Error: " + exception);
         }
+    }
+    
+    private void getAvdid()
+    {
+        String currentAvdelning = cboxAvdelning.getSelectedItem().toString();
+        avdid = currentAvdelning.substring(0, currentAvdelning.indexOf('.'));
+        
     }
     
     /**
