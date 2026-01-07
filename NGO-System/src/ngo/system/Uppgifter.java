@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ngo.system;
+
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.table.DefaultTableModel;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 public class Uppgifter extends javax.swing.JFrame 
 {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Uppgifter.class.getName());
+    
     private final InfDB idb;
     private final String aid;
     
@@ -24,24 +26,27 @@ public class Uppgifter extends javax.swing.JFrame
     
     
     
-    public Uppgifter(InfDB idb) 
+    public Uppgifter(InfDB idb, String aid) 
     {
         this.idb = idb;
         this.aid = Meny.getAID();
         initComponents();
         hamtaMinaProjekt();
-    }
+    } 
+        
+        
+    
 
     private void hamtaMinaProjekt()
     {
         try{
-            String sqlFraga = "SELECT pid, projektnamn, startdatum, slutdatum, status FROM projekt WHERE pid IN"
+            String sqlFraga = "SELECT projektnamn, beskrivning, kostnad, prioritet, land, projektchef, startdatum, slutdatum, status FROM projekt WHERE pid IN"
                     + "(SELECT pid FROM ans_proj WHERE aid =  " + aid + ")";
             
             ArrayList<HashMap<String, String>> projektLista = idb.fetchRows(sqlFraga);
             
             
-            String[] kolumner = {"Projektnamn","Startdatum", "Slutdatum", "Status"};
+            String[] kolumner = {"Projektnamn", "beskrivning", "kostnad", "prioritet", "land", "projektchef", "Startdatum", "Slutdatum", "Status"};
             DefaultTableModel model = new DefaultTableModel(kolumner, 0);
             
       
@@ -49,6 +54,11 @@ public class Uppgifter extends javax.swing.JFrame
             {
                 Object[] rad = {
                                 projekt.get("projektnamn"),
+                                projekt.get("beskrivning"),
+                                projekt.get("kostnad"),
+                                projekt.get("prioritet"),
+                                projekt.get("land"),
+                                projekt.get("projektchef"),
                                 projekt.get("startdatum"),
                                 projekt.get("slutdatum"),
                                 projekt.get("status")
@@ -59,7 +69,7 @@ public class Uppgifter extends javax.swing.JFrame
                 
                projektTable.setModel(model);
         } catch (InfException e) {
-                JOptionPane.showMessageDialog(null, "Kunde inte hämta projekten: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Kunde inte hämta projekten: " + e.getMessage());
             }
     }
     
@@ -92,15 +102,15 @@ public class Uppgifter extends javax.swing.JFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPaneProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(scrollPaneProjekt, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPaneProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(scrollPaneProjekt, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
