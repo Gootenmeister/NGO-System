@@ -51,31 +51,26 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         lblTitel = new javax.swing.JLabel();
         cboxAvdelning = new javax.swing.JComboBox<>();
         cboxUppgift = new javax.swing.JComboBox<>();
-        cboxAtgard = new javax.swing.JComboBox<>();
         lblAvdelning = new javax.swing.JLabel();
         lblUppgift = new javax.swing.JLabel();
-        lblAtgard = new javax.swing.JLabel();
         lblExData = new javax.swing.JLabel();
         lblNyData = new javax.swing.JLabel();
         txtNyData = new javax.swing.JTextField();
         txtExData = new javax.swing.JTextField();
-        btnOK = new javax.swing.JButton();
+        btnUppdatera = new javax.swing.JButton();
+        btnLaggTill = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        lblTitel.setText("Ändra eller lägg till data om avdelningar");
+        lblTitel.setText("Ändra data om eller lägg till avdelningar");
 
         cboxAvdelning.addActionListener(this::cboxAvdelningActionPerformed);
 
         cboxUppgift.addActionListener(this::cboxUppgiftActionPerformed);
 
-        cboxAtgard.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ändra", "Lägg till" }));
-
         lblAvdelning.setText("Avdelning");
 
         lblUppgift.setText("Uppgift");
-
-        lblAtgard.setText("Åtgärd");
 
         lblExData.setText("Nuvarande data");
 
@@ -83,12 +78,15 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
 
         txtExData.setEditable(false);
 
-        btnOK.setText("OK");
-        btnOK.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnUppdatera.setText("Uppdatera");
+        btnUppdatera.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnOKMouseClicked(evt);
+                btnUppdateraMouseClicked(evt);
             }
         });
+
+        btnLaggTill.setText("Lägg till");
+        btnLaggTill.addActionListener(this::btnLaggTillActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,28 +94,10 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblAvdelning, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cboxAvdelning, 0, 368, Short.MAX_VALUE)
-                            .addComponent(txtExData))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblUppgift)
-                        .addGap(69, 69, 69)
-                        .addComponent(lblAtgard)
-                        .addGap(54, 54, 54))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtNyData, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cboxAtgard, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addComponent(txtExData, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(txtNyData, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(184, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,11 +107,30 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                         .addComponent(lblNyData)
                         .addGap(106, 106, 106))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnOK)
-                        .addGap(280, 280, 280))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblTitel)
                         .addGap(216, 216, 216))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cboxAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(lblAvdelning)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblUppgift)
+                        .addGap(127, 127, 127))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(198, 198, 198)
+                .addComponent(btnUppdatera)
+                .addGap(137, 137, 137)
+                .addComponent(btnLaggTill)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,13 +140,11 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAvdelning)
-                    .addComponent(lblUppgift)
-                    .addComponent(lblAtgard))
+                    .addComponent(lblUppgift))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboxAvdelning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboxAtgard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboxUppgift, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNyData, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -156,9 +153,11 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNyData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtExData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addComponent(btnOK)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUppdatera)
+                    .addComponent(btnLaggTill))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
@@ -195,11 +194,11 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
             
     }//GEN-LAST:event_cboxUppgiftActionPerformed
 
-    private void btnOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOKMouseClicked
+    private void btnUppdateraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUppdateraMouseClicked
         String sqlQ = "";
         try 
         {
-            if(cboxAvdelning.getSelectedItem() == null || cboxUppgift.getSelectedItem() == null || cboxAtgard.getSelectedItem() == null || txtNyData.getText().isEmpty())
+            if(cboxAvdelning.getSelectedItem() == null || cboxUppgift.getSelectedItem() == null || txtNyData.getText().isEmpty())
             {
                 if(cboxAvdelning.getSelectedItem() == null)
                 {
@@ -209,37 +208,20 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                 {
                     JOptionPane.showMessageDialog(this, "Vänligen välj en uppgift för att ändra eller lägga till information, tack.", "Ingen uppgift vald", JOptionPane.ERROR_MESSAGE);
                 }
-                if(cboxAtgard.getSelectedItem() == null)
-                {
-                    JOptionPane.showMessageDialog(this, "Vänligen välj om datan ska ändras eller läggas till, tack.", "Inget åtgärd vald", JOptionPane.ERROR_MESSAGE);
-                }
                 if(txtNyData.getText().isEmpty())
                 {
                     JOptionPane.showMessageDialog(this, "Vänligen skriv in den nya datan för att ändra eller lägga till information, tack.", "Ingen ny datan skriven", JOptionPane.ERROR_MESSAGE);
                 }
 
             }
-            else if(cboxAtgard.getSelectedItem().toString() == "Ändra")
+            else
             {
                 getAvdid();
                 sqlQ = "update avdelning set " + cboxUppgift.getSelectedItem().toString() + " = '" + txtNyData.getText() + "' where avdid = " + avdid;
                 System.out.println(sqlQ);
                 idb.update(sqlQ);
+                setAvdelning();
                 JOptionPane.showMessageDialog(this, "Datan har uppdaterats till: " + txtNyData.getText(), "Uppdatering lyckades", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else if(cboxAtgard.getSelectedItem().toString() == "Lägg till")
-            {
-                if(txtExData.getText().isEmpty())
-                {
-                    sqlQ = "insert into avdelning (" + cboxUppgift.getSelectedItem().toString() + ") values ('" + txtNyData.getText() + "')";
-                    System.out.println(sqlQ);
-                    idb.insert(sqlQ);
-                    JOptionPane.showMessageDialog(this, "Ny data har laggts till: " + txtNyData.getText(), "Tillägg lyckats", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(this, "Den nuvarande datan måste vara tom för att kunna lägga till ny data. Testa annars \"Ändra\" åtgärdet", "Nuvarande data inte tom", JOptionPane.ERROR_MESSAGE);
-                }
             }
         }
         
@@ -247,7 +229,29 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         {
             System.out.println("Error: " + exception);
         }
-    }//GEN-LAST:event_btnOKMouseClicked
+    }//GEN-LAST:event_btnUppdateraMouseClicked
+
+    private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
+        if(JOptionPane.showConfirmDialog(this, "Vill du lägga till en ny avdelning?", "Lägg till avdelning?", WIDTH) == 0)
+        {
+            
+            String minstId = "";
+            String sqlQ = "select min(avdid) + 1 from avdelning where avdid > 0 and avdid + 1 not in (select avdid from avdelning)";
+            try
+            {
+                minstId = idb.fetchSingle(sqlQ);
+                sqlQ = "insert into avdelning (avdid) values (" + minstId + ")";
+                idb.insert(sqlQ);
+                setAvdelning();
+            }
+            
+            catch(InfException exception)
+            {
+                System.out.println("Error: " + exception);
+            }
+        }
+ 
+    }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void setAvdelning()
     {
@@ -304,11 +308,10 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnOK;
-    private javax.swing.JComboBox<String> cboxAtgard;
+    private javax.swing.JButton btnLaggTill;
+    private javax.swing.JButton btnUppdatera;
     private javax.swing.JComboBox<String> cboxAvdelning;
     private javax.swing.JComboBox<String> cboxUppgift;
-    private javax.swing.JLabel lblAtgard;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblExData;
     private javax.swing.JLabel lblNyData;
