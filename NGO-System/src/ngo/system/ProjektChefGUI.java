@@ -26,6 +26,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         this.activeUser = activeUser;
         initComponents();
         hamtaKostnad();
+        hamtaLand();
         // hämtar och visar namn på personen som loggar in
         String sqlForNamn = "select fornamn from sdgsweden.anstalld where epost = '" + activeUser + "'";
         String sqlEfterNamn = "select efternamn from sdgsweden.anstalld where epost = '" + activeUser + "'";
@@ -68,6 +69,26 @@ public class ProjektChefGUI extends javax.swing.JFrame {
            
 
     }
+    
+    private void hamtaLand(){
+    try {
+            String sqlQ = "select namn from land order by lid";
+            int i = 1;
+            ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
+            ArrayList<String> landLista = new ArrayList<>();
+            String sqlfraga = "select namn from land where lid = ";
+            for (HashMap<String, String> row : databasSvar){
+                String landNamn = idb.fetchSingle(sqlfraga + i);
+                landLista.add(row.get("projektnamn"));
+                if (landNamn != null){
+                    landKostnadBox.addItem(landNamn);
+                } 
+                i++;
+            }
+        } catch (InfException ex) {
+            System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,10 +103,10 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         jLabelName = new javax.swing.JLabel();
         projektBox = new javax.swing.JComboBox<>();
         kostnadLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tfPartnerInfo = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         tfLandInfo = new javax.swing.JTextArea();
+        landKostnadBox = new javax.swing.JComboBox<>();
+        landKostnadLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,19 +119,17 @@ public class ProjektChefGUI extends javax.swing.JFrame {
 
         kostnadLabel.setText("jLabel1");
 
-        tfPartnerInfo.setEditable(false);
-        tfPartnerInfo.setColumns(20);
-        tfPartnerInfo.setLineWrap(true);
-        tfPartnerInfo.setRows(5);
-        tfPartnerInfo.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(tfPartnerInfo);
-
         tfLandInfo.setEditable(false);
         tfLandInfo.setColumns(20);
         tfLandInfo.setLineWrap(true);
         tfLandInfo.setRows(5);
         tfLandInfo.setWrapStyleWord(true);
         jScrollPane2.setViewportView(tfLandInfo);
+
+        landKostnadBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
+        landKostnadBox.addActionListener(this::landKostnadBoxActionPerformed);
+
+        landKostnadLabel.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,8 +142,9 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                     .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kostnadLabel)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(landKostnadBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(landKostnadLabel))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -141,8 +161,10 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addComponent(landKostnadBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(landKostnadLabel)
+                .addContainerGap(160, Short.MAX_VALUE))
         );
 
         pack();
@@ -198,32 +220,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             String ProjektID = "select pid from projekt where projektnamn = '" + valtProjekt + "'";
             String pid = idb.fetchSingle(ProjektID);
             
-            //hämtar partner namn
-            String fetchPartnerNamn = "select namn from partner where pid = " + pid;
-            String partnerNamn = idb.fetchSingle(fetchPartnerNamn);
-            //hämtar partner branch
-            String fetchPartnerBranch = "select branch from partner where pid = " + pid;
-            String partnerBranch = idb.fetchSingle(fetchPartnerBranch);
-            
-            //hämtar först stad ID, för att sedan hämta stad namn iform tabellen "stad"
-            String fetchPartnerStadID = "select stad from partner where pid = " + pid;
-            String partnerStadID = idb.fetchSingle(fetchPartnerStadID);
-            String fetchPartnerStadNamn = "select namn from stad where sid = " + partnerStadID;
-            String partnerStadNamn = idb.fetchSingle(fetchPartnerStadNamn);
-            
-            //hämtar först land ID, för att sedan hämta land namn iform tabellen "land". 
-            //denna är separat från "landNamn", om projektet inte urförs i samma land som partnern 'r lokaliserad
-            String fetchPartnerLandID = "select land from stad where sid = " + partnerStadID;
-            String partnerLandID = idb.fetchSingle(fetchPartnerLandID);
-            String fetchPartnerLandNamn = "select namn from land where lid = " + partnerLandID;
-            String partnerLandNamn = idb.fetchSingle(fetchPartnerLandNamn);
-            
-            //sätter in informationen i textfältet
-            String partnerInfo = (partnerNamn + ", " + partnerBranch + ", " + partnerLandNamn + ", " + partnerStadNamn);
-            tfPartnerInfo.setText(partnerInfo);
-            
-            
-            
+               
         } catch (InfException ex) {
             System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
@@ -233,6 +230,22 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_projektBoxActionPerformed
+
+    private void landKostnadBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_landKostnadBoxActionPerformed
+        
+        try {
+            String fetchKostnad = "select kostnad from projekt join land on projekt.land = land.lid where land.lid = ";
+            String valtLand = (String) landKostnadBox.getSelectedItem();
+            
+            String fetchLandID = "select lid from land where namn = '" + valtLand + "'";
+            String landID = idb.fetchSingle(fetchLandID);
+            
+            String utskriftKostnad = idb.fetchSingle(fetchKostnad + landID);
+            landKostnadLabel.setText(utskriftKostnad + " kr");
+        } catch (InfException ex) {
+            System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }//GEN-LAST:event_landKostnadBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,12 +275,12 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel PCLabel;
     private javax.swing.JLabel jLabelName;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel kostnadLabel;
+    private javax.swing.JComboBox<String> landKostnadBox;
+    private javax.swing.JLabel landKostnadLabel;
     private javax.swing.JComboBox<String> projektBox;
     private javax.swing.JTextArea tfLandInfo;
-    private javax.swing.JTextArea tfPartnerInfo;
     // End of variables declaration//GEN-END:variables
 
     
