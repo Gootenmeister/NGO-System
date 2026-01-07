@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ngo.system;
+import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -198,7 +199,14 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_openHallbarhetsMalMouseClicked
 
     private void btnPersonalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPersonalMouseClicked
-        new Personal(idb).setVisible(true); //ersätt null med avdelningen på maria?
+        if(accessLevel == 0)
+        {   
+            new Personal(idb).setVisible(true); //ersätt null med avdelningen på maria?
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Enbart handläggare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnPersonalMouseClicked
 
     private void pcKnappMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pcKnappMouseClicked
@@ -214,11 +222,25 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAvdelningUpggifterActionPerformed
 
     private void btnAvdelningUpggifterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvdelningUpggifterMouseClicked
-        new AvdelningUppgifter(idb).setVisible(true);
+        if(accessLevel == 2)
+        {
+            new AvdelningUppgifter(idb).setVisible(true);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Enbart administratörer kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAvdelningUpggifterMouseClicked
     
-    private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
-        new Projekt(idb).setVisible(true); 
+    private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {
+        if(accessLevel == 0)
+        {
+            new Projekt(idb).setVisible(true); 
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Enbart handläggare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
+        }
     }   
    
     /**
