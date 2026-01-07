@@ -9,6 +9,7 @@ import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.JOptionPane;
+import java.util.Collections;
 
 /**
  *
@@ -163,6 +164,7 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //När användaren har valt vilken avdelning som de ska ändra uppgifter för så hämtas alla uppgifter
     private void cboxAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxAvdelningActionPerformed
         String sqlQ = "select column_name from information_schema.columns where table_name = 'avdelning'";
         try
@@ -177,14 +179,21 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         }  
     }//GEN-LAST:event_cboxAvdelningActionPerformed
 
+    //När användaren har valt vilken uppgift de vill ändra data för så hämtas datan för den uppiften som användaren valt för den avdelningen användaren har valt
     private void cboxUppgiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxUppgiftActionPerformed
         getAvdid();
         String sqlQ = "select " + cboxUppgift.getSelectedItem().toString() + " from avdelning where avdid = '" + avdid + "'";
         
         try
         {
-            exDataString = idb.fetchSingle(sqlQ);
-            txtExData.setText(exDataString);
+            if(idb.fetchSingle(sqlQ) == null)
+            {
+                txtExData.setText("(INGEN DATA)");
+            }
+            else
+            {
+                txtExData.setText(idb.fetchSingle(sqlQ));
+            }
         }
         
         catch(InfException exception)
@@ -194,26 +203,36 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
             
     }//GEN-LAST:event_cboxUppgiftActionPerformed
 
+    //När användaren klickar på "Uppdatera"-knappen så kollar systemet om användaren har valt alla värden som behövs: om användaren har så uppdateras databasen, om inte så får de reda på vad som saknas.
     private void btnUppdateraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUppdateraMouseClicked
         String sqlQ = "";
         try 
         {
+            //Kollar om något saknas från användaren, om det gör så körs koden nedan. Koden nedan är specifikt if-satsen och inte if-else-satser så att användaren får reda på varje fel
             if(cboxAvdelning.getSelectedItem() == null || cboxUppgift.getSelectedItem() == null || txtNyData.getText().isEmpty())
             {
+                //Skriver ut om användarne har missat att välja avdelning
                 if(cboxAvdelning.getSelectedItem() == null)
                 {
                     JOptionPane.showMessageDialog(this, "Vänligen välj en avdelning för att ändra eller lägga till information, tack.", "Ingen avdelning vald", JOptionPane.ERROR_MESSAGE);
                 }
+                
+                //Skriver ut om användaren har missat att välja uppgift
                 if(cboxUppgift.getSelectedItem() == null)
                 {
                     JOptionPane.showMessageDialog(this, "Vänligen välj en uppgift för att ändra eller lägga till information, tack.", "Ingen uppgift vald", JOptionPane.ERROR_MESSAGE);
                 }
+                
+                //Skriver ut om användaren har missat att skriva vad den gamla datan ska uppdateras till
                 if(txtNyData.getText().isEmpty())
                 {
                     JOptionPane.showMessageDialog(this, "Vänligen skriv in den nya datan för att ändra eller lägga till information, tack.", "Ingen ny datan skriven", JOptionPane.ERROR_MESSAGE);
                 }
 
             }
+            //Om allt stämmer så hämtas den valda avdelningens avdid och vi uppdaterar datan med en sql-query,
+            //Efter att tabellen är uppdaterad så uppdaterar avdelning-comboboxen ifall användaren uppdaterade antinge avdid eller namn,
+            //Till sist så får användaren en pop-up ruta som informerar användaren om att datan har uppdaterats
             else
             {
                 getAvdid();
@@ -231,7 +250,10 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnUppdateraMouseClicked
 
+    //Om användaren klickar på knappen för att lägga till en ny avdelning så får de först en pup-ruta som frågar om de vill lägga till en avdelning (detta är för att det finns inget krav på att man ska kunna ta bort uppgifter),
+    //Om användaren klickar "Yes" så läggs det till en ny avdelning med det minsta ike-upptagna avdid och avdelning-comboboxen uppdateras så att man kan ändra uppgifter om den nya avdelningen
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
+        //Frågar om konfirmation om användaren vill lägga till en ny avdelning
         if(JOptionPane.showConfirmDialog(this, "Vill du lägga till en ny avdelning?", "Lägg till avdelning?", WIDTH) == 0)
         {
             
@@ -253,6 +275,8 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
  
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
+    //Ger avdelning-comboboxen dess värden (avdid och sedan avdelningens namn) samt sorterar dem.
+    //Vi hämtar varje avdelnings avdid och skriver det innan namnet så att vi kan lättare göra sql-querys med avdid senare
     private void setAvdelning()
     {
         String sqlQ = "select avdid from avdelning";
@@ -261,10 +285,12 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         try
         {
             avdidLista = idb.fetchColumn(sqlQ);
+            //Matchar avdelnings namn och avdid och sorterar så att lägst avdid kommer först (att sortera är inte nödvändigt men det ser snyggare ut och blir möjligtvis lättare för användare att använda systemet)
             for(String id : avdidLista)
             {
                 sqlQ = "select namn from avdelning where avdid = " + id;
                 avdelningLista.add(id + ". " + idb.fetchSingle(sqlQ));
+                Collections.sort(avdelningLista);
             }
             cboxAvdelning.setModel(new javax.swing.DefaultComboBoxModel(avdelningLista.toArray()));
         }
@@ -275,6 +301,7 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         }
     }
     
+    //En get-metod för avdid för den avdelningen som användaren valt i comboboxen
     private void getAvdid()
     {
         String currentAvdelning = cboxAvdelning.getSelectedItem().toString();
