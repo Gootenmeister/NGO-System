@@ -83,6 +83,7 @@ public class Meny extends javax.swing.JFrame {
         adminKnapp = new javax.swing.JButton();
         btnAvdelningUpggifter = new javax.swing.JButton();
         btnUppgifter = new javax.swing.JButton();
+        btnMinaUppgifter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,8 +137,11 @@ public class Meny extends javax.swing.JFrame {
         });
         btnAvdelningUpggifter.addActionListener(this::btnAvdelningUpggifterActionPerformed);
 
-        btnUppgifter.setText("Mina Uppgifter");
+        btnUppgifter.setText("Projekt Uppgifter");
         btnUppgifter.addActionListener(this::btnUppgifterActionPerformed);
+
+        btnMinaUppgifter.setText("Mina Uppgifter");
+        btnMinaUppgifter.addActionListener(this::btnMinaUppgifterActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,13 +169,16 @@ public class Meny extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnAvdelningUpggifter)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(pcKnapp)
                                 .addGap(18, 18, 18)
-                                .addComponent(adminKnapp))
-                            .addComponent(btnAvdelningUpggifter)
+                                .addComponent(adminKnapp)
+                                .addGap(10, 10, 10))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btnMinaUppgifter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(8, 8, 8)))
                         .addGap(44, 44, 44))))
         );
@@ -195,7 +202,9 @@ public class Meny extends javax.swing.JFrame {
                 .addComponent(btnAvdelningUpggifter)
                 .addGap(18, 18, 18)
                 .addComponent(btnUppgifter)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnMinaUppgifter)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pcKnapp)
                     .addComponent(adminKnapp))
@@ -236,10 +245,16 @@ public class Meny extends javax.swing.JFrame {
     private void btnUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppgifterActionPerformed
         new Uppgifter(idb, Meny.getAID()).setVisible(true);
     }//GEN-LAST:event_btnUppgifterActionPerformed
+
+    private void btnMinaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinaUppgifterActionPerformed
+        new MinaUppgifter(idb, Meny.getAID()).setVisible(true);
+    }//GEN-LAST:event_btnMinaUppgifterActionPerformed
     
     private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
         new Projekt(idb).setVisible(true); 
-    }   
+    }  
+    
+    
     
     
    
@@ -271,6 +286,7 @@ public class Meny extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adminKnapp;
     private javax.swing.JButton btnAvdelningUpggifter;
+    private javax.swing.JButton btnMinaUppgifter;
     private javax.swing.JButton btnPersonal;
     private javax.swing.JButton btnProjekt;
     private javax.swing.JButton btnUppgifter;
