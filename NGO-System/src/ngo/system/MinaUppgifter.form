@@ -39,14 +39,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btnSpara" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtAvdelning" pref="111" max="32767" attributes="0"/>
-                          <Component id="txtLosenord" max="32767" attributes="0"/>
-                          <Component id="txtTelefon" max="32767" attributes="0"/>
-                          <Component id="txtAdress" max="32767" attributes="0"/>
-                          <Component id="txtENamn" max="32767" attributes="0"/>
-                          <Component id="txtNamn" alignment="0" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="txtAvdelning" max="32767" attributes="0"/>
+                      <Component id="txtLosenord" max="32767" attributes="0"/>
+                      <Component id="txtTelefon" max="32767" attributes="0"/>
+                      <Component id="txtAdress" max="32767" attributes="0"/>
+                      <Component id="txtENamn" max="32767" attributes="0"/>
+                      <Component id="txtNamn" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <Component id="txtEpost" min="-2" pref="111" max="-2" attributes="0"/>
                   <Component id="txtAnstallningsdatum" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
@@ -77,7 +75,6 @@
                       <Component id="txtEpost" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtTelefon" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblTelefon" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>

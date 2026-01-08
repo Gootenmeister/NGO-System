@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author calle
+ * @author cl
  */
 public class Uppgifter extends javax.swing.JFrame 
 {
