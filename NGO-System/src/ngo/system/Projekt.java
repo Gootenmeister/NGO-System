@@ -30,6 +30,8 @@ public class Projekt extends javax.swing.JFrame {
     private String epostChef;
     private LocalDate startDatumLocal;
     private LocalDate slutDatumLocal;
+    private String statusFilter = null;
+
 
     /**
      * Creates new form Projekt
@@ -42,6 +44,15 @@ public class Projekt extends javax.swing.JFrame {
         initComponents();
         printAvdelning();
         projektLista();
+        lstProjekt.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) { 
+                String selectedProjekt = lstProjekt.getSelectedValue();
+            if (selectedProjekt != null) {
+                visaProjektMedarbetare(selectedProjekt);
+            }
+    }
+});
+
     }
     
     //Ändrar lblAvdelning till att visa avdelningens namn som användaren jobbar på
@@ -79,44 +90,61 @@ public class Projekt extends javax.swing.JFrame {
     }
     
     //Skapar en lista för alla projekt som finns i avdelningen som användaren jobbar på och som är aktiva samt ingår i det datumet användaren skrivit in om de har det. Söker även efter projekt utifrån vilken projektchef som projektet har om användaren har sökt på en Epost-adress. 
-    private void projektLista()
-    {
-        try {
-            String sqlQ;
-            DefaultListModel<String> listModel = new DefaultListModel<>();
+    private void projektLista() {
+    try {
+        DefaultListModel<String> listModel = new DefaultListModel<>();
 
-            //Kollar om användaren har sökt på ett specifikt datum, om de inte har så körs kod-blocket nedan
-            if(startDatum == null || slutDatum == null)
-            {
-                sqlQ = "select projektnamn from projekt where status = 'Pågående' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
-            }
-            //Om de har sökt på ett datum så körs kod-blocket nedan
-            else
-            {
-                sqlQ = "select projektnamn from projekt where status = 'Pågående' and startdatum >= '" + startDatumLocal + "' and slutdatum <= '" + slutDatumLocal + "' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
-            }
-            
-            projektNamn = idb.fetchColumn(sqlQ);
-            
-            //Kollar genom varje projekt som är aktuell för att se om projektchefens Epost innehåller det som användaren sökt på
-            for (int i = 0; i < projektNamn.size(); i++) {
-                String currentProjektNamn = projektNamn.get(i);
-                sqlQ = "select epost from anstalld where aid in (select projektchef from projekt where projektnamn = '" + projektNamn.get(i) + "')";
-                epostChef = idb.fetchSingle(sqlQ);
-                if(epostChef.toLowerCase().contains(epost.toLowerCase()))
-                {
-                    listModel.addElement(currentProjektNamn);
-                }
-            }
-            
-            lstProjekt.setModel(listModel);
+        String statusCondition = "";
+        if (statusFilter != null) {
+            statusCondition = " and p.status = '" + statusFilter + "'";
         }
+
         
-        catch (InfException exception) {
-            System.out.println("Error: " + exception);
+        String dateCondition = "";
+        if (startDatumLocal != null && slutDatumLocal != null) {
+            dateCondition = " and CAST(p.startdatum AS DATE) >= DATE '" + startDatumLocal.toString() + "'" +
+                            " and CAST(p.slutdatum AS DATE) <= DATE '" + slutDatumLocal.toString() + "'";
+        } else if (startDatumLocal != null) {
+            dateCondition = " and CAST(p.startdatum AS DATE) >= DATE '" + startDatumLocal.toString() + "'";
+        } else if (slutDatumLocal != null) {
+            dateCondition = " and CAST(p.slutdatum AS DATE) <= DATE '" + slutDatumLocal.toString() + "'";
         }
-    }
 
+        String emailCondition = "";
+        if (epost != null && !epost.isEmpty()) {
+            emailCondition = " and lower(a.epost) like '%" + epost.toLowerCase() + "%'";
+        }
+
+        String sqlQ = //med filters denna gång :p
+        "select DISTINCT p.projektnamn " +
+        "from projekt p " +
+        "join anstalld pc on p.projektchef = pc.aid " +
+        "where (p.pid in (" +
+        "select pid from ans_proj ap " +
+        "join anstalld a on ap.aid = a.aid " +
+        "where a.avdelning = " + avdelningNummer +
+        ") or not exists (" +
+        "select 1 from ans_proj ap2 where ap2.pid = p.pid" +
+        "))" +
+        statusCondition +
+        dateCondition +
+        emailCondition;
+
+
+
+        projektNamn = idb.fetchColumn(sqlQ);
+
+        for (String namn : projektNamn) {
+            listModel.addElement(namn);
+        }
+
+        lstProjekt.setModel(listModel);
+
+    } catch (InfException exception) {
+        System.out.println("Error: " + exception);
+    }
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,11 +158,15 @@ public class Projekt extends javax.swing.JFrame {
         splProjekt = new javax.swing.JScrollPane();
         lstProjekt = new javax.swing.JList<>();
         btnDatum = new javax.swing.JButton();
-        lblStart = new javax.swing.JLabel();
-        lblSlut = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtEpost = new javax.swing.JTextField();
         lblEpost = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        statusCbox = new javax.swing.JComboBox<>();
+        txtStartDatum = new javax.swing.JTextField();
+        txtSlutDatum = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstProjektMedarbetare = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -150,49 +182,68 @@ public class Projekt extends javax.swing.JFrame {
         btnDatum.setText("Sök");
         btnDatum.addActionListener(this::btnDatumActionPerformed);
 
-        lblStart.setText("Startdatum");
-
-        lblSlut.setText("Slutdatum");
-
         jLabel1.setText("Sök inom ett datum eller på en användares E-post");
 
         txtEpost.addActionListener(this::txtEpostActionPerformed);
 
         lblEpost.setText("E-post");
 
+        jLabel2.setText("Filtrera på status:");
+
+        statusCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Ingen Filtrering-", "Pågående", "Avslutat", "Planerat" }));
+        statusCbox.addActionListener(this::statusCboxActionPerformed);
+
+        txtStartDatum.setText("Startdatum");
+
+        txtSlutDatum.setText("Slutdatum");
+
+        lstProjektMedarbetare.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Välj ett projekt" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(lstProjektMedarbetare);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(73, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
+                                .addComponent(jLabel2)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(25, 25, 25))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblEpost)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtEpost, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(103, 103, 103)
-                                            .addComponent(lblEpost)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(lblStart)
-                                        .addGap(81, 81, 81)
-                                        .addComponent(lblSlut)))))
-                        .addGap(65, 65, 65))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnDatum)
-                        .addGap(164, 164, 164))))
+                                    .addComponent(jLabel1)
+                                    .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(lblAvdelning)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(lblAvdelning))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(102, 102, 102)
+                        .addComponent(btnDatum)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -201,20 +252,26 @@ public class Projekt extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(lblAvdelning)
                 .addGap(18, 18, 18)
-                .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStart)
-                    .addComponent(lblSlut))
-                .addGap(36, 36, 36)
-                .addComponent(lblEpost)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(lblEpost)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDatum)
-                .addContainerGap())
+                .addGap(12, 12, 12))
         );
 
         pack();
@@ -222,30 +279,72 @@ public class Projekt extends javax.swing.JFrame {
 
     //När användaren klickar på knappen så hämtas det som användaren har sökt på för Epost och de datum som användaren har knappat in. Datumen görs om från Date till LocalDate så att vi kan gemföra datum i vår SQL query
     private void btnDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumActionPerformed
-        epost = txtEpost.getText();
-        //startDatum = dtcStart.getDate();
-        //slutDatum = dtcSlut.getDate();
-        
-        //Kollar om något av datumen är null, detta kollar vi för att med koden nedan så får vi en massa errors om något av datumen är null vilken som kan leda till att koden inte fungerar som planerat
-        if(startDatum != null && slutDatum != null)
-        {
-            startDatumLocal = LocalDate.ofInstant(startDatum.toInstant(), ZoneId.systemDefault());
-            slutDatumLocal = LocalDate.ofInstant(slutDatum.toInstant(), ZoneId.systemDefault());
-        }
-        //Om något av datumen är null så gör vi om våra två LocalDate värden till null så att koden för att skapa vår projektlista kan köras som planerat
-        else
-        {
+        epost = txtEpost.getText().trim();
+
+    try {
+        if (!txtStartDatum.getText().isEmpty()) {
+            startDatumLocal = LocalDate.parse(txtStartDatum.getText());
+        } else {
             startDatumLocal = null;
+        }
+
+        if (!txtSlutDatum.getText().isEmpty()) {
+            slutDatumLocal = LocalDate.parse(txtSlutDatum.getText());
+        } else {
             slutDatumLocal = null;
         }
-        System.out.println(startDatumLocal);
-        System.out.println(slutDatumLocal);
-        projektLista();
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Felaktigt datumformat! Använd yyyy-MM-dd");
+        startDatumLocal = null;
+        slutDatumLocal = null;
+    }
+
+    projektLista();
     }//GEN-LAST:event_btnDatumActionPerformed
+
+    
+    private void visaProjektMedarbetare(String projektnamn) {
+    try {
+        String pid = idb.fetchSingle(
+            "SELECT pid FROM projekt WHERE projektnamn = '" + projektnamn + "'"
+        );
+
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+
+        if (pid != null) {
+            String query = "SELECT CONCAT(a.fornamn, ' ', a.efternamn) AS namn " +
+                           "FROM ans_proj ap " +
+                           "JOIN anstalld a ON ap.aid = a.aid " +
+                           "WHERE ap.pid = " + pid;
+            System.out.println("DEBUG: Medarbetare query = " + query);
+
+            ArrayList<String> medarbetare = idb.fetchColumn(query);
+
+            if (medarbetare != null) {
+                for (String namn : medarbetare) {
+                    listModel.addElement(namn);
+                }
+            }
+        }
+
+        lstProjektMedarbetare.setModel(listModel);
+
+    } catch (InfException ex) {
+        System.out.println("Error: " + ex);
+    }
+}
+
+
 
     private void txtEpostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEpostActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEpostActionPerformed
+
+    private void statusCboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCboxActionPerformed
+        statusFilter = statusCbox.getSelectedIndex() == 0 ? null
+                    : (String) statusCbox.getSelectedItem();
+    projektLista();
+    }//GEN-LAST:event_statusCboxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -275,12 +374,17 @@ public class Projekt extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDatum;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblEpost;
-    private javax.swing.JLabel lblSlut;
-    private javax.swing.JLabel lblStart;
     private javax.swing.JList<String> lstProjekt;
+    private javax.swing.JList<String> lstProjektMedarbetare;
     private javax.swing.JScrollPane splProjekt;
+    private javax.swing.JComboBox<String> statusCbox;
     private javax.swing.JTextField txtEpost;
+    private javax.swing.JTextField txtSlutDatum;
+    private javax.swing.JTextField txtStartDatum;
     // End of variables declaration//GEN-END:variables
 }
+
