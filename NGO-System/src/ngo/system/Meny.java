@@ -274,7 +274,14 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMinaUppgifterActionPerformed
 
     private void btnProjektAnsvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProjektAnsvarActionPerformed
-        new ProjektAnsvar(idb).setVisible(true);
+        if(accessLevel == 1)
+        {
+            new ProjektAnsvar(idb).setVisible(true);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Enbart projektledare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnProjektAnsvarActionPerformed
     
 
