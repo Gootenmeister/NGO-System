@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 /**
  *
- * @author calle
+ * @author cl
  */
 public class MinaUppgifter extends javax.swing.JFrame {
     
@@ -30,7 +30,7 @@ public class MinaUppgifter extends javax.swing.JFrame {
         txtAvdelning.setEditable(false);
     }
     // kör sql frågan och hämtar "kolumnnamnen" som nycklar i en hashmap (rader) och datan som värde.
-    // visar den hämtade infon i Jtable.
+    // visar den hämtade infon i GUI.
     private void hamtaMinaUppgifter()
     {
         try {
@@ -50,7 +50,7 @@ public class MinaUppgifter extends javax.swing.JFrame {
             
             } catch (InfException e)
             { 
-                JOptionPane.showMessageDialog(this, "Kunde ej hämta uppgifter", "Fel", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Kunde ej hämta uppgifter", "Fel" , JOptionPane.ERROR_MESSAGE);
             }
     }
     
