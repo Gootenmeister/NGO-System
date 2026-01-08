@@ -25,7 +25,7 @@ public class Uppgifter extends javax.swing.JFrame
     
     
     
-    
+    // hämtar databasen och aid till inloggad i konstruktorn
     public Uppgifter(InfDB idb, String aid) 
     {
         this.idb = idb;
@@ -43,13 +43,18 @@ public class Uppgifter extends javax.swing.JFrame
             String sqlFraga = "SELECT projektnamn, beskrivning, kostnad, prioritet, land, projektchef, startdatum, slutdatum, status FROM projekt WHERE pid IN"
                     + "(SELECT pid FROM ans_proj WHERE aid =  " + aid + ")";
             
+            //skapar en Arraylist av hashmaps, kolumnerna ovan efter SELECT är nycklar och "infon" är värdena.
             ArrayList<HashMap<String, String>> projektLista = idb.fetchRows(sqlFraga);
             
-            
+            //TableModel lagrar datan
+            //kolumner, eller ordningen på arrayen är det som visas i jTable... "designen".
             String[] kolumner = {"Projektnamn", "beskrivning", "kostnad", "prioritet", "land", "projektchef", "Startdatum", "Slutdatum", "Status"};
             DefaultTableModel model = new DefaultTableModel(kolumner, 0);
             
-      
+            // loopar igenom alla projekt i projektlistan. ex "projektnamn" är nyckel och "infon" är värdet.
+            // Object[] rad skapar en array av rader. rad och kolumner matchar så att ordningen blir rätt.
+            // Object klassen används för att kunna hantera "alla typer" av data till tabellen. 
+            // ex kan "beskrivning" vara en String och "kostnad" en int. Object kan hantera båda.
             for (HashMap<String, String> projekt : projektLista )
             {
                 Object[] rad = {

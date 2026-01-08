@@ -8,6 +8,7 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 /**
  *
  * @author calle
@@ -28,7 +29,8 @@ public class MinaUppgifter extends javax.swing.JFrame {
         txtAnstallningsdatum.setEditable(false);
         txtAvdelning.setEditable(false);
     }
-
+    // kör sql frågan och hämtar "kolumnnamnen" som nycklar i en hashmap (rader) och datan som värde.
+    // visar den hämtade infon i Jtable.
     private void hamtaMinaUppgifter()
     {
         try {
@@ -171,18 +173,22 @@ public class MinaUppgifter extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //körs när man sparar ändringar.
+    //skapar en array av JTextField object. txtnamn, txtEnamn osv.
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
         javax.swing.JTextField[] textfält = {
             txtNamn, txtENamn, txtEpost, txtAdress, txtLosenord };
         
-        for ( int i = 0 ; i < textfält.length ; i ++)
-        {
-            if ( textfält[i].getText().isEmpty())
-            {
+        // kontrollerar att man inte lämnar något tomt.
+        for (JTextField textfält1 : textfält) {
+            if (textfält1.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, " Fyll i alla fält");
                 return;
             }
         }
+        // SQl frågan uppdaterar en rad ur anstalld.
+        // via set. ex "fornamn" till txtNamn.getText(), alltså den inskrivda texten.
+        // hämtar alltså värdena om skrivs in  GUI 
         String sql = "UPDATE anstalld SET " 
                 + "fornamn = '" + txtNamn.getText() + "', "
                 + "efternamn = '" + txtENamn.getText() + "', "
