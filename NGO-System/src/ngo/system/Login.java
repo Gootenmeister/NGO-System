@@ -131,7 +131,19 @@ public class Login extends javax.swing.JFrame {
         String sqlIsAdmin = "select anstalld.aid from sdgsweden.anstalld join sdgsweden.admin on sdgsweden.anstalld.aid = sdgsweden.admin.aid where sdgsweden.anstalld.epost = '" + epost + "'" + " limit 1";
         String sqlIsProjektChef = "select anstalld.aid from sdgsweden.anstalld join sdgsweden.projekt on sdgsweden.anstalld.aid = sdgsweden.projekt.projektchef where sdgsweden.anstalld.epost = '" + epost + "'" +  " limit 1";
         String sqlIsHandlaggare = "select anstalld.aid from sdgsweden.anstalld join sdgsweden.handlaggare on sdgsweden.anstalld.aid = sdgsweden.handlaggare.aid where sdgsweden.anstalld.epost = '" + epost + "'" + " limit 1";
+        //Först validera epost
+        String error = Validering.goodStr(epost);
+        if (error != null) {
+            showError("E-post: " + error);
+            return;
+        }
         
+        //Validera lösen
+        error = Validering.goodStr(pwd);
+        if (error != null) {
+            showError("Lösenord: " + error);
+            return;
+        }
         
         try {
             String AID = idb.fetchSingle(sqlAID);
@@ -160,21 +172,6 @@ public class Login extends javax.swing.JFrame {
             
         } catch (InfException ex) {
             System.getLogger(Login.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        
-        
-        //Först validera epost
-        String error = Validering.goodStr(epost);
-        if (error != null) {
-            showError("E-post: " + error);
-            return;
-        }
-        
-        //Validera lösen
-        error = Validering.goodStr(pwd);
-        if (error != null) {
-            showError("Lösenord: " + error);
-            return;
         }
         
         try {
