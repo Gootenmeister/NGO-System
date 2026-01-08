@@ -85,6 +85,7 @@ public class Meny extends javax.swing.JFrame {
         btnAvdelningUpggifter = new javax.swing.JButton();
         btnUppgifter = new javax.swing.JButton();
         btnMinaUppgifter = new javax.swing.JButton();
+        btnProjektAnsvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,6 +145,9 @@ public class Meny extends javax.swing.JFrame {
         btnMinaUppgifter.setText("Mina Uppgifter");
         btnMinaUppgifter.addActionListener(this::btnMinaUppgifterActionPerformed);
 
+        btnProjektAnsvar.setText("Projekt Ansvar");
+        btnProjektAnsvar.addActionListener(this::btnProjektAnsvarActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,15 +176,17 @@ public class Meny extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnAvdelningUpggifter)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(pcKnapp)
-                                .addGap(18, 18, 18)
-                                .addComponent(adminKnapp)
-                                .addGap(10, 10, 10))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(btnMinaUppgifter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(8, 8, 8)))
+                                .addGap(8, 8, 8))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pcKnapp)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnProjektAnsvar)
+                                    .addComponent(adminKnapp))
+                                .addGap(10, 10, 10)))
                         .addGap(44, 44, 44))))
         );
         layout.setVerticalGroup(
@@ -205,7 +211,9 @@ public class Meny extends javax.swing.JFrame {
                 .addComponent(btnUppgifter)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnMinaUppgifter)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnProjektAnsvar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pcKnapp)
                     .addComponent(adminKnapp))
@@ -264,6 +272,10 @@ public class Meny extends javax.swing.JFrame {
     private void btnMinaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinaUppgifterActionPerformed
         new MinaUppgifter(idb, Meny.getAID()).setVisible(true);
     }//GEN-LAST:event_btnMinaUppgifterActionPerformed
+
+    private void btnProjektAnsvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProjektAnsvarActionPerformed
+        new ProjektAnsvar(idb).setVisible(true);
+    }//GEN-LAST:event_btnProjektAnsvarActionPerformed
     
 
     private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
@@ -317,6 +329,7 @@ public class Meny extends javax.swing.JFrame {
     private javax.swing.JButton btnMinaUppgifter;
     private javax.swing.JButton btnPersonal;
     private javax.swing.JButton btnProjekt;
+    private javax.swing.JButton btnProjektAnsvar;
     private javax.swing.JButton btnUppgifter;
     private javax.swing.JLabel lblAccessLevel;
     private javax.swing.JLabel lblActiveUser;
