@@ -206,27 +206,32 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
     //När användaren klickar på "Uppdatera"-knappen så kollar systemet om användaren har valt alla värden som behövs: om användaren har så uppdateras databasen, om inte så får de reda på vad som saknas.
     private void btnUppdateraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUppdateraMouseClicked
         String sqlQ = "";
+        String error = "";
         try 
         {
             //Kollar om något saknas från användaren, om det gör så körs koden nedan. Koden nedan är specifikt if-satsen och inte if-else-satser så att användaren får reda på varje fel
             if(cboxAvdelning.getSelectedItem() == null || cboxUppgift.getSelectedItem() == null || txtNyData.getText().isEmpty())
             {
                 //Skriver ut om användarne har missat att välja avdelning
-                if(cboxAvdelning.getSelectedItem() == null)
-                {
-                    JOptionPane.showMessageDialog(this, "Vänligen välj en avdelning för att ändra eller lägga till information, tack.", "Ingen avdelning vald", JOptionPane.ERROR_MESSAGE);
+                error = Validering.goodStr(cboxAvdelning.getSelectedItem().toString());
+                if (error != null) {
+                    showError("Lösenord: " + error);
+                    return;
                 }
                 
                 //Skriver ut om användaren har missat att välja uppgift
-                if(cboxUppgift.getSelectedItem() == null)
-                {
-                    JOptionPane.showMessageDialog(this, "Vänligen välj en uppgift för att ändra eller lägga till information, tack.", "Ingen uppgift vald", JOptionPane.ERROR_MESSAGE);
+                error = Validering.goodStr(cboxUppgift.getSelectedItem().toString());
+                if (error != null) {
+                    showError("Lösenord: " + error);
+                    return;
                 }
+
                 
                 //Skriver ut om användaren har missat att skriva vad den gamla datan ska uppdateras till
-                if(txtNyData.getText().isEmpty())
-                {
-                    JOptionPane.showMessageDialog(this, "Vänligen skriv in den nya datan för att ändra eller lägga till information, tack.", "Ingen ny datan skriven", JOptionPane.ERROR_MESSAGE);
+                error = Validering.goodStr(txtNyData.getText());
+                if (error != null) {
+                    showError("Lösenord: " + error);
+                    return;
                 }
 
             }
@@ -307,6 +312,12 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
         String currentAvdelning = cboxAvdelning.getSelectedItem().toString();
         avdid = currentAvdelning.substring(0, currentAvdelning.indexOf('.'));
         
+    }
+    
+    //Visar ett medellande om vad som gick fel om en validering misslyckades
+    private void showError(String message) 
+    {
+        JOptionPane.showMessageDialog(this, message, "Valideringsfel", JOptionPane.ERROR_MESSAGE);
     }
     
     /**
