@@ -96,14 +96,14 @@ public class AnsvarigTaBort extends javax.swing.JFrame {
             if(currentRad == "Partner")
             {
                 id = cboxData.getSelectedItem().toString();
-                id = id.substring(0, currentPid.indexOf('.'));
+                id = id.substring(0, id.indexOf('.'));
                 sqlQ = "delete from projekt_partner where pid = " + currentPid + " and partner_pid = " + id;
             }
             //Om användaren valde att ta bort en handläggare
             else if(currentRad == "Handläggare")
             {
                 id = cboxData.getSelectedItem().toString();
-                id = id.substring(0, currentPid.indexOf('.'));
+                id = id.substring(0, id.indexOf('.'));
                 sqlQ = "delete from ans_proj where pid = " + currentPid + " and aid = " + id;
             }
 
@@ -111,6 +111,7 @@ public class AnsvarigTaBort extends javax.swing.JFrame {
             {
                 idb.delete(sqlQ);
                 JOptionPane.showMessageDialog(this, currentRad + "n har tagits bort.", "Borttagning lyckades", JOptionPane.INFORMATION_MESSAGE);
+                setData();
             }
 
             catch(InfException exception)
@@ -161,7 +162,7 @@ public class AnsvarigTaBort extends javax.swing.JFrame {
         try
         {
             //Om användaren valde partner
-            if(currentRad == "Partner")
+            if(currentRad.equals("Partner"))
             {
                 sqlQ = "select partner_pid from projekt_partner where pid = " + currentPid;
                 idLista = idb.fetchColumn(sqlQ);
@@ -174,7 +175,7 @@ public class AnsvarigTaBort extends javax.swing.JFrame {
                 }
             }
             //Om användaren valde handläggare
-            else if(currentRad == "Handläggare")
+            else if(currentRad.equals("Handläggare"))
             {
                 sqlQ = "select aid from ans_proj where pid = " + currentPid;
                 idLista = idb.fetchColumn(sqlQ);
@@ -188,6 +189,13 @@ public class AnsvarigTaBort extends javax.swing.JFrame {
                 }
             }
             
+            //Sorterar vår combobox utifrån handläggarnas eller partnernas id
+            Collections.sort(namnLista, (a, b) ->  
+            {
+                int idA = Integer.parseInt(a.substring(0, a.indexOf('.')));
+                int idB = Integer.parseInt(b.substring(0, b.indexOf('.')));
+                return Integer.compare(idA, idB);
+            });
             cboxData.setModel(new javax.swing.DefaultComboBoxModel(namnLista.toArray()));
         }
         
