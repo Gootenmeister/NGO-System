@@ -90,17 +90,18 @@ public class AnsvarigLaggTill extends javax.swing.JFrame {
         String id = "";
         
         //Om användaren valde att ta bort en partner
-        if(currentRad == "Partner")
+        if(currentRad.equals("Partner"))
         {
             id = cboxData.getSelectedItem().toString();
-            id = id.substring(0, currentPid.indexOf('.'));
+            id = id.substring(0, id.indexOf('.'));
             sqlQ = "insert into projekt_partner values (" + currentPid + ", " + id + ")";
+            System.out.println(sqlQ);
         }
         //Om användaren valde att ta bort en handläggare
-        else if(currentRad == "Handläggare")
+        else if(currentRad.equals("Handläggare"))
         {
             id = cboxData.getSelectedItem().toString();
-            id = id.substring(0, currentPid.indexOf('.'));
+                id = id.substring(0, id.indexOf('.'));
             sqlQ = "insert into ans_proj values (" + currentPid + ", " + id + ")";
         }
 
@@ -108,6 +109,7 @@ public class AnsvarigLaggTill extends javax.swing.JFrame {
         {
             idb.insert(sqlQ);
             JOptionPane.showMessageDialog(this, "Datan har laggts till!", "Tilläg lyckats", JOptionPane.INFORMATION_MESSAGE);
+            setData();
         }
 
         catch(InfException exception)
@@ -166,7 +168,6 @@ public class AnsvarigLaggTill extends javax.swing.JFrame {
                 {
                     sqlQ = "select namn from partner where pid = " + partnerId;
                     namnLista.add(partnerId + ". " + idb.fetchSingle(sqlQ));
-                    Collections.sort(namnLista);
                 }
             }
             //Om användaren valde handläggare
@@ -180,9 +181,16 @@ public class AnsvarigLaggTill extends javax.swing.JFrame {
                     sqlQ = "select fornamn from anstalld where aid = " + handId;
                     sqlQ2 = "select efternamn from anstalld where aid = " + handId;
                     namnLista.add(handId + ". " + idb.fetchSingle(sqlQ) + " " + idb.fetchSingle(sqlQ2));
-                    Collections.sort(namnLista);
                 }
             }
+            
+            //Sorterar vår combobox utifrån handläggarnas eller partnernas id
+            Collections.sort(namnLista, (a, b) ->  
+            {
+                int idA = Integer.parseInt(a.substring(0, a.indexOf('.')));
+                int idB = Integer.parseInt(b.substring(0, b.indexOf('.')));
+                return Integer.compare(idA, idB);
+            });
             cboxData.setModel(new javax.swing.DefaultComboBoxModel(namnLista.toArray()));
         }
         
