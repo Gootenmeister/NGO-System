@@ -194,7 +194,7 @@ public class LandUppgifter extends javax.swing.JFrame {
         }
          //Sgl frågan uppdaterar all info som användaren har skrivit in i täxtfälten genom getText().
          // texten använderen skrev in blir det nya texten.
-         String sqlFråga = "UPDATE land SEt "
+         String sqlFråga = "UPDATE land SET "
                  + "namn = '" + txtNamn.getText() + "', "
                  + "sprak = '" + txtSprak.getText() + "', "
                  + "valuta = " + txtValuta.getText() + ", "
@@ -208,7 +208,7 @@ public class LandUppgifter extends javax.swing.JFrame {
                    idb.update(sqlFråga);
                    //funkar det returneras "uppgifterna har ändrats"
                    JOptionPane.showMessageDialog(this, "Uppgifterna har ändrats");
-               } catch (Exception e) {
+               } catch (InfException e) {
                    //funkar det ej returneras "ett fel har inträffat"
                    JOptionPane.showMessageDialog(this, "Ett fel har inträffat");
                }
