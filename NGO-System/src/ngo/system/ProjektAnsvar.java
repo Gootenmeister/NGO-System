@@ -18,14 +18,18 @@ public class ProjektAnsvar extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektAnsvar.class.getName());
     
     private InfDB idb;
-    private ArrayList<String> projektLista;
+    private ArrayList<String> projektNummerLista;
+    private static String currentPid;
+    private static String currentRad;
     
     /**
      * Creates new form PartnerAnsvarig
      */
     public ProjektAnsvar(InfDB idb) {
         this.idb = idb;
-        ArrayList<String> projektLista = new ArrayList<>();
+        ArrayList<String> projektNummerLista = new ArrayList<>();
+        currentPid = "";
+        currentRad = "";
         initComponents();
         setProjekt();
     }
@@ -45,14 +49,16 @@ public class ProjektAnsvar extends javax.swing.JFrame {
         lblTitle = new javax.swing.JLabel();
         cboxRad = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cboxProjekt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboxProjekt.addActionListener(this::cboxProjektActionPerformed);
 
         btnLaggTill.setText("Lägg till");
+        btnLaggTill.addActionListener(this::btnLaggTillActionPerformed);
 
         btnTaBort.setText("Ta bort");
+        btnTaBort.addActionListener(this::btnTaBortActionPerformed);
 
         lblTitle.setText("Vänligen välj vilket projekt du vill ta bort eller lägga till en partner eller handläggare ifrån");
 
@@ -96,12 +102,23 @@ public class ProjektAnsvar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cboxProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxProjektActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cboxProjektActionPerformed
 
     private void cboxRadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxRadActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cboxRadActionPerformed
+
+    //Om användaren klickar på "Ta bort"-knappen så kommer "Ta bort"fönstret upp
+    private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
+        setCurrents();
+        new AnsvarigTaBort(idb, currentPid, currentRad).setVisible(true);
+    }//GEN-LAST:event_btnTaBortActionPerformed
+
+    private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
+        setCurrents();
+        new AnsvarigLaggTill(idb, currentPid, currentRad).setVisible(true);
+    }//GEN-LAST:event_btnLaggTillActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,19 +144,48 @@ public class ProjektAnsvar extends javax.swing.JFrame {
         /* Create and display the form */
     }
     
+    //Lägger in alla projekt som användaren är projektansvarig för in i comboboxen
     private void setProjekt()
     {
         String sqlQ = "select pid from projekt where projektchef = " + Meny.getAID();
+        ArrayList<String> projektFullLista = new ArrayList<>();
         try
         {
-            projektLista = idb.fetchColumn(sqlQ);
-            cboxProjekt.setModel(new javax.swing.DefaultComboBoxModel(projektLista.toArray()));
+            projektNummerLista = idb.fetchColumn(sqlQ);
+            //Kombinerar alla projekt med deras id och namn så att det blir lättare för sql-queries senare
+            for(String projekt : projektNummerLista)
+            {
+                sqlQ = "select projektnamn from projekt where pid = " + projekt;
+                projektFullLista.add(projekt + ". " + idb.fetchSingle(sqlQ));
+                
+            }
+            cboxProjekt.setModel(new javax.swing.DefaultComboBoxModel(projektFullLista.toArray()));
         }
         
         catch(InfException exception)
         {
             System.out.println("Error: " + exception);
         }
+    }
+    
+    //En get-metod för currentPid
+    public static String getPID()
+    {
+        return currentPid;
+    }
+    
+    //En get-metod för currentRad
+    public static String getRad()
+    {
+        return currentRad;
+    }
+    
+    //En set-metod för currentPid och currentRad så att de kan användas i konstruktörer senare
+    private void setCurrents()
+    {
+        currentPid = cboxProjekt.getSelectedItem().toString();
+        currentPid = currentPid.substring(0, currentPid.indexOf('.'));
+        currentRad = cboxRad.getSelectedItem().toString();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
