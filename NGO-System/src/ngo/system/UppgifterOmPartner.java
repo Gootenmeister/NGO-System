@@ -314,11 +314,7 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "misslyckat " + e.getMessage());
         }
-    
-    
-   
-    
-
+       
     }//GEN-LAST:event_btnSparaNyPartnerActionPerformed
 
     // namnPaPartner = det selected item man hämtar från comboboxen.

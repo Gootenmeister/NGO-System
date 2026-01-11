@@ -317,7 +317,7 @@ public class Meny extends javax.swing.JFrame {
     private void btnLandUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLandUppgifterActionPerformed
         if(accessLevel == 2)
         {
-        new LandUppgifter(idb, Meny.getAID()).setVisible(true);
+        new LandUppgifter(idb).setVisible(true);
         }
         else
         {

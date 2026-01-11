@@ -23,81 +23,102 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="lblNamn" max="32767" attributes="0"/>
-                      <Component id="lblSpråk" max="32767" attributes="0"/>
-                      <Component id="lblValuta" max="32767" attributes="0"/>
-                      <Component id="lblTidszon" max="32767" attributes="0"/>
-                      <Component id="lblPolitiskStruktur" pref="115" max="32767" attributes="0"/>
-                      <Component id="lblEkonomi" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="lblSpråk" min="-2" pref="115" max="-2" attributes="0"/>
+                  <Component id="lblValuta" min="-2" pref="115" max="-2" attributes="0"/>
+                  <Component id="lblTidszon" min="-2" pref="115" max="-2" attributes="0"/>
+                  <Component id="lblPolitiskStruktur" min="-2" pref="115" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel1" alignment="0" min="-2" pref="101" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblNamn" max="32767" attributes="0"/>
+                          <Component id="lblEkonomi" pref="115" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <Component id="jLabel1" alignment="0" min="-2" pref="101" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="180" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="btnSparaNyttLand" max="32767" attributes="0"/>
-                  <Component id="nyttLand" max="32767" attributes="0"/>
-                  <Component id="txtSprak" max="32767" attributes="0"/>
-                  <Component id="txtValuta" max="32767" attributes="0"/>
-                  <Component id="txtTidszon" max="32767" attributes="0"/>
-                  <Component id="txtPolitiskStruktur" max="32767" attributes="0"/>
-                  <Component id="txtEkonomi" max="32767" attributes="0"/>
-                  <Component id="sparaÄndringar" max="32767" attributes="0"/>
-                  <Component id="txtNamn" max="32767" attributes="0"/>
-                  <Component id="txtLandID" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="btnSparaNyttLand" max="32767" attributes="0"/>
+                                          <Component id="nyttLand" max="32767" attributes="0"/>
+                                          <Component id="sparaÄndringar" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Component id="txtEkonomi" min="-2" pref="115" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="txtPolitiskStruktur" alignment="1" min="-2" pref="115" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="txtTidszon" alignment="1" min="-2" pref="115" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="txtValuta" alignment="1" min="-2" pref="115" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="txtSprak" alignment="1" min="-2" pref="115" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="txtNamn" min="-2" pref="115" max="-2" attributes="0"/>
+                  <Component id="txtLandID" min="-2" pref="115" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="537" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="63" max="32767" attributes="0"/>
+              <Component id="cBoxLander" min="-2" pref="328" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="576" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtLandID" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cBoxLander" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="199" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLandID" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblNamn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNamn" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblNamn" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtNamn" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtSprak" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblSpråk" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtValuta" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblValuta" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtTidszon" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblTidszon" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtPolitiskStruktur" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPolitiskStruktur" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtPolitiskStruktur" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtEkonomi" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblEkonomi" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtEkonomi" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
               <Component id="sparaÄndringar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="nyttLand" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="btnSparaNyttLand" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="182" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -175,6 +196,24 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLandID">
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cBoxLander">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cBoxLanderActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

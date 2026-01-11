@@ -9,6 +9,7 @@ import oru.inf.InfException;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import java.util.ArrayList;
 /**
  *
  * @author cl
@@ -18,32 +19,28 @@ public class LandUppgifter extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LandUppgifter.class.getName());
     
     private final InfDB idb;
-    private final String landID;
+    private ArrayList<String> landLista;
     
     
-    public LandUppgifter(InfDB idb, String landID) 
+    public LandUppgifter(InfDB idb) 
     {
         this.idb = idb;
-        this.landID = landID;
+        landLista = new ArrayList<>();
         initComponents();
-        hamtaLandUppgifter();
+        fyllcBoxLander();
         
-        txtLandID.setText(landID);
-        txtLandID.setEditable(false);
     }
+    
     // kör sql frågan och hämtar "kolumnnamnen" som nycklar i en hashmap (rader) och datan som värde.
     // alltså rader = nyckel: namn && värde: ex Sverige.
     // txtNamn, txtSprak osv är variabelnamn för JTextfield. 
     // alltså variabler, vars hämtade värden visas i GUI.
     // fetchrow returnerar värdet i kolumnerna som strängar. spelar alltså ingen roll här, att valuta är en decimal i databasen.
-    private void hamtaLandUppgifter()
+    private void hamtaLandUppgifter(String namn)
     {
         try {
-              String sqlFråga = "SELECT lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi FROM land "
-                                + "WHERE lid = " + landID;
-              
-              HashMap<String, String> rader = idb.fetchRow(sqlFråga);
-              
+              HashMap<String, String> rader = idb.fetchRow("SELECT * FROM land WHERE namn = '" + namn + "'");
+              txtLandID.setText(rader.get("lid"));
               txtNamn.setText(rader.get("namn"));
               txtSprak.setText(rader.get("sprak"));
               txtValuta.setText(rader.get("valuta"));
@@ -51,10 +48,26 @@ public class LandUppgifter extends javax.swing.JFrame {
               txtPolitiskStruktur.setText(rader.get("politisk_struktur"));
               txtEkonomi.setText(rader.get("ekonomi"));
               
+              txtLandID.setEditable(false);
             } catch (InfException e) 
             {
                 JOptionPane.showMessageDialog(this, "kunde ej hämta uppgifter", "Fel", JOptionPane.ERROR_MESSAGE);
             }
+    }
+    
+    private void fyllcBoxLander()
+    {
+        try {
+             landLista = idb.fetchColumn("SELECT namn FROM land");
+             if (landLista != null)
+             {
+                 cBoxLander.setModel(new javax.swing.DefaultComboBoxModel(landLista.toArray()));
+             }
+            }
+            catch (InfException e)
+                {
+                System.out.println("Error: " + e);
+                }
     }
 
     
@@ -79,6 +92,7 @@ public class LandUppgifter extends javax.swing.JFrame {
         btnSparaNyttLand = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtLandID = new javax.swing.JTextField();
+        cBoxLander = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,73 +119,89 @@ public class LandUppgifter extends javax.swing.JFrame {
 
         jLabel1.setText("Land ID:");
 
+        cBoxLander.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cBoxLander.addActionListener(this::cBoxLanderActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblNamn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblSpråk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblValuta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTidszon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblPolitiskStruktur, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                        .addComponent(lblEkonomi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblSpråk, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblValuta, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTidszon, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPolitiskStruktur, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblNamn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblEkonomi, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))))
                 .addGap(180, 180, 180)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnSparaNyttLand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nyttLand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSprak)
-                    .addComponent(txtValuta)
-                    .addComponent(txtTidszon)
-                    .addComponent(txtPolitiskStruktur)
-                    .addComponent(txtEkonomi)
-                    .addComponent(sparaÄndringar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNamn)
-                    .addComponent(txtLandID))
-                .addContainerGap(537, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(btnSparaNyttLand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(nyttLand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(sparaÄndringar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(txtEkonomi, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtPolitiskStruktur, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtTidszon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtValuta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtSprak, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLandID, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(63, Short.MAX_VALUE)
+                .addComponent(cBoxLander, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(576, 576, 576))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtLandID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNamn)
-                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(cBoxLander, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtLandID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNamn, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNamn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSprak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSpråk))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtValuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblValuta))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTidszon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTidszon))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPolitiskStruktur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPolitiskStruktur))
-                .addGap(18, 18, 18)
+                    .addComponent(lblPolitiskStruktur)
+                    .addComponent(txtPolitiskStruktur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEkonomi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEkonomi))
-                .addGap(18, 18, 18)
+                    .addComponent(lblEkonomi)
+                    .addComponent(txtEkonomi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(57, 57, 57)
                 .addComponent(sparaÄndringar)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nyttLand)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSparaNyttLand)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -181,8 +211,8 @@ public class LandUppgifter extends javax.swing.JFrame {
     
     private void sparaÄndringarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sparaÄndringarActionPerformed
         //här skapas en array med alla täxtfält som användaren ska fylla i.
-        javax.swing.JTextField[] textfält = {
-            txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
+        JTextField[] textfält = {
+            txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi};
         
         //for each loopen har som syfe att gå igneom alla "täxtfält" i arrayen täxtfält och se om något lämnats tomt. 
         //om något lämnats tomt returneras ett felmeddelane "fyll i alla fält" 
@@ -201,7 +231,7 @@ public class LandUppgifter extends javax.swing.JFrame {
                  + "tidszon = '" + txtTidszon.getText() + "', "
                  + "politisk_struktur = '" + txtPolitiskStruktur.getText() + "', "
                  + "ekonomi = '" + txtEkonomi.getText() + "' "
-                 + "WHERE lid = " + landID;
+                 + "WHERE lid = " + txtLandID.getText();
          
                 try { 
                     // uppdateringen körs 
@@ -225,10 +255,10 @@ public class LandUppgifter extends javax.swing.JFrame {
     // och att sql frågan använder sig av en INSERT istället för UPDATE 
     //man uppdaterar alltså inte databasen utan man skapar ett nytt land till databasen.
     private void nyttLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nyttLandActionPerformed
-        javax.swing.JTextField[] textfält2 = {
+        JTextField[] textfält = {
             txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
         
-        for (JTextField fält : textfält2)
+        for (JTextField fält : textfält)
         {
             fält.setText("");
         }
@@ -238,10 +268,10 @@ public class LandUppgifter extends javax.swing.JFrame {
 
     private void btnSparaNyttLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaNyttLandActionPerformed
         
-        javax.swing.JTextField[] textfält3 = {
+        JTextField[] textfält = {
             txtLandID, txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
         
-        for (JTextField fält : textfält3) {
+        for (JTextField fält : textfält) {
             if (fält.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, " Fyll i alla fält");
                 return;
@@ -264,18 +294,27 @@ public class LandUppgifter extends javax.swing.JFrame {
             System.out.println();
             idb.insert(fråga);
             JOptionPane.showMessageDialog(this, "Lyckat");
+            fyllcBoxLander();
             
         } catch (InfException e) {
             JOptionPane.showMessageDialog(this, "misslyckat " + e.getMessage());
         }
-        
-
+      
     }//GEN-LAST:event_btnSparaNyttLandActionPerformed
+
+    private void cBoxLanderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxLanderActionPerformed
+        String namnPaLand = (String) cBoxLander.getSelectedItem();
+        if (namnPaLand != null) 
+        {
+            hamtaLandUppgifter(namnPaLand);
+        }
+    }//GEN-LAST:event_cBoxLanderActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSparaNyttLand;
+    private javax.swing.JComboBox<String> cBoxLander;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblEkonomi;
     private javax.swing.JLabel lblNamn;
