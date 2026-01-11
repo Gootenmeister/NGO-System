@@ -27,6 +27,9 @@ public class LandUppgifter extends javax.swing.JFrame {
         this.landID = landID;
         initComponents();
         hamtaLandUppgifter();
+        
+        txtLandID.setText(landID);
+        txtLandID.setEditable(false);
     }
     // kör sql frågan och hämtar "kolumnnamnen" som nycklar i en hashmap (rader) och datan som värde.
     // alltså rader = nyckel: namn && värde: ex Sverige.
@@ -73,6 +76,9 @@ public class LandUppgifter extends javax.swing.JFrame {
         lblEkonomi = new javax.swing.JLabel();
         txtNamn = new javax.swing.JTextField();
         nyttLand = new javax.swing.JButton();
+        btnSparaNyttLand = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtLandID = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,36 +100,48 @@ public class LandUppgifter extends javax.swing.JFrame {
         nyttLand.setText("Lägg till land");
         nyttLand.addActionListener(this::nyttLandActionPerformed);
 
+        btnSparaNyttLand.setText("Spara Nytt Land");
+        btnSparaNyttLand.addActionListener(this::btnSparaNyttLandActionPerformed);
+
+        jLabel1.setText("Land ID:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblNamn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblSpråk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblValuta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTidszon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPolitiskStruktur, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                    .addComponent(lblEkonomi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblNamn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblSpråk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblValuta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTidszon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblPolitiskStruktur, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                        .addComponent(lblEkonomi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(180, 180, 180)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSparaNyttLand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nyttLand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtSprak)
-                        .addComponent(txtValuta)
-                        .addComponent(txtTidszon)
-                        .addComponent(txtPolitiskStruktur)
-                        .addComponent(txtEkonomi)
-                        .addComponent(sparaÄndringar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtNamn)))
+                    .addComponent(txtSprak)
+                    .addComponent(txtValuta)
+                    .addComponent(txtTidszon)
+                    .addComponent(txtPolitiskStruktur)
+                    .addComponent(txtEkonomi)
+                    .addComponent(sparaÄndringar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtNamn)
+                    .addComponent(txtLandID))
                 .addContainerGap(537, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtLandID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNamn)
                     .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -147,11 +165,13 @@ public class LandUppgifter extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEkonomi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEkonomi))
-                .addGap(41, 41, 41)
+                .addGap(18, 18, 18)
                 .addComponent(sparaÄndringar)
-                .addGap(36, 36, 36)
+                .addGap(29, 29, 29)
                 .addComponent(nyttLand)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSparaNyttLand)
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         pack();
@@ -205,12 +225,58 @@ public class LandUppgifter extends javax.swing.JFrame {
     // och att sql frågan använder sig av en INSERT istället för UPDATE 
     //man uppdaterar alltså inte databasen utan man skapar ett nytt land till databasen.
     private void nyttLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nyttLandActionPerformed
+        javax.swing.JTextField[] textfält2 = {
+            txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
         
+        for (JTextField fält : textfält2)
+        {
+            fält.setText("");
+        }
+        
+        txtLandID.setEditable(true);
     }//GEN-LAST:event_nyttLandActionPerformed
+
+    private void btnSparaNyttLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaNyttLandActionPerformed
+        
+        javax.swing.JTextField[] textfält3 = {
+            txtLandID, txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
+        
+        for (JTextField fält : textfält3) {
+            if (fält.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, " Fyll i alla fält");
+                return;
+            }
+        }    
+        
+        String fråga = "INSERT INTO land(lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi) VALUES ('"
+                 + txtLandID.getText() + "', '"
+                 + txtNamn.getText() + "', '"
+                 + txtSprak.getText() + "', '"
+                 + txtValuta.getText() + "', '"
+                 + txtTidszon.getText() + "', '"
+                 + txtPolitiskStruktur.getText() + "', '"
+                 + txtEkonomi.getText() + "')";
+            
+        
+        
+        try 
+        {
+            System.out.println();
+            idb.insert(fråga);
+            JOptionPane.showMessageDialog(this, "Lyckat");
+            
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "misslyckat " + e.getMessage());
+        }
+        
+
+    }//GEN-LAST:event_btnSparaNyttLandActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSparaNyttLand;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblEkonomi;
     private javax.swing.JLabel lblNamn;
     private javax.swing.JLabel lblPolitiskStruktur;
@@ -220,6 +286,7 @@ public class LandUppgifter extends javax.swing.JFrame {
     private javax.swing.JButton nyttLand;
     private javax.swing.JButton sparaÄndringar;
     private javax.swing.JTextField txtEkonomi;
+    private javax.swing.JTextField txtLandID;
     private javax.swing.JTextField txtNamn;
     private javax.swing.JTextField txtPolitiskStruktur;
     private javax.swing.JTextField txtSprak;
