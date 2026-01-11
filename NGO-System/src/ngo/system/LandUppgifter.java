@@ -34,7 +34,6 @@ public class LandUppgifter extends javax.swing.JFrame {
     // kör sql frågan och hämtar "kolumnnamnen" som nycklar i en hashmap (rader) och datan som värde.
     // alltså rader = nyckel: namn && värde: ex Sverige.
     // txtNamn, txtSprak osv är variabelnamn för JTextfield. 
-    // alltså variabler, vars hämtade värden visas i GUI.
     // fetchrow returnerar värdet i kolumnerna som strängar. spelar alltså ingen roll här, att valuta är en decimal i databasen.
     private void hamtaLandUppgifter(String namn)
     {
@@ -256,7 +255,7 @@ public class LandUppgifter extends javax.swing.JFrame {
     //man uppdaterar alltså inte databasen utan man skapar ett nytt land till databasen.
     private void nyttLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nyttLandActionPerformed
         JTextField[] textfält = {
-            txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
+            txtLandID, txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
         
         for (JTextField fält : textfält)
         {

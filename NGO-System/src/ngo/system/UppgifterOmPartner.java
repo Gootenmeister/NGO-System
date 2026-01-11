@@ -269,7 +269,7 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
     
     private void btnLäggTillNyPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLäggTillNyPartnerActionPerformed
         JTextField[] kolumner = {
-            txtNamn, txtKontaktperson, txtKontaktepost, txtTelefon, txtAdress, txtBransch, txtStad  };
+            txtpID, txtNamn, txtKontaktperson, txtKontaktepost, txtTelefon, txtAdress, txtBransch, txtStad  };
         
         for (JTextField fält : kolumner)
         {
