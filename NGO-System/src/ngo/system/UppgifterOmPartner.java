@@ -297,7 +297,7 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
                  + "telefon = '" + txtTelefon.getText() + "', "
                  + "adress = '" + txtAdress.getText() + "', "
                  + "branch = '" + txtBransch.getText() + "', "
-                 + "stad = '" + txtStad.getText() + "' "
+                 + "stad = " + stad + " "
                  + "WHERE pid = " + txtpID.getText() + "'";
         
         try { 
@@ -403,14 +403,14 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
         
         
         String fråga = "INSERT INTO partner(pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad) VALUES ('"
-                 + txtpID.getText() + "', '"
+                 + pid + ", '"
                  + txtNamn.getText() + "', '"
                  + txtKontaktperson.getText() + "', '"
                  + txtKontaktepost.getText() + "', '"
                  + txtTelefon.getText() + "', '"
                  + txtAdress.getText() + "', '"
-                 + txtBransch.getText() + "','"
-                 + txtStad.getText() + "')";
+                 + txtBransch.getText() + "',"
+                 + stad + ")";
         
         try 
         {
@@ -426,7 +426,7 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSparaNyPartnerActionPerformed
 
     // namnPaPartner = det selected item man hämtar från comboboxen.
-    // det man hämtar kläs i en sträng eftersom, det hämtas som ett objekt.
+    // det man hämtar kläs i en sträng eftersom det hämtas som ett objekt.
     // funkar inte. felmeddelande.
     //kallar på metoden hamtaUppgifterOmPartner med samma partner som man klickr på i comboboxen.
     private void cboxPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxPartnerActionPerformed
