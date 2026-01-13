@@ -73,6 +73,11 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
                     System.out.println("Error: " + e);
                     }
     }
+    
+    private void showError(String message) 
+    {
+        JOptionPane.showMessageDialog(this, message, "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -231,15 +236,59 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
     //try satsen testar att uppdatera databasen 
     private void btnSparaÄndringarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaÄndringarActionPerformed
        
-        JTextField[] kolumner = {
-            txtNamn, txtKontaktperson, txtKontaktepost, txtTelefon, txtAdress, txtBransch, txtStad };
+        String error = "";
         
-        for (JTextField textfält1 : kolumner) {
-            if (textfält1.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, " Fyll i alla fält");
-                return;
-            }
+        
+        error = Validering.goodStr(txtNamn.getText());
+        if (error != null) {
+        showError("namn: " + error);
+        return;
         }
+        
+        error = Validering.goodStr(txtKontaktperson.getText());
+        if (error != null) {
+        showError("Kontakt person: " + error);
+        return;
+        }
+        
+        error = Validering.mailValid(txtKontaktepost.getText());
+        if (error != null) {
+        showError("Kontakt epost: " + error);
+        return;
+        }
+        
+        error = Validering.tfnValid(txtTelefon.getText());
+        if (error != null) {
+        showError("Telefon: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtAdress.getText());
+        if (error != null) {
+        showError("Adress: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtBransch.getText());
+        if (error != null) {
+        showError("Bransch: " + error);
+        return;
+        }
+        
+        int stad;
+        try
+        {
+            stad = Integer.parseInt(txtStad.getText());
+        } catch (NumberFormatException e) {
+            showError("Stad: " + error);
+            return;
+        }
+        error = Validering.goodInt(stad);
+        if (error != null) {
+        showError("Stad: " + error);
+        return;
+        }
+        
         
         String sqlFråga = "UPDATE partner SET "
                  + "namn = '" + txtNamn.getText() + "', "
@@ -284,15 +333,74 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
     // sql frågan skickar till databasen "testa uppdatera dom här fälten, till det användaren skriver in i textfälten.
     // try satsen testar att uppdatera databasen och sedan fyller comboboxen med en till partner
     private void btnSparaNyPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaNyPartnerActionPerformed
-       JTextField[] kolumner = {
-            txtpID, txtNamn, txtKontaktperson, txtKontaktepost, txtTelefon, txtAdress, txtBransch, txtStad  };
         
-        for (JTextField fält : kolumner) {
-            if (fält.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, " Fyll i alla fält");
-                return;
-            }
-        }    
+        String error = "";
+        int stad;
+        int pid;
+        
+        try
+        {
+            pid = Integer.parseInt(txtpID.getText());
+        } catch (NumberFormatException e) {
+            showError("pID " + error);
+            return;
+        }
+        error = Validering.goodInt(pid);
+        if (error != null) {
+        showError("pID: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtNamn.getText());
+        if (error != null) {
+        showError("namn: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtKontaktperson.getText());
+        if (error != null) {
+        showError("Kontakt person: " + error);
+        return;
+        }
+        
+        error = Validering.mailValid(txtKontaktepost.getText());
+        if (error != null) {
+        showError("Kontakt epost: " + error);
+        return;
+        }
+        
+        error = Validering.tfnValid(txtTelefon.getText());
+        if (error != null) {
+        showError("Telefon: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtAdress.getText());
+        if (error != null) {
+        showError("Adress: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtBransch.getText());
+        if (error != null) {
+        showError("Bransch: " + error);
+        return;
+        }
+        
+        
+        try
+        {
+            stad = Integer.parseInt(txtStad.getText());
+        } catch (NumberFormatException e) {
+            showError("Stad: " + error);
+            return;
+        }
+        error = Validering.goodInt(stad);
+        if (error != null) {
+        showError("Stad: " + error);
+        return;
+        }
+        
         
         String fråga = "INSERT INTO partner(pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad) VALUES ('"
                  + txtpID.getText() + "', '"

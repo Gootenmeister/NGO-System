@@ -54,6 +54,11 @@ public class MinaUppgifter extends javax.swing.JFrame {
             }
     }
     
+    private void showError(String message) 
+    {
+        JOptionPane.showMessageDialog(this, message, "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+    }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -176,16 +181,48 @@ public class MinaUppgifter extends javax.swing.JFrame {
     //körs när man sparar ändringar.
     //skapar en array av JTextField object. txtnamn, txtEnamn osv.
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        javax.swing.JTextField[] textfält = {
-            txtNamn, txtENamn, txtEpost, txtAdress, txtLosenord };
         
-        // kontrollerar att man inte lämnar något tomt.
-        for (JTextField textfält1 : textfält) {
-            if (textfält1.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, " Fyll i alla fält");
-                return;
-            }
+       
+        String error = "";
+        
+        
+        error = Validering.goodStr(txtNamn.getText());
+        if (error != null) {
+        showError("namn: " + error);
+        return;
         }
+        
+        error = Validering.goodStr(txtENamn.getText());
+        if (error != null) {
+        showError("Efternamn " + error);
+        return;
+        }
+        
+        error = Validering.mailValid(txtEpost.getText());
+        if (error != null) {
+        showError("Epost: " + error);
+        return;
+        }
+        
+        error = Validering.tfnValid(txtTelefon.getText());
+        if (error != null) {
+        showError("Telefon: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtAdress.getText());
+        if (error != null) {
+        showError("namn: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtLosenord.getText());
+        if (error != null) {
+        showError("Lösenord: " + error);
+        return;
+        }
+        
+        
         // SQl frågan uppdaterar en rad ur anstalld.
         // via set. ex "fornamn" till txtNamn.getText(), alltså den inskrivda texten.
         // hämtar alltså värdena om skrivs in  GUI 
@@ -193,6 +230,7 @@ public class MinaUppgifter extends javax.swing.JFrame {
                 + "fornamn = '" + txtNamn.getText() + "', "
                 + "efternamn = '" + txtENamn.getText() + "', "
                 + "epost = '" + txtEpost.getText() + "', "
+                + "telefon = '" + txtTelefon.getText() + "', "
                 + "adress = '" + txtAdress.getText() + "', "
                 + "losenord = '" + txtLosenord.getText() + "' "
                 + "WHERE aid = " + aid;

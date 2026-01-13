@@ -68,6 +68,11 @@ public class LandUppgifter extends javax.swing.JFrame {
                 System.out.println("Error: " + e);
                 }
     }
+    
+    private void showError(String message) 
+    {
+        JOptionPane.showMessageDialog(this, message, "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+    }
 
     
     @SuppressWarnings("unchecked")
@@ -209,24 +214,60 @@ public class LandUppgifter extends javax.swing.JFrame {
     
     
     private void sparaÄndringarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sparaÄndringarActionPerformed
-        //här skapas en array med alla täxtfält som användaren ska fylla i.
-        JTextField[] textfält = {
-            txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi};
         
-        //for each loopen har som syfe att gå igneom alla "täxtfält" i arrayen täxtfält och se om något lämnats tomt. 
-        //om något lämnats tomt returneras ett felmeddelane "fyll i alla fält" 
-         for (JTextField textfält1 : textfält) {
-            if (textfält1.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, " Fyll i alla fält");
-                return;
-            }
+        String error= "";
+        
+        
+        error = Validering.goodStr(txtNamn.getText());
+        if (error != null) {
+        showError("namn: " + error);
+        return;
         }
+        
+        error = Validering.goodStr(txtSprak.getText());
+        if (error != null) {
+        showError("språk: " + error);
+        return;
+        }
+        
+        double valuta;
+        try{
+            valuta = Double.parseDouble(txtValuta.getText());
+           } catch (NumberFormatException e) {
+               showError("Valuta måste vara en double" + error);
+              return;
+           }
+    
+        error = Validering.goodDbl(valuta);
+        if (error != null) {
+        showError("Valuta: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtTidszon.getText());
+        if (error != null) {
+        showError("tidszon: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtPolitiskStruktur.getText());
+        if (error != null) {
+        showError("Politisk struktur: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtEkonomi.getText());
+        if (error != null) {
+        showError("Ekonomi: " + error);
+        return;
+        }
+        
          //Sgl frågan uppdaterar all info som användaren har skrivit in i täxtfälten genom getText().
          // texten använderen skrev in blir det nya texten.
          String sqlFråga = "UPDATE land SET "
                  + "namn = '" + txtNamn.getText() + "', "
                  + "sprak = '" + txtSprak.getText() + "', "
-                 + "valuta = " + txtValuta.getText() + ", "
+                 + "valuta = " + valuta + ", "
                  + "tidszon = '" + txtTidszon.getText() + "', "
                  + "politisk_struktur = '" + txtPolitiskStruktur.getText() + "', "
                  + "ekonomi = '" + txtEkonomi.getText() + "' "
@@ -267,18 +308,70 @@ public class LandUppgifter extends javax.swing.JFrame {
 
     private void btnSparaNyttLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaNyttLandActionPerformed
         
-        JTextField[] textfält = {
-            txtLandID, txtNamn, txtSprak, txtValuta, txtTidszon, txtPolitiskStruktur, txtEkonomi  };
+        String error= "";
         
-        for (JTextField fält : textfält) {
-            if (fält.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, " Fyll i alla fält");
-                return;
-            }
-        }    
+        
+        int landID;
+        try
+        {
+            landID = Integer.parseInt(txtLandID.getText());
+        } catch (NumberFormatException e) {
+            showError("Land ID: " + error);
+            return;
+        }
+        error = Validering.goodInt(landID);
+        if (error != null) {
+        showError("Land ID " + error);
+        return;
+        }
+        
+        
+        error = Validering.goodStr(txtNamn.getText());
+        if (error != null) {
+        showError("namn: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtSprak.getText());
+        if (error != null) {
+        showError("språk: " + error);
+        return;
+        }
+        
+        double valuta;
+        try{
+            valuta = Double.parseDouble(txtValuta.getText());
+           } catch (NumberFormatException e) {
+               showError("Valuta måste vara en double" + error);
+              return;
+           }
+    
+        error = Validering.goodDbl(valuta);
+        if (error != null) {
+        showError("Valuta: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtTidszon.getText());
+        if (error != null) {
+        showError("tidszon: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtPolitiskStruktur.getText());
+        if (error != null) {
+        showError("Politisk struktur: " + error);
+        return;
+        }
+        
+        error = Validering.goodStr(txtEkonomi.getText());
+        if (error != null) {
+        showError("Ekonomi: " + error);
+        return;
+        }  
         
         String fråga = "INSERT INTO land(lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi) VALUES ('"
-                 + txtLandID.getText() + "', '"
+                 + landID + "', '"
                  + txtNamn.getText() + "', '"
                  + txtSprak.getText() + "', '"
                  + txtValuta.getText() + "', '"
