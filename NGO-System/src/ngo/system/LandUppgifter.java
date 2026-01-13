@@ -370,11 +370,11 @@ public class LandUppgifter extends javax.swing.JFrame {
         return;
         }  
         
-        String fråga = "INSERT INTO land(lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi) VALUES ('"
-                 + landID + "', '"
+        String fråga = "INSERT INTO land(lid, namn, sprak, valuta, tidszon, politisk_struktur, ekonomi) VALUES ("
+                 + landID + ", '"
                  + txtNamn.getText() + "', '"
-                 + txtSprak.getText() + "', '"
-                 + txtValuta.getText() + "', '"
+                 + txtSprak.getText() + "', "
+                 + valuta + ", '"
                  + txtTidszon.getText() + "', '"
                  + txtPolitiskStruktur.getText() + "', '"
                  + txtEkonomi.getText() + "')";
