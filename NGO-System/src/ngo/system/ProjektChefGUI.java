@@ -397,13 +397,15 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             showError("Slut datum: " + errorSlutDatum);
             return;
         }
-            
-        if (validDate(textFieldSlutDatum.getText())){
-            String sqlStatus = "update projekt set status = '" + textFieldSlutDatum.getText() + "' where projektnamn = '" + valtProjekt + "'";
-            idb.update(sqlStatus);
-        }
         
-        else {
+        errorSlutDatum = Validering.datumValid(textFieldSlutDatum.getText());
+        if(errorSlutDatum != null)
+        {
+            showError("Slutdatum: " + errorSlutDatum);
+            return;
+        }
+        else
+        {
             String sqlStatus = "update projekt set status = '" + textFieldSlutDatum.getText() + "' where projektnamn = '" + valtProjekt + "'";
             idb.update(sqlStatus);
         }
