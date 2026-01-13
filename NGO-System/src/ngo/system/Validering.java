@@ -41,6 +41,63 @@ public class Validering {
     return null;
     }
     
+    public static String tfnValid(String tfn)
+    {
+        //Kollar längden på telefnonummret
+        if(tfn.length() < 10)
+        {
+            return "För litet! 10 siffror behövs.";
+        }
+        else if(tfn.length() > 10)
+        {
+            return "För stort! Endast 10 siffror behövs.";
+        }
+        else
+        {
+            //Kollar om alla tecken är siffror
+            for(int i = 0; i < tfn.length(); i++)
+            {
+                if (!Character.isDigit(tfn.charAt(i)))
+                {
+                    return "Alla tecken behöver vara siffor.";
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    public static String mailValid(String mail)
+    {
+        //Kollar om adressen innehåller @ och . och vart dem är
+        if(!mail.contains("@"))
+        {
+            return "Email-adressen saknar ett \"@\".";
+        }
+        else if(!mail.contains("."))
+        {
+            return "Email-adressen saknar ett \".\".";
+        }
+        else if(mail.startsWith("@"))
+        {
+            return "Email-adressen kan inte börja med ett \"@\".";
+        }
+        else if(mail.endsWith("@"))
+        {
+            return "Email-adressen kan inte sluta med ett \"@\".";
+        }
+        else if(mail.startsWith("."))
+        {
+            return "Email-adressen kan inte börja med ett \".\".";
+        }
+        else if(mail.endsWith("."))
+        {
+            return "Email-adressen kan inte börja med ett \".\".";
+        }
+
+        return null;
+    }
+    
     public static String goodStr(String s) {
     if (s == null || s.isEmpty()) {
         return "Inputsträng tom!";
