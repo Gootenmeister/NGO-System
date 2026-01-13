@@ -282,17 +282,19 @@ public class Projekt extends javax.swing.JFrame {
         epost = txtEpost.getText().trim();
 
     try {
-        if (!txtStartDatum.getText().isEmpty()) {
-            startDatumLocal = LocalDate.parse(txtStartDatum.getText());
-        } else {
-            startDatumLocal = null;
+        String error = Validering.datumValid(txtStartDatum.getText());
+        if (error != null) {
+            showError("Lösenord: " + error);
+            return;
+        }
+        
+        error = Validering.datumValid(txtSlutDatum.getText());
+        if (error != null) {
+            showError("Lösenord: " + error);
+            return;
         }
 
-        if (!txtSlutDatum.getText().isEmpty()) {
-            slutDatumLocal = LocalDate.parse(txtSlutDatum.getText());
-        } else {
-            slutDatumLocal = null;
-        }
+
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Felaktigt datumformat! Använd yyyy-MM-dd");
         startDatumLocal = null;
@@ -333,6 +335,12 @@ public class Projekt extends javax.swing.JFrame {
         System.out.println("Error: " + ex);
     }
 }
+    
+    //Visar ett medellande om vad som gick fel om en validering misslyckades
+    private void showError(String message) 
+    {
+        JOptionPane.showMessageDialog(this, message, "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+    }
 
 
 
