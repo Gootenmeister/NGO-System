@@ -98,6 +98,16 @@ public class Validering {
         return null;
     }
     
+    public static String datumValid(String datum)
+    {
+        if(!datum.matches("\\d{4}-\\d{2}-\\d{2}"))
+        {
+            return "Datumet behöver använda formatet (yyyy-mm-dd).";
+        }
+        
+        return null;
+    }
+    
     public static String goodStr(String s) {
     if (s == null || s.isEmpty()) {
         return "Inputsträng tom!";
