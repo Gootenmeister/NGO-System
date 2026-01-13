@@ -102,7 +102,7 @@ public class Validering {
     {
         if(!datum.matches("\\d{4}-\\d{2}-\\d{2}"))
         {
-            return "Datumet behöver använda formatet (yyyy-mm-dd).";
+            return "Datumet behöver använda formatet (yyyy-mm-dd) bindestreck inkluderat.";
         }
         
         return null;
