@@ -132,6 +132,9 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         textFieldStatus = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         textFieldSlutDatum = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        textFieldStartDatum = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -177,6 +180,12 @@ public class ProjektChefGUI extends javax.swing.JFrame {
 
         textFieldSlutDatum.setText("(yyyy-mm-dd)");
 
+        jLabel7.setText("Kostnad:");
+
+        textFieldStartDatum.setText("(yyyy-mm-dd)");
+
+        jLabel8.setText("Startdatum");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,94 +196,109 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                     .addComponent(PCLabel)
                     .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(landKostnadLabel)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(kostnadLabel)
+                                .addGap(162, 162, 162)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(kostnadLabel)
-                                    .addComponent(landKostnadLabel))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(37, 37, 37)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(4, 4, 4)
-                                                .addComponent(textFieldNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(textFieldBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel2)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(40, 40, 40)
-                                        .addComponent(btnUppdatera))))
-                            .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(landKostnadBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(jLabel3))
-                            .addGroup(layout.createSequentialGroup()
+                                        .addGap(4, 4, 4)
+                                        .addComponent(textFieldNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textFieldSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textFieldKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textFieldBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jLabel8))
+                                    .addComponent(textFieldStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jLabel3))
+                                    .addComponent(textFieldSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textFieldKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(3, 3, 3)
+                                        .addComponent(jLabel4)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(textFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textFieldPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(jLabel4)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(textFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textFieldPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))))
-                .addContainerGap(38, Short.MAX_VALUE))
+                                .addGap(40, 40, 40)
+                                .addComponent(btnUppdatera))))
+                    .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(landKostnadBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(PCLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(PCLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(kostnadLabel)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(landKostnadBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(landKostnadLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(textFieldBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textFieldNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textFieldSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnUppdatera))))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(landKostnadBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(landKostnadLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                        .addGap(78, 78, 78)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(textFieldSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel5))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(textFieldKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(textFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(textFieldPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(textFieldStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textFieldBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textFieldNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textFieldKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFieldPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btnUppdatera)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -323,13 +347,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             tfLandInfo.setText(landInfo);
             
             
-            //HÄMTA PARTNER INFO:
-            //
-            //
-            //
-            //hämtar projekt ID för att identifiera projektet
-            String ProjektID = "select pid from projekt where projektnamn = '" + valtProjekt + "'";
-            String pid = idb.fetchSingle(ProjektID);
+            
             
                
         } catch (InfException ex) {
@@ -345,17 +363,39 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     private void landKostnadBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_landKostnadBoxActionPerformed
         
         try {
-            String fetchKostnad = "select kostnad from projekt join land on projekt.land = land.lid where land.lid = ";
             String valtLand = (String) landKostnadBox.getSelectedItem();
-            
-            String fetchLandID = "select lid from land where namn = '" + valtLand + "'";
+            String fetchLandID = "SELECT lid FROM land WHERE namn = '" + valtLand + "'";
             String landID = idb.fetchSingle(fetchLandID);
+            String fetchKostnad = "SELECT projektnamn, kostnad FROM projekt WHERE land = " + landID;
             
-            String utskriftKostnad = idb.fetchSingle(fetchKostnad + landID);
-            landKostnadLabel.setText(utskriftKostnad + " kr");
+            StringBuilder kostnadUppDelning = new StringBuilder();
+            ArrayList<HashMap<String, String>> databasSvar = idb.fetchRows(fetchKostnad);
+            for (HashMap<String, String> row : databasSvar) {
+            String projektnamn = row.get("projektnamn");
+            String kostnad = row.get("kostnad");
+            kostnadUppDelning.append(projektnamn).append(", ").append(kostnad).append(" kr || ");
+            }
+
+        landKostnadLabel.setText(kostnadUppDelning.toString());
+
         } catch (InfException ex) {
             System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+        
+        //String sqlQ = "select namn from land order by lid";
+        //    int i = 1;
+        //    ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
+        //    ArrayList<String> landLista = new ArrayList<>();
+        //    String sqlfraga = "select namn from land where lid = ";
+        //    for (HashMap<String, String> row : databasSvar){
+        //        String landNamn = idb.fetchSingle(sqlfraga + i);
+        //        landLista.add(row.get("projektnamn"));
+        //        if (landNamn != null){
+        //            landKostnadBox.addItem(landNamn);
+        //        } 
+        //        i++;
+        
+        
     }//GEN-LAST:event_landKostnadBoxActionPerformed
 
     private void btnUppdateraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUppdateraMouseClicked
@@ -375,8 +415,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             String sqlNamn = "update projekt set projektnamn = '" + textFieldNamn.getText() + "' where projektnamn = '" + valtProjekt + "'";
             idb.update(sqlNamn);
             //ändrar "valtProjekt" så att satserna nedan inte använder gamla projektnamnet som "where"-värde
-            valtProjekt = textFieldNamn.getText();
-            
+            valtProjekt = textFieldNamn.getText();  
         }
         
             String errorBeskrivning = Validering.goodStr(textFieldBeskrivning.getText());
@@ -389,6 +428,24 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             String sqlBeskrivning = "update projekt set beskrivning = '" + textFieldBeskrivning.getText() + "' where projektnamn = '" + valtProjekt + "'";
             idb.update(sqlBeskrivning);
         }
+            
+            
+        String errorStartDatum = Validering.goodStr(textFieldStartDatum.getText());
+            if (errorStartDatum != null) {
+            showError("Start datum: " + errorStartDatum);
+            return;
+        }
+        
+        errorStartDatum = Validering.datumValid(textFieldStartDatum.getText());
+            if(errorStartDatum != null) {
+            showError("Startdatum: " + errorStartDatum);
+            return;
+        }
+            
+        else {
+            String sqlStartDatum = "update projekt set startdatum = '" + textFieldSlutDatum.getText() + "' where projektnamn = '" + valtProjekt + "'";
+            idb.update(sqlStartDatum);
+        }
         
         
         
@@ -396,18 +453,17 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             if (errorSlutDatum != null) {
             showError("Slut datum: " + errorSlutDatum);
             return;
-        }
+            }
         
         errorSlutDatum = Validering.datumValid(textFieldSlutDatum.getText());
-        if(errorSlutDatum != null)
-        {
+            if(errorSlutDatum != null) {
             showError("Slutdatum: " + errorSlutDatum);
             return;
-        }
-        else
-        {
-            String sqlStatus = "update projekt set status = '" + textFieldSlutDatum.getText() + "' where projektnamn = '" + valtProjekt + "'";
-            idb.update(sqlStatus);
+            }
+            
+        else {
+            String sqlSlutDatum = "update projekt set slutdatum = '" + textFieldSlutDatum.getText() + "' where projektnamn = '" + valtProjekt + "'";
+            idb.update(sqlSlutDatum);
         }
         
         //hämter string värdet för textFieldKostnad och omvandlar den till en double, som sen kan checkas med "Validering.goodInt"
@@ -502,6 +558,8 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel kostnadLabel;
@@ -513,6 +571,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     private javax.swing.JTextField textFieldNamn;
     private javax.swing.JTextField textFieldPrioritet;
     private javax.swing.JTextField textFieldSlutDatum;
+    private javax.swing.JTextField textFieldStartDatum;
     private javax.swing.JTextField textFieldStatus;
     private javax.swing.JTextArea tfLandInfo;
     // End of variables declaration//GEN-END:variables
