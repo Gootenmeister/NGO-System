@@ -38,18 +38,18 @@
               <EmptySpace min="-2" pref="166" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="btnSpara" max="32767" attributes="0"/>
-                      <Component id="txtAvdelning" max="32767" attributes="0"/>
+                      <Component id="btnSpara" pref="150" max="32767" attributes="0"/>
                       <Component id="txtLosenord" max="32767" attributes="0"/>
-                      <Component id="txtTelefon" max="32767" attributes="0"/>
                       <Component id="txtAdress" max="32767" attributes="0"/>
                       <Component id="txtENamn" max="32767" attributes="0"/>
                       <Component id="txtNamn" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtAvdelning" alignment="0" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="txtEpost" min="-2" pref="111" max="-2" attributes="0"/>
-                  <Component id="txtAnstallningsdatum" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
+                  <Component id="txtEpost" alignment="0" pref="150" max="32767" attributes="0"/>
+                  <Component id="txtTelefon" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txtAnstallningsdatum" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="671" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="637" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

@@ -282,25 +282,13 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_openHallbarhetsMalActionPerformed
 
     private void btnUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUppgifterActionPerformed
-       if(accessLevel == 0)
-       {    
+   
         new Uppgifter(idb, Meny.getAID()).setVisible(true);
-       }
-       else
-       {
-            JOptionPane.showMessageDialog(this, "Enbart handläggare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
-       }
+      
     }//GEN-LAST:event_btnUppgifterActionPerformed
 
     private void btnMinaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinaUppgifterActionPerformed
-       if(accessLevel == 0)
-       {
-        new MinaUppgifter(idb, Meny.getAID()).setVisible(true);
-       }
-       else
-       {
-            JOptionPane.showMessageDialog(this, "Enbart handläggare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
-       }
+      new MinaUppgifter(idb, Meny.getAID()).setVisible(true);
     }//GEN-LAST:event_btnMinaUppgifterActionPerformed
 
     private void btnProjektAnsvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProjektAnsvarActionPerformed
