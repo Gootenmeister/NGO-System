@@ -110,7 +110,6 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jCalendar1 = new com.toedter.calendar.JCalendar();
         PCLabel = new javax.swing.JLabel();
         jLabelName = new javax.swing.JLabel();
         projektBox = new javax.swing.JComboBox<>();
@@ -447,8 +446,6 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             idb.update(sqlStartDatum);
         }
         
-        
-        
         String errorSlutDatum = Validering.goodStr(textFieldSlutDatum.getText());
             if (errorSlutDatum != null) {
             showError("Slut datum: " + errorSlutDatum);
@@ -551,7 +548,6 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel PCLabel;
     private javax.swing.JButton btnUppdatera;
-    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
