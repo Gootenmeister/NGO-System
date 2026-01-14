@@ -30,7 +30,8 @@ public class AdminGUI extends javax.swing.JFrame {
         try {
             String fNamn = idb.fetchSingle(sqlForNamn);
             String eNamn = idb.fetchSingle(sqlEfterNamn);
-            jLabelName.setText("Välkommen " + fNamn + " " + eNamn + "");
+            jLabelName.setText("Tja: " + fNamn + " " + eNamn + "");
+            
         } catch (InfException ex) {
             System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
@@ -52,25 +53,34 @@ public class AdminGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabelName = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabelName.setText("Välkommen ");
+        jLabelName.setText("Tja:");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Du är Admin!!!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 70, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(27, 27, 27)
                 .addComponent(jLabelName)
-                .addContainerGap(247, Short.MAX_VALUE))
+                .addGap(53, 53, 53)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         pack();
@@ -102,6 +112,7 @@ public class AdminGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelName;
     // End of variables declaration//GEN-END:variables
 
