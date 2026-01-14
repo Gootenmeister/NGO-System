@@ -89,11 +89,12 @@ public class ProjektAvd extends javax.swing.JFrame {
         try {
             String sqlQ;
             DefaultListModel<String> listModel = new DefaultListModel<>();
+            String status = cboxStatus.getSelectedItem().toString();
 
             //Kollar om användaren har sökt på ett specifikt datum, om de inte har så körs kod-blocket nedan
-            if(startDatumString.isEmpty() || slutDatumString.isEmpty())
+            if((startDatumString.isEmpty() || slutDatumString.isEmpty()) || status.equals("(Alla)"))
             {
-                sqlQ = "select projektnamn from projekt where status = 'Pågående' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
+                sqlQ = "select projektnamn from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
             }
             //Om de har sökt på ett datum så körs kod-blocket nedan
             else
@@ -109,7 +110,12 @@ public class ProjektAvd extends javax.swing.JFrame {
                 epostChef = idb.fetchSingle(sqlQ);
                 if(epostChef.toLowerCase().contains(epost.toLowerCase()))
                 {
-                    listModel.addElement(currentProjektNamn);
+                    sqlQ = "select status from projekt where projektnamn = '" + projektNamn.get(i) + "'";
+                    String projektStatus = idb.fetchSingle(sqlQ);
+                    if(status.equals("(Alla)") || status.equals(projektStatus))
+                    {
+                        listModel.addElement(currentProjektNamn);   
+                    }
                 }
             }
             
@@ -142,6 +148,8 @@ public class ProjektAvd extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtEpost = new javax.swing.JTextField();
         lblEpost = new javax.swing.JLabel();
+        cboxStatus = new javax.swing.JComboBox<>();
+        lblStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -168,6 +176,10 @@ public class ProjektAvd extends javax.swing.JFrame {
         txtEpost.addActionListener(this::txtEpostActionPerformed);
 
         lblEpost.setText("E-post");
+
+        cboxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(Alla)", "Planerat", "Pågående", "Avslutat" }));
+
+        lblStatus.setText("Status");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -207,8 +219,18 @@ public class ProjektAvd extends javax.swing.JFrame {
                         .addComponent(btnDatum)
                         .addGap(164, 164, 164))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(lblAvdelning)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(lblAvdelning))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboxStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(lblStatus)
+                                .addGap(22, 22, 22)))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -218,7 +240,11 @@ public class ProjektAvd extends javax.swing.JFrame {
                 .addComponent(lblAvdelning)
                 .addGap(18, 18, 18)
                 .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(lblStatus)
+                .addGap(1, 1, 1)
+                .addComponent(cboxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -317,12 +343,14 @@ public class ProjektAvd extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDatum;
+    private javax.swing.JComboBox<String> cboxStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblFormat;
     private javax.swing.JLabel lblSlut;
     private javax.swing.JLabel lblStart;
+    private javax.swing.JLabel lblStatus;
     private javax.swing.JList<String> lstProjekt;
     private javax.swing.JScrollPane splProjekt;
     private javax.swing.JTextField txtEpost;
