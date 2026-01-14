@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  *
@@ -97,44 +98,17 @@ public class Projekt extends javax.swing.JFrame {
     try {
         DefaultListModel<String> listModel = new DefaultListModel<>();
 
-        String statusCondition = "";
-        if (statusFilter != null) {
-            statusCondition = " and p.status = '" + statusFilter + "'";
-        }
-
-        
-        String dateCondition = "";
-        if (startDatumLocal != null && slutDatumLocal != null) {
-            dateCondition = " and CAST(p.startdatum AS DATE) >= DATE '" + startDatumLocal.toString() + "'" +
-                            " and CAST(p.slutdatum AS DATE) <= DATE '" + slutDatumLocal.toString() + "'";
-        } else if (startDatumLocal != null) {
-            dateCondition = " and CAST(p.startdatum AS DATE) >= DATE '" + startDatumLocal.toString() + "'";
-        } else if (slutDatumLocal != null) {
-            dateCondition = " and CAST(p.slutdatum AS DATE) <= DATE '" + slutDatumLocal.toString() + "'";
-        }
-
-        String emailCondition = "";
-        if (epost != null && !epost.isEmpty()) {
-            emailCondition = " and lower(a.epost) like '%" + epost.toLowerCase() + "%'";
-        }
-
         //sql-sats om man är handläggare
         String sqlHandläggare =
         "select p.projektnamn " +
         "from sdgsweden.projekt p " +
         "join sdgsweden.ans_proj ap on p.pid = ap.pid " +
         "join sdgsweden.anstalld a on ap.aid = a.aid " +
-        "where ap.aid = " + Meny.getAID() +
-        statusCondition +
-        dateCondition +
-        emailCondition;
+        "where ap.aid = " + Meny.getAID();
         
         //sql-sats om man är projektchef
         String sqlProjektChef = 
-        "select projektnamn from sdgsweden.projekt  where projekt.projektchef = " + Meny.getAID() +
-        statusCondition +
-        dateCondition +
-        emailCondition;
+        "select projektnamn from sdgsweden.projekt  where projekt.projektchef = " + Meny.getAID();
 
 
         if (accessLevel == 0){
@@ -156,6 +130,25 @@ public class Projekt extends javax.swing.JFrame {
         System.out.println("Error: " + exception);
     }
 }
+    
+    private void projektListaAllaProjekt(){
+        
+        try {
+            DefaultListModel<String> listModel = new DefaultListModel<>();
+            
+            String sqlQ = "select projektnamn from projekt";
+            projektNamn = idb.fetchColumn(sqlQ);
+            
+            for (String namn : projektNamn) {
+                listModel.addElement(namn);
+            }
+            
+            lstAllaProjekt.setModel(listModel);
+        } catch (InfException ex) {
+            System.getLogger(Projekt.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -183,6 +176,8 @@ public class Projekt extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstProjektPartner = new javax.swing.JList<>();
+        splProjekt1 = new javax.swing.JScrollPane();
+        lstAllaProjekt = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -229,49 +224,48 @@ public class Projekt extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(lstProjektPartner);
 
+        lstAllaProjekt.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = {  };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        splProjekt1.setViewportView(lstAllaProjekt);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(lblAvdelning))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(btnDatum)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(60, 60, 60)
+                .addComponent(lblAvdelning)
+                .addGap(0, 623, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel4)))
-                        .addGap(0, 371, Short.MAX_VALUE))
+                        .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(106, 106, 106)
+                        .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblEpost))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(82, 82, 82)
+                        .addComponent(btnDatum))
+                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEpost)
+                    .addComponent(splProjekt1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel4))
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,7 +279,7 @@ public class Projekt extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
@@ -297,13 +291,15 @@ public class Projekt extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblEpost)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDatum)
-                .addGap(12, 12, 12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(splProjekt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -342,7 +338,7 @@ public class Projekt extends javax.swing.JFrame {
         slutDatumLocal = null;
     }
 
-    projektLista();
+    projektListaAllaProjekt();
     }//GEN-LAST:event_btnDatumActionPerformed
 
     
@@ -463,10 +459,12 @@ public class Projekt extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblEpost;
+    private javax.swing.JList<String> lstAllaProjekt;
     private javax.swing.JList<String> lstProjekt;
     private javax.swing.JList<String> lstProjektMedarbetare;
     private javax.swing.JList<String> lstProjektPartner;
     private javax.swing.JScrollPane splProjekt;
+    private javax.swing.JScrollPane splProjekt1;
     private javax.swing.JComboBox<String> statusCbox;
     private javax.swing.JTextField txtEpost;
     private javax.swing.JTextField txtSlutDatum;
