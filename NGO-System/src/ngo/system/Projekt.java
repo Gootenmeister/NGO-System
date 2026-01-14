@@ -59,7 +59,7 @@ public class Projekt extends javax.swing.JFrame {
                 visaProjektParner(selectedProjekt);
             }
             
-        projektListaAllaProjekt();
+        
     }
 });
 
@@ -136,30 +136,7 @@ public class Projekt extends javax.swing.JFrame {
         System.out.println("Error: " + exception);
     }
 }
-    
-    private void projektListaAllaProjekt(){
-        
-        try {
-            DefaultListModel<String> listModel = new DefaultListModel<>();
-            
-            System.out.println(avdid);
-            setAvdid();
-            System.out.println(avdid);
-            String sqlQ = "select projektnamn from projekt where projektchef in (select aid from anstalld where avdelning = " + avdid + ")";
-            System.out.println(sqlQ);
-            projektNamn = idb.fetchColumn(sqlQ);
-            
-            for (String namn : projektNamn) {
-                listModel.addElement(namn);
-            }
-            
-            lstAllaProjekt.setModel(listModel);
-        } catch (InfException ex) {
-            System.getLogger(Projekt.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-    
-    }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -209,7 +186,7 @@ public class Projekt extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(lblAvdelning)
-                .addGap(0, 638, Short.MAX_VALUE))
+                .addGap(0, 623, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +206,7 @@ public class Projekt extends javax.swing.JFrame {
                     .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(365, 365, 365))
         );
 
         pack();
