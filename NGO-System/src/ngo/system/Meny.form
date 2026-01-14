@@ -252,7 +252,7 @@
     </Component>
     <Component class="javax.swing.JToggleButton" name="btnProjektAvd">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jToggleButton1"/>
+        <Property name="text" type="java.lang.String" value="Projekt S&#xf6;kning"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProjektAvdActionPerformed"/>
