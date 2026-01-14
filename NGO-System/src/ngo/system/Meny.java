@@ -346,7 +346,7 @@ public class Meny extends javax.swing.JFrame {
     
 
     private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
-        new Projekt(idb).setVisible(true); 
+        new Projekt(idb, accessLevel).setVisible(true); 
     }  
     
     
@@ -356,7 +356,7 @@ public class Meny extends javax.swing.JFrame {
     private void btnProjektMouseClicked1(java.awt.event.MouseEvent evt) {
         if(accessLevel == 0 || accessLevel == 1)
         {
-            new Projekt(idb).setVisible(true); 
+            new Projekt(idb, accessLevel).setVisible(true); 
         }
         else
         {
