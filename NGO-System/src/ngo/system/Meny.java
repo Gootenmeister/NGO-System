@@ -90,6 +90,7 @@ public class Meny extends javax.swing.JFrame {
         btnLandUppgifter = new javax.swing.JButton();
         btnUppgifterOmPartner = new javax.swing.JButton();
         btnPartnersUppgifter = new javax.swing.JButton();
+        btnProjektAvd = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,6 +166,9 @@ public class Meny extends javax.swing.JFrame {
         btnPartnersUppgifter.setText("Partners Uppgifter");
         btnPartnersUppgifter.addActionListener(this::btnPartnersUppgifterActionPerformed);
 
+        btnProjektAvd.setText("jToggleButton1");
+        btnProjektAvd.addActionListener(this::btnProjektAvdActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,6 +210,7 @@ public class Meny extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnProjektAvd)
                     .addComponent(pcKnapp, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(adminKnapp, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(92, 92, 92))
@@ -239,7 +244,9 @@ public class Meny extends javax.swing.JFrame {
                 .addComponent(btnPersonal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnProjekt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnProjektAvd)
+                .addGap(18, 18, 18)
                 .addComponent(adminKnapp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pcKnapp)
@@ -348,6 +355,17 @@ public class Meny extends javax.swing.JFrame {
     private void btnProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProjektActionPerformed
         
     }//GEN-LAST:event_btnProjektActionPerformed
+
+    private void btnProjektAvdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProjektAvdActionPerformed
+        if(accessLevel == 0 || accessLevel == 1)
+        {
+            new ProjektAvd(idb).setVisible(true); 
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Enbart handläggare och projektchefer kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnProjektAvdActionPerformed
     
 
     private void btnProjektMouseClicked1(java.awt.event.MouseEvent evt) {                                         
@@ -404,6 +422,7 @@ public class Meny extends javax.swing.JFrame {
     private javax.swing.JButton btnPersonal;
     private javax.swing.JButton btnProjekt;
     private javax.swing.JButton btnProjektAnsvar;
+    private javax.swing.JToggleButton btnProjektAvd;
     private javax.swing.JButton btnUppgifter;
     private javax.swing.JButton btnUppgifterOmPartner;
     private javax.swing.JLabel lblAccessLevel;
