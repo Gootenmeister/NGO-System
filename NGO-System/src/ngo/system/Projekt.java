@@ -172,22 +172,10 @@ public class Projekt extends javax.swing.JFrame {
         lblAvdelning = new javax.swing.JLabel();
         splProjekt = new javax.swing.JScrollPane();
         lstProjekt = new javax.swing.JList<>();
-        btnDatum = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        txtEpost = new javax.swing.JTextField();
-        lblEpost = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        statusCbox = new javax.swing.JComboBox<>();
-        txtStartDatum = new javax.swing.JTextField();
-        txtSlutDatum = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstProjektMedarbetare = new javax.swing.JList<>();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstProjektPartner = new javax.swing.JList<>();
-        splProjekt1 = new javax.swing.JScrollPane();
-        lstAllaProjekt = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -200,32 +188,12 @@ public class Projekt extends javax.swing.JFrame {
         });
         splProjekt.setViewportView(lstProjekt);
 
-        btnDatum.setText("Sök");
-        btnDatum.addActionListener(this::btnDatumActionPerformed);
-
-        jLabel1.setText("Sök inom ett datum eller på en användares E-post");
-
-        txtEpost.addActionListener(this::txtEpostActionPerformed);
-
-        lblEpost.setText("E-post");
-
-        jLabel2.setText("Filtrera på status:");
-
-        statusCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Ingen Filtrering-", "Pågående", "Avslutat", "Planerat" }));
-        statusCbox.addActionListener(this::statusCboxActionPerformed);
-
-        txtSlutDatum.addActionListener(this::txtSlutDatumActionPerformed);
-
         lstProjektMedarbetare.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Välj ett projekt" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(lstProjektMedarbetare);
-
-        jLabel3.setText("Startdatum [åååå-mm-dd]");
-
-        jLabel4.setText("Slutdatum [åååå-mm-dd]");
 
         lstProjektPartner.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Välj ett projekt" };
@@ -234,13 +202,6 @@ public class Projekt extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(lstProjektPartner);
 
-        lstAllaProjekt.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = {  };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        splProjekt1.setViewportView(lstAllaProjekt);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -248,33 +209,14 @@ public class Projekt extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(lblAvdelning)
-                .addGap(0, 623, Short.MAX_VALUE))
+                .addGap(0, 638, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(106, 106, 106)
-                        .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1)
-                    .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addComponent(btnDatum))
-                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEpost)
-                    .addComponent(splProjekt1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(53, 53, 53)
-                        .addComponent(jLabel4))
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -287,69 +229,11 @@ public class Projekt extends javax.swing.JFrame {
                     .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEpost)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDatum)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(splProjekt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    //När användaren klickar på knappen så hämtas det som användaren har sökt på för Epost och de datum som användaren har knappat in. Datumen görs om från Date till LocalDate så att vi kan gemföra datum i vår SQL query
-    private void btnDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatumActionPerformed
-        epost = txtEpost.getText().trim();
-
-    try {
-        String error = Validering.datumValid(txtStartDatum.getText());
-        if (error != null) {
-            showError("Startdatum: " + error);
-            return;
-        }
-        
-        error = Validering.datumValid(txtSlutDatum.getText());
-        if (error != null) {
-            showError("Slutdatum: " + error);
-            return;
-        }
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        startDatumLocal = txtStartDatum.getText().isBlank()
-                ? null
-                : startDatumLocal.parse(txtStartDatum.getText(), formatter);
-        
-        slutDatumLocal = txtSlutDatum.getText().isBlank()
-                ? null
-                : slutDatumLocal.parse(txtSlutDatum.getText(), formatter);
-
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Felaktigt datumformat! Använd yyyy-MM-dd");
-        startDatumLocal = null;
-        slutDatumLocal = null;
-    }
-
-    projektListaAllaProjekt();
-    }//GEN-LAST:event_btnDatumActionPerformed
 
     
     private void visaProjektMedarbetare(String projektnamn) {
@@ -420,20 +304,6 @@ public class Projekt extends javax.swing.JFrame {
 
 
 
-    private void txtEpostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEpostActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEpostActionPerformed
-
-    private void statusCboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusCboxActionPerformed
-        statusFilter = statusCbox.getSelectedIndex() == 0 ? null
-                    : (String) statusCbox.getSelectedItem();
-    projektLista();
-    }//GEN-LAST:event_statusCboxActionPerformed
-
-    private void txtSlutDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSlutDatumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSlutDatumActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -474,25 +344,13 @@ public class Projekt extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDatum;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAvdelning;
-    private javax.swing.JLabel lblEpost;
-    private javax.swing.JList<String> lstAllaProjekt;
     private javax.swing.JList<String> lstProjekt;
     private javax.swing.JList<String> lstProjektMedarbetare;
     private javax.swing.JList<String> lstProjektPartner;
     private javax.swing.JScrollPane splProjekt;
-    private javax.swing.JScrollPane splProjekt1;
-    private javax.swing.JComboBox<String> statusCbox;
-    private javax.swing.JTextField txtEpost;
-    private javax.swing.JTextField txtSlutDatum;
-    private javax.swing.JTextField txtStartDatum;
     // End of variables declaration//GEN-END:variables
 }
 

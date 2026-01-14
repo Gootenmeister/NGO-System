@@ -45,6 +45,10 @@ public class ProjektAvd extends javax.swing.JFrame {
         projektLista();
     }
     
+    private void showError(String message) {
+    JOptionPane.showMessageDialog(this, message, "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+    }
+    
     //Ändrar lblAvdelning till att visa avdelningens namn som användaren jobbar på
     private void printAvdelning()
     {
@@ -242,6 +246,29 @@ public class ProjektAvd extends javax.swing.JFrame {
         startDatumString = txtStart.getText();
         slutDatumString = txtSlut.getText();
         epost = txtEpost.getText();
+        
+        String errorStartDatum = Validering.goodStr(startDatumString);
+        if (errorStartDatum != null) {
+            showError("Startdatum: " + errorStartDatum);
+            return;
+        }
+        errorStartDatum = Validering.datumValid(startDatumString);
+        if(errorStartDatum != null) {
+            showError("Startdatum: " + errorStartDatum);
+            return;
+        }
+        
+        String errorSlutDatum = Validering.goodStr(slutDatumString);
+        if (errorSlutDatum != null) {
+            showError("Slutdatum: " + errorSlutDatum);
+            return;
+        }
+        errorSlutDatum = Validering.datumValid(slutDatumString);
+        if(errorSlutDatum != null) {
+            showError("Slutdatum: " + errorSlutDatum);
+            return;
+        }
+        
          
         if((!startDatumString.isEmpty() || !slutDatumString.isEmpty()) && (startDatumString.length() != 10 || slutDatumString.length() != 10))
         {
