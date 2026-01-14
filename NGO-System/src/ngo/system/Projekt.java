@@ -58,6 +58,8 @@ public class Projekt extends javax.swing.JFrame {
                 visaProjektMedarbetare(selectedProjekt);
                 visaProjektParner(selectedProjekt);
             }
+            
+        projektListaAllaProjekt();
     }
 });
 
@@ -140,7 +142,11 @@ public class Projekt extends javax.swing.JFrame {
         try {
             DefaultListModel<String> listModel = new DefaultListModel<>();
             
-            String sqlQ = "select projektnamn from projekt";
+            System.out.println(avdid);
+            setAvdid();
+            System.out.println(avdid);
+            String sqlQ = "select projektnamn from projekt where projektchef in (select aid from anstalld where avdelning = " + avdid + ")";
+            System.out.println(sqlQ);
             projektNamn = idb.fetchColumn(sqlQ);
             
             for (String namn : projektNamn) {
@@ -459,20 +465,6 @@ public class Projekt extends javax.swing.JFrame {
         try
         {
             avdid = idb.fetchSingle(sqlQ);
-        }
-        
-        catch(InfException exception)
-        {
-            System.out.println("Error: " + exception);
-        }
-    }
-    
-    private void setAidLista()
-    {
-        String sqlQ = "select aid from anstalld where avdelning = " + avdid;
-        try
-        {
-            aidLista = idb.fetchColumn(sqlQ);
         }
         
         catch(InfException exception)
