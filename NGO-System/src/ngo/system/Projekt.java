@@ -33,6 +33,8 @@ public class Projekt extends javax.swing.JFrame {
     private LocalDate slutDatumLocal;
     private String statusFilter = null;
     private int accessLevel;
+    private String avdid;
+    private ArrayList<String> aidLista;
 
 
     /**
@@ -42,7 +44,9 @@ public class Projekt extends javax.swing.JFrame {
         this.idb = idb;
         this.accessLevel = accessLevel;
         epost = "";
+        avdid = "";
         ArrayList<String> projektNamn = new ArrayList<>();
+        ArrayList<String> aidLista = new ArrayList<>();
         epostChef = "";
         initComponents();
         printAvdelning();
@@ -447,6 +451,34 @@ public class Projekt extends javax.swing.JFrame {
 
         /* Create and display the form */
         //java.awt.EventQueue.invokeLater(() -> new Projekt().setVisible(true));
+    }
+    
+    private void setAvdid()
+    {
+        String sqlQ = "select avdelning from anstalld where aid = " + Meny.getAID();
+        try
+        {
+            avdid = idb.fetchSingle(sqlQ);
+        }
+        
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }
+    }
+    
+    private void setAidLista()
+    {
+        String sqlQ = "select aid from anstalld where avdelning = " + avdid;
+        try
+        {
+            aidLista = idb.fetchColumn(sqlQ);
+        }
+        
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
