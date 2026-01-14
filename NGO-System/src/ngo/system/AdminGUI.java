@@ -55,7 +55,7 @@ public class AdminGUI extends javax.swing.JFrame {
         jLabelName = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabelName.setText("Tja:");
 
