@@ -192,7 +192,7 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_adminKnappMouseClicked
     
     private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
-        new Projekt(idb).setVisible(true); 
+        new ProjektAvd(idb).setVisible(true); 
     }   
     /**
      * @param args the command line arguments
