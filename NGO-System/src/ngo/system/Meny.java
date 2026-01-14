@@ -166,7 +166,7 @@ public class Meny extends javax.swing.JFrame {
         btnPartnersUppgifter.setText("Partners Uppgifter");
         btnPartnersUppgifter.addActionListener(this::btnPartnersUppgifterActionPerformed);
 
-        btnProjektAvd.setText("jToggleButton1");
+        btnProjektAvd.setText("Projekt Sökning");
         btnProjektAvd.addActionListener(this::btnProjektAvdActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
