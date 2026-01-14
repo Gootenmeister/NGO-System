@@ -120,7 +120,7 @@ public class Meny extends javax.swing.JFrame {
             }
         });
 
-        pcKnapp.setText("Projekt-knapp");
+        pcKnapp.setText("ProjektChef knapp");
         pcKnapp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pcKnappMouseClicked(evt);
