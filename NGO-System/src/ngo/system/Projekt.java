@@ -316,13 +316,13 @@ public class Projekt extends javax.swing.JFrame {
     try {
         String error = Validering.datumValid(txtStartDatum.getText());
         if (error != null) {
-            showError("Lösenord: " + error);
+            showError("Startdatum: " + error);
             return;
         }
         
         error = Validering.datumValid(txtSlutDatum.getText());
         if (error != null) {
-            showError("Lösenord: " + error);
+            showError("Slutdatum: " + error);
             return;
         }
         
