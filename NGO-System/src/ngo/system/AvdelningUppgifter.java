@@ -215,14 +215,14 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                 //Skriver ut om användarne har missat att välja avdelning
                 error = Validering.goodStr(cboxAvdelning.getSelectedItem().toString());
                 if (error != null) {
-                    showError("Lösenord: " + error);
+                    showError("Gör om gör rätt !! hint: Avdelning: " + error);
                     return;
                 }
                 
                 //Skriver ut om användaren har missat att välja uppgift
                 error = Validering.goodStr(cboxUppgift.getSelectedItem().toString());
                 if (error != null) {
-                    showError("Lösenord: " + error);
+                    showError("ajdå det verkar vara fel i Uppgift: " + error);
                     return;
                 }
 
@@ -230,7 +230,7 @@ public class AvdelningUppgifter extends javax.swing.JFrame {
                 //Skriver ut om användaren har missat att skriva vad den gamla datan ska uppdateras till
                 error = Validering.goodStr(txtNyData.getText());
                 if (error != null) {
-                    showError("Lösenord: " + error);
+                    showError("Oops något gick fel: " + error);
                     return;
                 }
 
