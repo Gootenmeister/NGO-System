@@ -83,24 +83,74 @@ public class ProjektAvd extends javax.swing.JFrame {
         }
     }
     
+    private boolean checkChef()
+    {
+        boolean chefBool = false;
+        ArrayList<String> chefList = new ArrayList<>();
+        String sqlQ = "select projektchef from projekt";
+        try
+        {
+            chefList = idb.fetchColumn(sqlQ);
+        
+            for(String chef : chefList)
+            {
+                if(chef.equals(Meny.getAID()))
+                {
+                    chefBool = true;
+                    break;
+                }
+            } 
+        }
+        
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }
+        
+        
+        return chefBool;
+    }
+    
     //Skapar en lista för alla projekt som finns i avdelningen som användaren jobbar på och som är aktiva samt ingår i det datumet användaren skrivit in om de har det
     private void projektLista()
     {
         try {
-            String sqlQ;
+            String sqlQ = "";
             DefaultListModel<String> listModel = new DefaultListModel<>();
             String status = cboxStatus.getSelectedItem().toString();
-
-            //Kollar om användaren har sökt på ett specifikt datum, om de inte har så körs kod-blocket nedan
-            if((startDatumString.isEmpty() || slutDatumString.isEmpty()) || status.equals("(Alla)"))
+            
+            //Kollar om användaren är projektchef, SQL-querin blir annorlunda då
+            if(checkChef())
             {
-                sqlQ = "select projektnamn from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
+                
+                //Kollar om användaren har sökt på ett specifikt datum, om de inte har så körs kod-blocket nedan
+                if((startDatumString.isEmpty() || slutDatumString.isEmpty()) || status.equals("(Alla)"))
+                {
+                    sqlQ = "select projektnamn from projekt where projektchef = " + Meny.getAID();
+                    System.out.println(sqlQ);
+                    System.out.println(idb.fetchColumn(sqlQ) + " | " + Meny.getAID());
+                }
+                //Om de har sökt på ett datum så körs kod-blocket nedan
+                else
+                {
+                    sqlQ = "select projektnamn from projekt where status = 'Pågående' and startdatum >= '" + startDatum + "' and slutdatum <= '" + slutDatum + "' and where projektchef = " + Meny.getAID();
+                }
             }
-            //Om de har sökt på ett datum så körs kod-blocket nedan
+            //Koden nedan körs om användaren inte är projektchef
             else
             {
-                sqlQ = "select projektnamn from projekt where status = 'Pågående' and startdatum >= '" + startDatum + "' and slutdatum <= '" + slutDatum + "' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
+                //Kollar om användaren har sökt på ett specifikt datum, om de inte har så körs kod-blocket nedan
+                if((startDatumString.isEmpty() || slutDatumString.isEmpty()) || status.equals("(Alla)"))
+                {
+                    sqlQ = "select projektnamn from projekt where pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
+                }
+                //Om de har sökt på ett datum så körs kod-blocket nedan
+                else
+                {
+                    sqlQ = "select projektnamn from projekt where status = 'Pågående' and startdatum >= '" + startDatum + "' and slutdatum <= '" + slutDatum + "' and pid in (select pid from ans_proj where aid in (select aid from anstalld where avdelning = " + avdelningNummer + "))";
+                }
             }
+            
             
             projektNamn = idb.fetchColumn(sqlQ);
             
