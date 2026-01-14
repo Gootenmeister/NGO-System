@@ -253,7 +253,7 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_openHallbarhetsMalMouseClicked
 
     private void btnPersonalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPersonalMouseClicked
-        if(accessLevel == 0)
+        if(accessLevel == 0 || accessLevel == 1)
         {   
             new Personal(idb).setVisible(true); //ersätt null med avdelningen på maria?
         }
@@ -334,7 +334,7 @@ public class Meny extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUppgifterOmPartnerActionPerformed
 
     private void btnPartnersUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnersUppgifterActionPerformed
-        if(accessLevel == 0)
+        if(accessLevel == 0 || accessLevel == 1)
         {
             new PartnersUppgifter(idb).setVisible(true);
         }
@@ -354,7 +354,7 @@ public class Meny extends javax.swing.JFrame {
     
 
     private void btnProjektMouseClicked1(java.awt.event.MouseEvent evt) {
-        if(accessLevel == 0)
+        if(accessLevel == 0 || accessLevel == 1)
         {
             new Projekt(idb).setVisible(true); 
         }

@@ -20,7 +20,7 @@ public class Login extends javax.swing.JFrame {
     public Login(InfDB idb) {
         this.idb = idb;
         initComponents();
-        jLabel1.setVisible(false); devbtnAutoDetail.setVisible(false); // <-- kommentera bort för att få tillbaka dev-knapparna
+        //jLabel1.setVisible(false); devbtnAutoDetail.setVisible(false); // <-- kommentera bort för att få tillbaka dev-knapparna
         lblErr.setVisible(false);
     }
     
