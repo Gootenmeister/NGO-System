@@ -123,6 +123,7 @@ public class Meny extends javax.swing.JFrame {
                 btnProjektMouseClicked(evt);
             }
         });
+        btnProjekt.addActionListener(this::btnProjektActionPerformed);
 
         pcKnapp.setText("Projekt-knapp");
         pcKnapp.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -200,9 +201,8 @@ public class Meny extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnProjekt)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnPersonal)
-                                .addGap(111, 111, 111))))))
+                            .addComponent(btnPersonal))
+                        .addGap(111, 111, 111))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -344,24 +344,28 @@ public class Meny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Enbart handläggare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnPartnersUppgifterActionPerformed
+
+    private void btnProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProjektActionPerformed
+        
+    }//GEN-LAST:event_btnProjektActionPerformed
     
 
-    private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
-        new Projekt(idb, accessLevel).setVisible(true); 
+    private void btnProjektMouseClicked1(java.awt.event.MouseEvent evt) {                                         
+        
     }  
     
     
     
     
 
-    private void btnProjektMouseClicked1(java.awt.event.MouseEvent evt) {
+    private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {
         if(accessLevel == 0 || accessLevel == 1)
         {
             new Projekt(idb, accessLevel).setVisible(true); 
         }
         else
         {
-            JOptionPane.showMessageDialog(this, "Enbart handläggare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Enbart handläggare och projektchefer kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
         }
     }   
 
