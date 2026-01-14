@@ -136,7 +136,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         landComboBox = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         PCLabel.setText("Projekt Chef Meny");
 
