@@ -86,7 +86,7 @@ public class Uppgifter extends javax.swing.JFrame
         scrollPaneProjekt = new javax.swing.JScrollPane();
         projektTable = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         projektTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
