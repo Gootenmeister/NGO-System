@@ -167,6 +167,8 @@ public class Projekt extends javax.swing.JFrame {
         txtSlutDatum = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstProjektMedarbetare = new javax.swing.JList<>();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -193,9 +195,7 @@ public class Projekt extends javax.swing.JFrame {
         statusCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Ingen Filtrering-", "Pågående", "Avslutat", "Planerat" }));
         statusCbox.addActionListener(this::statusCboxActionPerformed);
 
-        txtStartDatum.setText("Startdatum");
-
-        txtSlutDatum.setText("Slutdatum");
+        txtSlutDatum.addActionListener(this::txtSlutDatumActionPerformed);
 
         lstProjektMedarbetare.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Välj ett projekt" };
@@ -204,10 +204,23 @@ public class Projekt extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstProjektMedarbetare);
 
+        jLabel3.setText("Startdatum [åååå-mm-dd]");
+
+        jLabel4.setText("Slutdatum [åååå-mm-dd]");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(lblAvdelning))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(102, 102, 102)
+                        .addComponent(btnDatum)))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,17 +247,12 @@ public class Projekt extends javax.swing.JFrame {
                                     .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
-                                    .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(53, 53, 53)
+                                .addComponent(jLabel4)))
                         .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(lblAvdelning))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(btnDatum)))
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,11 +269,15 @@ public class Projekt extends javax.swing.JFrame {
                 .addComponent(statusCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtStartDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSlutDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblEpost)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -354,6 +366,10 @@ public class Projekt extends javax.swing.JFrame {
     projektLista();
     }//GEN-LAST:event_statusCboxActionPerformed
 
+    private void txtSlutDatumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSlutDatumActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSlutDatumActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -383,6 +399,8 @@ public class Projekt extends javax.swing.JFrame {
     private javax.swing.JButton btnDatum;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblEpost;
