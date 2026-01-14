@@ -305,6 +305,15 @@ public class Projekt extends javax.swing.JFrame {
             showError("Lösenord: " + error);
             return;
         }
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        startDatumLocal = txtStartDatum.getText().isBlank()
+                ? null
+                : startDatumLocal.parse(txtStartDatum.getText(), formatter);
+        
+        slutDatumLocal = txtSlutDatum.getText().isBlank()
+                ? null
+                : slutDatumLocal.parse(txtSlutDatum.getText(), formatter);
 
 
     } catch (Exception ex) {
