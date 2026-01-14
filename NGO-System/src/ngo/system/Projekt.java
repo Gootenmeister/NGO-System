@@ -31,13 +31,15 @@ public class Projekt extends javax.swing.JFrame {
     private LocalDate startDatumLocal;
     private LocalDate slutDatumLocal;
     private String statusFilter = null;
+    private int accessLevel;
 
 
     /**
      * Creates new form Projekt
      */
-    public Projekt(InfDB idb) {
+    public Projekt(InfDB idb, int accessLevel) {
         this.idb = idb;
+        this.accessLevel = accessLevel;
         epost = "";
         ArrayList<String> projektNamn = new ArrayList<>();
         epostChef = "";
@@ -49,6 +51,7 @@ public class Projekt extends javax.swing.JFrame {
                 String selectedProjekt = lstProjekt.getSelectedValue();
             if (selectedProjekt != null) {
                 visaProjektMedarbetare(selectedProjekt);
+                visaProjektParner(selectedProjekt);
             }
     }
 });
@@ -115,24 +118,29 @@ public class Projekt extends javax.swing.JFrame {
             emailCondition = " and lower(a.epost) like '%" + epost.toLowerCase() + "%'";
         }
 
-        String sqlQ = //med filters denna gång :p
-        "select DISTINCT p.projektnamn " +
-        "from projekt p " +
-        "join anstalld pc on p.projektchef = pc.aid " +
-        "where (p.pid in (" +
-        "select pid from ans_proj ap " +
-        "join anstalld a on ap.aid = a.aid " +
-        "where a.avdelning = " + avdelningNummer +
-        ") or not exists (" +
-        "select 1 from ans_proj ap2 where ap2.pid = p.pid" +
-        "))" +
+        //sql-sats om man är handläggare
+        String sqlHandläggare = 
+        "select projektnamn from sdgsweden.projekt join sdgsweden.ans_proj on projekt.pid = ans_proj.pid where ans_proj.aid = " + Meny.getAID() +
+        statusCondition +
+        dateCondition +
+        emailCondition;
+        
+        //sql-sats om man är projektchef
+        String sqlProjektChef = 
+        "select projektnamn from sdgsweden.projekt  where projekt.projektchef = " + Meny.getAID() +
         statusCondition +
         dateCondition +
         emailCondition;
 
 
-
-        projektNamn = idb.fetchColumn(sqlQ);
+        if (accessLevel == 0){
+        projektNamn = idb.fetchColumn(sqlHandläggare);
+        }
+        System.out.println(accessLevel);
+        
+        if (accessLevel == 1){
+        projektNamn = idb.fetchColumn(sqlProjektChef);
+        }
 
         for (String namn : projektNamn) {
             listModel.addElement(namn);
@@ -169,6 +177,8 @@ public class Projekt extends javax.swing.JFrame {
         lstProjektMedarbetare = new javax.swing.JList<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lstProjektPartner = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -208,6 +218,13 @@ public class Projekt extends javax.swing.JFrame {
 
         jLabel4.setText("Slutdatum [åååå-mm-dd]");
 
+        lstProjektPartner.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Välj ett projekt" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(lstProjektPartner);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -224,19 +241,6 @@ public class Projekt extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(25, 25, 25))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEpost)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,7 +256,18 @@ public class Projekt extends javax.swing.JFrame {
                                 .addComponent(jLabel3)
                                 .addGap(53, 53, 53)
                                 .addComponent(jLabel4)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 371, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblEpost))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,7 +277,8 @@ public class Projekt extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(splProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -357,6 +373,35 @@ public class Projekt extends javax.swing.JFrame {
     }
 }
     
+    
+    private void visaProjektParner(String projektnamn){
+    
+        try {
+            String pid = idb.fetchSingle(
+                    "SELECT pid FROM projekt WHERE projektnamn = '" + projektnamn + "'"
+            );
+            
+            DefaultListModel<String> listModel = new DefaultListModel<>();
+            
+            if (pid != null) {
+                String query = "SELECT namn from partner join projekt_partner on projekt_partner.partner_pid = partner.pid where projekt_partner.pid = " + pid;
+                System.out.println("DEBUG: Medarbetare query = " + query);
+                
+                ArrayList<String> partner = idb.fetchColumn(query);
+                
+                if (partner != null) {
+                    for (String namn : partner) {
+                        listModel.addElement(namn);
+                    }
+                }
+            }
+            
+            lstProjektPartner.setModel(listModel);
+        } catch (InfException ex) {
+            System.getLogger(Projekt.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    
+    }
     //Visar ett medellande om vad som gick fel om en validering misslyckades
     private void showError(String message) 
     {
@@ -411,10 +456,12 @@ public class Projekt extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAvdelning;
     private javax.swing.JLabel lblEpost;
     private javax.swing.JList<String> lstProjekt;
     private javax.swing.JList<String> lstProjektMedarbetare;
+    private javax.swing.JList<String> lstProjektPartner;
     private javax.swing.JScrollPane splProjekt;
     private javax.swing.JComboBox<String> statusCbox;
     private javax.swing.JTextField txtEpost;

@@ -84,7 +84,8 @@ public class PartnersUppgifter extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cboxProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxProjektActionPerformed
-        // TODO add your handling code here:
+        getPid();
+        setPartner();
     }//GEN-LAST:event_cboxProjektActionPerformed
 
     /**
@@ -113,7 +114,7 @@ public class PartnersUppgifter extends javax.swing.JFrame {
     
     private void setProjekt()
     {
-        String sqlQ = "select pid from projekt where projektchef = " + Meny.getAID();
+        String sqlQ = "select pid from ans_proj where aid = " + Meny.getAID();
         ArrayList<String> projektFullLista = new ArrayList<>();
         try
         {
@@ -132,6 +133,18 @@ public class PartnersUppgifter extends javax.swing.JFrame {
         {
             System.out.println("Error: " + exception);
         }
+    }
+    
+    private void setPartner()
+    {
+        
+    }
+    
+    private String getPid()
+    {
+        String pid = cboxProjekt.getSelectedItem().toString();
+        pid = pid.substring(0, pid.indexOf('.'));
+        return pid;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
