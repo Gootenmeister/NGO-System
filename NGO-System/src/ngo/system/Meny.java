@@ -9,6 +9,7 @@ import oru.inf.InfException;
 
 /**
  *
+ * 
  * @author alve
  */
 public class Meny extends javax.swing.JFrame {
