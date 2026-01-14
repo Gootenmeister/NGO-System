@@ -17,7 +17,7 @@ package ngo.system;
 public class Validering {
     
     //KONSTANTER
-    private static final int OUT_OF_BOUNDS = 16000;     //OutOfBounds-tak
+    private static final int OUT_OF_BOUNDS = 2147483647;     //OutOfBounds-tak
     private static final int MAX_STRLEN = 255;          //MaxStringLen-tak
     
     //METODER

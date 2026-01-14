@@ -125,7 +125,6 @@ public class Login extends javax.swing.JFrame {
         String epost = tfEpost.getText();
         String pwd = tfPwd.getText();
         String sqlQ = "select losenord from anstalld where epost = '" + epost + "'";
-        System.out.println(sqlQ);
         
         //alla sql satser som används för att få reda på någon behörigheter
         String sqlAID = "select anstalld.aid from sdgsweden.anstalld where epost = '" + epost + "'" + " limit 1";
@@ -165,11 +164,6 @@ public class Login extends javax.swing.JFrame {
         else if (AID.equals(isAdmin)){
             access = 2;
         }
-        
-        
-
-        
-        System.out.println("nivå=" + access);
             
         } catch (InfException ex) {
             System.getLogger(Login.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

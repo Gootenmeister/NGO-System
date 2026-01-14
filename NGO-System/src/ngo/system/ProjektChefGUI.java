@@ -79,6 +79,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     
     private void hamtaLand(){
     try {
+            // en for-each loop som hämtar landen som ska kunna väljas i "comboBox"-en
             String sqlQ = "select namn from land order by lid";
             int i = 1;
             ArrayList<HashMap<String,String>> databasSvar = idb.fetchRows(sqlQ);
@@ -88,17 +89,15 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                 String landNamn = idb.fetchSingle(sqlfraga + i);
                 landLista.add(row.get("projektnamn"));
                 if (landNamn != null){
+                    // det finns två "combobox":ar, då måste programmet lägga till landnamn i båda
                     landKostnadBox.addItem(landNamn);
+                    landComboBox.addItem(landNamn);
                 } 
                 i++;
             }
         } catch (InfException ex) {
             System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-    }
-    
-    private boolean validDate(String slutDatum){
-         return slutDatum.matches("\\d{4}-\\d{2}-\\d{2}");
     }
 
     /**
@@ -134,6 +133,8 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         textFieldStartDatum = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        landComboBox = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -185,6 +186,11 @@ public class ProjektChefGUI extends javax.swing.JFrame {
 
         jLabel8.setText("Startdatum");
 
+        landComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
+        landComboBox.addActionListener(this::landComboBoxActionPerformed);
+
+        jLabel9.setText("Land");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -192,8 +198,6 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PCLabel)
-                    .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,13 +244,22 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(textFieldPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5)))
+                                    .addComponent(jLabel5))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(landComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(40, 40, 40)
                                 .addComponent(btnUppdatera))))
+                    .addComponent(PCLabel)
+                    .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(projektBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(landKostnadBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,12 +296,14 @@ public class ProjektChefGUI extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel6)
                                         .addComponent(jLabel4)
-                                        .addComponent(jLabel5))
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel9))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(textFieldKostnad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(textFieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textFieldPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(textFieldPrioritet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(landComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -362,11 +377,14 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     private void landKostnadBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_landKostnadBoxActionPerformed
         
         try {
+            // hämtar landnamn och landID för att använda i sql-satserna
             String valtLand = (String) landKostnadBox.getSelectedItem();
             String fetchLandID = "SELECT lid FROM land WHERE namn = '" + valtLand + "'";
             String landID = idb.fetchSingle(fetchLandID);
+            
             String fetchKostnad = "SELECT projektnamn, kostnad FROM projekt WHERE land = " + landID;
             
+            // StringBuilder för att enklare utöka texten
             StringBuilder kostnadUppDelning = new StringBuilder();
             ArrayList<HashMap<String, String>> databasSvar = idb.fetchRows(fetchKostnad);
             for (HashMap<String, String> row : databasSvar) {
@@ -416,7 +434,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             //ändrar "valtProjekt" så att satserna nedan inte använder gamla projektnamnet som "where"-värde
             valtProjekt = textFieldNamn.getText();  
         }
-        
+            
             String errorBeskrivning = Validering.goodStr(textFieldBeskrivning.getText());
             if (errorBeskrivning != null) {
             showError("Beskrivning: " + errorBeskrivning);
@@ -428,13 +446,13 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             idb.update(sqlBeskrivning);
         }
             
-            
+        // validerar att man har skrivit in någonting i "String"-en
         String errorStartDatum = Validering.goodStr(textFieldStartDatum.getText());
             if (errorStartDatum != null) {
             showError("Start datum: " + errorStartDatum);
             return;
         }
-        
+        // validerar så att datumet är i rätt format (yyyy-mm-dd)
         errorStartDatum = Validering.datumValid(textFieldStartDatum.getText());
             if(errorStartDatum != null) {
             showError("Startdatum: " + errorStartDatum);
@@ -445,14 +463,14 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             String sqlStartDatum = "update projekt set startdatum = '" + textFieldSlutDatum.getText() + "' where projektnamn = '" + valtProjekt + "'";
             idb.update(sqlStartDatum);
         }
-        
-        String errorSlutDatum = Validering.goodStr(textFieldSlutDatum.getText());
+            // validerar att man har skrivit in någonting i "String"-en
+            String errorSlutDatum = Validering.goodStr(textFieldSlutDatum.getText());
             if (errorSlutDatum != null) {
             showError("Slut datum: " + errorSlutDatum);
             return;
             }
-        
-        errorSlutDatum = Validering.datumValid(textFieldSlutDatum.getText());
+            // validerar så att datumet är i rätt format (yyyy-mm-dd)
+            errorSlutDatum = Validering.datumValid(textFieldSlutDatum.getText());
             if(errorSlutDatum != null) {
             showError("Slutdatum: " + errorSlutDatum);
             return;
@@ -463,14 +481,14 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             idb.update(sqlSlutDatum);
         }
         
-        //hämter string värdet för textFieldKostnad och omvandlar den till en double, som sen kan checkas med "Validering.goodInt"
+        // hämter string värdet för textFieldKostnad och omvandlar den till en double, som sen kan checkas med "Validering.goodInt"
         String kostnadString = textFieldKostnad.getText();
-
+        // validerar att fältet inte är tomt
         if (kostnadString.isEmpty()) {
             showError("Kostnad: Inputsträng tom!");
             return;
         }
-
+        // hämtar nummret man skrivit in, och placerar den i en "double"-variabel
         double kostnad;
         try {
             kostnad = Double.parseDouble(kostnadString);
@@ -478,7 +496,7 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             showError("Kostnad: Ogiltig inmatning!");
             return;
         }
-
+        // validerar att "double":n är en tillåten double
         String errorKostnad = Validering.goodDbl(kostnad);
         if (errorKostnad != null) {
             showError("Kostnad: " + errorKostnad);
@@ -511,6 +529,15 @@ public class ProjektChefGUI extends javax.swing.JFrame {
             String sqlPrioritet = "update projekt set prioritet = '" + textFieldPrioritet.getText() + "' where projektnamn = '" + valtProjekt + "'";
             idb.update(sqlPrioritet);
         }
+        
+            
+        // funktionaliteten av de 6 rader nedan är inte i en "if"-sats för man behöver inte kontrollera att data är rätt
+        //då den välj i en "combobox". man väljer alltså ett land att byta till, och den hämter landID och uppdaterar med den
+        String valtLand = (String) landComboBox.getSelectedItem();
+        String fetchLandID = "SELECT lid FROM land WHERE namn = '" + valtLand + "'";
+        String landID = idb.fetchSingle(fetchLandID);       
+        String sqlUpdate = "update projekt set land = " + landID + " where projektnamn = '" + valtProjekt + "'";
+        idb.update(sqlUpdate);
 
         } catch (InfException ex) {
                 System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -519,6 +546,21 @@ public class ProjektChefGUI extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnUppdateraMouseClicked
+
+    private void landComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_landComboBoxActionPerformed
+        //String valtProjekt = (String) projektBox.getSelectedItem();
+        //try {
+        //    String valtLand = (String) landKostnadBox.getSelectedItem();
+        //    String fetchLandID = "SELECT lid FROM land WHERE namn = '" + valtLand + "'";
+        //    String landID = idb.fetchSingle(fetchLandID);
+        //    
+        //    String sqlUpdate = "update projekt set land = " + landID + " where projektnamn = '" + valtProjekt + "'";
+        //    idb.update(sqlUpdate);
+        //    
+        //} catch (InfException ex) {
+        //    System.getLogger(ProjektChefGUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        //}
+    }//GEN-LAST:event_landComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -556,9 +598,11 @@ public class ProjektChefGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel kostnadLabel;
+    private javax.swing.JComboBox<String> landComboBox;
     private javax.swing.JComboBox<String> landKostnadBox;
     private javax.swing.JLabel landKostnadLabel;
     private javax.swing.JComboBox<String> projektBox;
