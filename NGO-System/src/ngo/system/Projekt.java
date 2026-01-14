@@ -119,8 +119,12 @@ public class Projekt extends javax.swing.JFrame {
         }
 
         //sql-sats om man är handläggare
-        String sqlHandläggare = 
-        "select projektnamn from sdgsweden.projekt join sdgsweden.ans_proj on projekt.pid = ans_proj.pid where ans_proj.aid = " + Meny.getAID() +
+        String sqlHandläggare =
+        "select p.projektnamn " +
+        "from sdgsweden.projekt p " +
+        "join sdgsweden.ans_proj ap on p.pid = ap.pid " +
+        "join sdgsweden.anstalld a on ap.aid = a.aid " +
+        "where ap.aid = " + Meny.getAID() +
         statusCondition +
         dateCondition +
         emailCondition;
