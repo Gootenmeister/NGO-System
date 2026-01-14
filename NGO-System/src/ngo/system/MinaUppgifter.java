@@ -82,7 +82,7 @@ public class MinaUppgifter extends javax.swing.JFrame {
         txtEpost = new javax.swing.JTextField();
         txtAnstallningsdatum = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblFornamn.setText("Förnamn:");
 

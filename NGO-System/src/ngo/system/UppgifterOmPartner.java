@@ -104,7 +104,7 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
         btnTaBortPartner = new javax.swing.JButton();
         cboxPartner = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblNamn.setText("Namn");
 

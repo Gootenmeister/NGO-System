@@ -98,7 +98,7 @@ public class LandUppgifter extends javax.swing.JFrame {
         txtLandID = new javax.swing.JTextField();
         cBoxLander = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         sparaÄndringar.setText("Spara ändringar");
         sparaÄndringar.addActionListener(this::sparaÄndringarActionPerformed);
