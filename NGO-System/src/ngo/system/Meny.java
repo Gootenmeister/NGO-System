@@ -88,6 +88,7 @@ public class Meny extends javax.swing.JFrame {
         btnProjektAnsvar = new javax.swing.JButton();
         btnLandUppgifter = new javax.swing.JButton();
         btnUppgifterOmPartner = new javax.swing.JButton();
+        btnPartnersUppgifter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,7 +120,7 @@ public class Meny extends javax.swing.JFrame {
             }
         });
 
-        pcKnapp.setText("PC knapp");
+        pcKnapp.setText("Projekt-knapp");
         pcKnapp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pcKnappMouseClicked(evt);
@@ -156,6 +157,9 @@ public class Meny extends javax.swing.JFrame {
         btnUppgifterOmPartner.setText("Uppgifter om partner");
         btnUppgifterOmPartner.addActionListener(this::btnUppgifterOmPartnerActionPerformed);
 
+        btnPartnersUppgifter.setText("Partners Uppgifter");
+        btnPartnersUppgifter.addActionListener(this::btnPartnersUppgifterActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -191,11 +195,14 @@ public class Meny extends javax.swing.JFrame {
                                 .addGap(59, 59, 59)
                                 .addComponent(btnUppgifterOmPartner))
                             .addComponent(btnLandUppgifter)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnMinaUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(adminKnapp)
-                                    .addComponent(btnProjektAnsvar)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnPartnersUppgifter)
+                                .addGap(71, 71, 71)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnMinaUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(adminKnapp)
+                                        .addComponent(btnProjektAnsvar))))
                             .addComponent(btnUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(43, 43, 43))
         );
@@ -218,7 +225,9 @@ public class Meny extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnUppgifter)
                 .addGap(18, 18, 18)
-                .addComponent(btnMinaUppgifter)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMinaUppgifter)
+                    .addComponent(btnPartnersUppgifter))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnProjektAnsvar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -323,6 +332,17 @@ public class Meny extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Enbart administratörer kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnUppgifterOmPartnerActionPerformed
+
+    private void btnPartnersUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnersUppgifterActionPerformed
+        if(accessLevel == 0)
+        {
+            new PartnersUppgifter(idb).setVisible(true);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Enbart handläggare kan komma åt den här funktionen.", "Åtkomst nekad", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnPartnersUppgifterActionPerformed
     
 
     private void btnProjektMouseClicked(java.awt.event.MouseEvent evt) {                                         
@@ -375,6 +395,7 @@ public class Meny extends javax.swing.JFrame {
     private javax.swing.JButton btnAvdelningUpggifter;
     private javax.swing.JButton btnLandUppgifter;
     private javax.swing.JButton btnMinaUppgifter;
+    private javax.swing.JButton btnPartnersUppgifter;
     private javax.swing.JButton btnPersonal;
     private javax.swing.JButton btnProjekt;
     private javax.swing.JButton btnProjektAnsvar;
