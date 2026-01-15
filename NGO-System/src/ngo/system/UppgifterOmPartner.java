@@ -402,7 +402,7 @@ public class UppgifterOmPartner extends javax.swing.JFrame {
         }
         
         
-        String fråga = "INSERT INTO partner(pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad) VALUES ('"
+        String fråga = "INSERT INTO partner(pid, namn, kontaktperson, kontaktepost, telefon, adress, branch, stad) VALUES ("
                  + pid + ", '"
                  + txtNamn.getText() + "', '"
                  + txtKontaktperson.getText() + "', '"
