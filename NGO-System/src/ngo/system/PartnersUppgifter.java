@@ -4,10 +4,10 @@
  */
 package ngo.system;
 
-
-import oru.inf.InfException;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
+import oru.inf.InfException;
 
 /**
  *
@@ -41,19 +41,17 @@ public class PartnersUppgifter extends javax.swing.JFrame {
 
         cboxProjekt = new javax.swing.JComboBox<>();
         cboxPartner = new javax.swing.JComboBox<>();
-        pnlUppgifter = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        paneUppgifter = new javax.swing.JScrollPane();
+        listUppgifter = new javax.swing.JList<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cboxProjekt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboxProjekt.addActionListener(this::cboxProjektActionPerformed);
 
-        cboxPartner.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboxPartner.addActionListener(this::cboxPartnerActionPerformed);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        pnlUppgifter.setViewportView(jTextArea1);
+        paneUppgifter.setViewportView(listUppgifter);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -63,10 +61,10 @@ public class PartnersUppgifter extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(cboxProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cboxPartner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addComponent(cboxPartner, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(paneUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,8 +74,8 @@ public class PartnersUppgifter extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cboxProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cboxPartner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pnlUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addComponent(paneUppgifter, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -87,6 +85,10 @@ public class PartnersUppgifter extends javax.swing.JFrame {
         getPid();
         setPartner();
     }//GEN-LAST:event_cboxProjektActionPerformed
+
+    private void cboxPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxPartnerActionPerformed
+        setUppgifter();
+    }//GEN-LAST:event_cboxPartnerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -137,7 +139,55 @@ public class PartnersUppgifter extends javax.swing.JFrame {
     
     private void setPartner()
     {
+        String pid = cboxProjekt.getSelectedItem().toString().substring(0, cboxProjekt.getSelectedItem().toString().indexOf('.'));
+        String sqlQ = "select partner_pid from projekt_partner where pid = " + pid;
+        ArrayList<String> partnerIdLista = new ArrayList<>();
+        ArrayList<String> partnerLista = new ArrayList<>();
+        try
+        {
+            partnerIdLista = idb.fetchColumn(sqlQ);
+            //Kombinerar alla partners med deras id och namn så att det blir lättare för sql-queries senare
+            for(String id : partnerIdLista)
+            {
+                sqlQ = "select namn from partner where pid = " + id;
+                partnerLista.add(id + ". " + idb.fetchSingle(sqlQ));
+                
+            }
+            cboxPartner.setModel(new javax.swing.DefaultComboBoxModel(partnerLista.toArray()));
+        }
         
+        catch(InfException exception)
+        {
+            System.out.println("Error: " + exception);
+        }
+    }
+    
+    private void setUppgifter()
+    {
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        String partnerId = cboxPartner.getSelectedItem().toString().substring(0, cboxProjekt.getSelectedItem().toString().indexOf('.'));
+        String sqlQ = "select column_name from information_schema.columns where table_name = 'partner'";
+        String data = "";
+        ArrayList<String> uppgifterLista = new ArrayList<>();
+        try
+        {
+            uppgifterLista = idb.fetchColumn(sqlQ);
+            //Lägger in alla uppgifter och datan som hör till dem i en lista
+            for(String uppgift : uppgifterLista)
+            {
+                sqlQ = "select " + uppgift + " from partner where pid = " + partnerId;
+                data = idb.fetchSingle(sqlQ);
+                uppgift = uppgift.substring(0, 1).toUpperCase() + uppgift.substring(1);
+                listModel.addElement(uppgift + ": " + data);
+            }
+            
+            listUppgifter.setModel(listModel);
+        }
+        
+        catch(InfException exception)
+        {
+                    System.out.println("Error: " + exception);
+        }
     }
     
     private String getPid()
@@ -150,7 +200,7 @@ public class PartnersUppgifter extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboxPartner;
     private javax.swing.JComboBox<String> cboxProjekt;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JScrollPane pnlUppgifter;
+    private javax.swing.JList<String> listUppgifter;
+    private javax.swing.JScrollPane paneUppgifter;
     // End of variables declaration//GEN-END:variables
 }
